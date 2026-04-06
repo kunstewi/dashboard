@@ -1,0 +1,2252 @@
+{
+  "meta": {
+    "start": "2026-04-06",
+    "end": "2026-08-31",
+    "goal": "SDE 1/2",
+    "languages": [
+      "TypeScript",
+      "Python"
+    ]
+  },
+  "phases": [
+    {
+      "id": "p1",
+      "name": "JS/TS Foundations",
+      "months": "April",
+      "color": "#4A90D9"
+    },
+    {
+      "id": "p2",
+      "name": "Python + TS Coding",
+      "months": "May",
+      "color": "#E07B4A"
+    },
+    {
+      "id": "p3",
+      "name": "DSA Depth + Codebase",
+      "months": "June",
+      "color": "#7B5EA7"
+    },
+    {
+      "id": "p4",
+      "name": "Advanced DSA + LLD",
+      "months": "July",
+      "color": "#3BAF7E"
+    },
+    {
+      "id": "p5",
+      "name": "Mock + Polish",
+      "months": "August",
+      "color": "#C45C8A"
+    }
+  ],
+  "topics": {
+    "js_closures": {
+      "label": "JS Closures & Scope",
+      "category": "JavaScript",
+      "phase": "p1"
+    },
+    "js_async": {
+      "label": "JS Async / Promises / Event Loop",
+      "category": "JavaScript",
+      "phase": "p1"
+    },
+    "js_prototypes": {
+      "label": "JS Prototypes & Inheritance",
+      "category": "JavaScript",
+      "phase": "p1"
+    },
+    "js_es6": {
+      "label": "ES6+ Features",
+      "category": "JavaScript",
+      "phase": "p1"
+    },
+    "js_arrays": {
+      "label": "JS Array Methods (map/filter/reduce)",
+      "category": "JavaScript",
+      "phase": "p1"
+    },
+    "js_this": {
+      "label": "JS 'this' keyword & binding",
+      "category": "JavaScript",
+      "phase": "p1"
+    },
+    "js_modules": {
+      "label": "JS Modules (ESM vs CJS)",
+      "category": "JavaScript",
+      "phase": "p1"
+    },
+    "ts_types": {
+      "label": "TS Types & Interfaces",
+      "category": "TypeScript",
+      "phase": "p1"
+    },
+    "ts_generics": {
+      "label": "TS Generics",
+      "category": "TypeScript",
+      "phase": "p1"
+    },
+    "ts_utility": {
+      "label": "TS Utility Types (Pick/Omit/Partial)",
+      "category": "TypeScript",
+      "phase": "p1"
+    },
+    "ts_classes": {
+      "label": "TS Classes & Access Modifiers",
+      "category": "TypeScript",
+      "phase": "p1"
+    },
+    "ts_enums": {
+      "label": "TS Enums & Literal Types",
+      "category": "TypeScript",
+      "phase": "p1"
+    },
+    "ts_decorators": {
+      "label": "TS Decorators",
+      "category": "TypeScript",
+      "phase": "p2"
+    },
+    "ts_advanced": {
+      "label": "TS Conditional & Mapped Types",
+      "category": "TypeScript",
+      "phase": "p2"
+    },
+    "dsa_bigo": {
+      "label": "Big O Notation & Complexity Analysis",
+      "category": "DSA",
+      "phase": "p1"
+    },
+    "dsa_arrays": {
+      "label": "Arrays: Two Pointer & Sliding Window",
+      "category": "DSA",
+      "phase": "p1"
+    },
+    "dsa_hashmaps": {
+      "label": "Hashmaps & Frequency Counting",
+      "category": "DSA",
+      "phase": "p1"
+    },
+    "dsa_stacks": {
+      "label": "Stacks & Monotonic Stack",
+      "category": "DSA",
+      "phase": "p1"
+    },
+    "dsa_queues": {
+      "label": "Queues & Deque",
+      "category": "DSA",
+      "phase": "p1"
+    },
+    "dsa_linkedlist": {
+      "label": "Linked Lists & Fast/Slow Pointer",
+      "category": "DSA",
+      "phase": "p1"
+    },
+    "dsa_binsearch": {
+      "label": "Binary Search & Variants",
+      "category": "DSA",
+      "phase": "p2"
+    },
+    "dsa_trees_basic": {
+      "label": "Trees: DFS/BFS Traversals",
+      "category": "DSA",
+      "phase": "p2"
+    },
+    "dsa_trees_adv": {
+      "label": "Trees: BST, LCA, Path Problems",
+      "category": "DSA",
+      "phase": "p2"
+    },
+    "dsa_graphs_basic": {
+      "label": "Graphs: DFS/BFS & Components",
+      "category": "DSA",
+      "phase": "p2"
+    },
+    "dsa_graphs_adv": {
+      "label": "Graphs: Topo Sort, Union-Find, Dijkstra",
+      "category": "DSA",
+      "phase": "p3"
+    },
+    "dsa_heaps": {
+      "label": "Heaps & Priority Queues",
+      "category": "DSA",
+      "phase": "p3"
+    },
+    "dsa_dp1": {
+      "label": "Dynamic Programming: 1D Patterns",
+      "category": "DSA",
+      "phase": "p3"
+    },
+    "dsa_dp2": {
+      "label": "Dynamic Programming: 2D & String DP",
+      "category": "DSA",
+      "phase": "p3"
+    },
+    "dsa_backtrack": {
+      "label": "Backtracking & Recursion",
+      "category": "DSA",
+      "phase": "p3"
+    },
+    "dsa_trie": {
+      "label": "Tries",
+      "category": "DSA",
+      "phase": "p3"
+    },
+    "py_basics": {
+      "label": "Python Syntax & Builtins",
+      "category": "Python",
+      "phase": "p2"
+    },
+    "py_collections": {
+      "label": "Python: collections module (deque, Counter, defaultdict)",
+      "category": "Python",
+      "phase": "p2"
+    },
+    "py_heapq": {
+      "label": "Python: heapq module",
+      "category": "Python",
+      "phase": "p2"
+    },
+    "py_bisect": {
+      "label": "Python: bisect module",
+      "category": "Python",
+      "phase": "p2"
+    },
+    "py_comprehensions": {
+      "label": "Python: List/Dict Comprehensions",
+      "category": "Python",
+      "phase": "p2"
+    },
+    "py_oop": {
+      "label": "Python OOP: Classes & Dunder Methods",
+      "category": "Python",
+      "phase": "p2"
+    },
+    "codebase_git": {
+      "label": "Git: rebase, bisect, blame, stash",
+      "category": "Codebase",
+      "phase": "p2"
+    },
+    "codebase_read": {
+      "label": "Reading open source TS repos (Express/Prisma)",
+      "category": "Codebase",
+      "phase": "p2"
+    },
+    "codebase_debug": {
+      "label": "VSCode debugger: breakpoints, call stack, watch",
+      "category": "Codebase",
+      "phase": "p2"
+    },
+    "codebase_prs": {
+      "label": "Reading GitHub PRs & understanding diffs",
+      "category": "Codebase",
+      "phase": "p3"
+    },
+    "lld_solid": {
+      "label": "SOLID Principles",
+      "category": "LLD",
+      "phase": "p3"
+    },
+    "lld_patterns1": {
+      "label": "Design Patterns: Factory, Strategy, Observer",
+      "category": "LLD",
+      "phase": "p3"
+    },
+    "lld_patterns2": {
+      "label": "Design Patterns: Decorator, Singleton, Adapter",
+      "category": "LLD",
+      "phase": "p4"
+    },
+    "lld_design1": {
+      "label": "LLD: Design Parking Lot",
+      "category": "LLD",
+      "phase": "p3"
+    },
+    "lld_design2": {
+      "label": "LLD: Design URL Shortener",
+      "category": "LLD",
+      "phase": "p4"
+    },
+    "lld_design3": {
+      "label": "LLD: Design Splitwise",
+      "category": "LLD",
+      "phase": "p4"
+    },
+    "lld_design4": {
+      "label": "LLD: Design Chess Game",
+      "category": "LLD",
+      "phase": "p4"
+    },
+    "machine_intro": {
+      "label": "Machine Coding: Approach & Checklist",
+      "category": "Machine Coding",
+      "phase": "p3"
+    },
+    "machine_snake": {
+      "label": "Machine Coding: Snake Game",
+      "category": "Machine Coding",
+      "phase": "p3"
+    },
+    "machine_taskmgr": {
+      "label": "Machine Coding: Task Manager CLI",
+      "category": "Machine Coding",
+      "phase": "p4"
+    },
+    "machine_ratelim": {
+      "label": "Machine Coding: Rate Limiter",
+      "category": "Machine Coding",
+      "phase": "p4"
+    },
+    "machine_lru": {
+      "label": "Machine Coding: LRU Cache",
+      "category": "Machine Coding",
+      "phase": "p4"
+    },
+    "hld_basics": {
+      "label": "HLD: Load Balancing & CDN",
+      "category": "HLD",
+      "phase": "p4"
+    },
+    "hld_caching": {
+      "label": "HLD: Caching Strategies (Redis)",
+      "category": "HLD",
+      "phase": "p4"
+    },
+    "hld_db": {
+      "label": "HLD: SQL vs NoSQL & DB Sharding",
+      "category": "HLD",
+      "phase": "p4"
+    },
+    "hld_msgqueue": {
+      "label": "HLD: Message Queues (Kafka concepts)",
+      "category": "HLD",
+      "phase": "p5"
+    },
+    "hld_design1": {
+      "label": "HLD: Design Twitter Feed",
+      "category": "HLD",
+      "phase": "p5"
+    },
+    "hld_design2": {
+      "label": "HLD: Design WhatsApp",
+      "category": "HLD",
+      "phase": "p5"
+    },
+    "mock_dsa": {
+      "label": "Mock: Full DSA Round (45 min)",
+      "category": "Mock",
+      "phase": "p5"
+    },
+    "mock_machine": {
+      "label": "Mock: Full Machine Coding Round (90 min)",
+      "category": "Mock",
+      "phase": "p5"
+    },
+    "mock_lld": {
+      "label": "Mock: LLD Design Interview",
+      "category": "Mock",
+      "phase": "p5"
+    },
+    "mock_hld": {
+      "label": "Mock: HLD System Design Interview",
+      "category": "Mock",
+      "phase": "p5"
+    },
+    "fundamentals_http": {
+      "label": "HTTP: headers, methods, status codes, REST",
+      "category": "Fundamentals",
+      "phase": "p1"
+    },
+    "fundamentals_dns": {
+      "label": "DNS, TCP/IP, how the internet works",
+      "category": "Fundamentals",
+      "phase": "p1"
+    },
+    "fundamentals_concurrency": {
+      "label": "Processes vs Threads, Concurrency basics",
+      "category": "Fundamentals",
+      "phase": "p2"
+    },
+    "fundamentals_db": {
+      "label": "Database basics: indexes, transactions, ACID",
+      "category": "Fundamentals",
+      "phase": "p3"
+    },
+    "docker_basics": {
+      "label": "Docker: images, containers, Dockerfile",
+      "category": "Infra",
+      "phase": "p4"
+    },
+    "docker_compose": {
+      "label": "Docker Compose for local dev",
+      "category": "Infra",
+      "phase": "p4"
+    }
+  },
+  "schedule": {
+    "2026-04-06": {
+      "learn": [
+        "dsa_bigo",
+        "js_closures"
+      ],
+      "revise": [],
+      "build": "Write 5 JS functions from scratch — no looking up",
+      "problem": "Two Sum (LeetCode #1)",
+      "tip": "Start your blank-file habit today. Open a .ts file and write without pasting.",
+      "phase": "p1"
+    },
+    "2026-04-07": {
+      "learn": [
+        "dsa_arrays",
+        "js_async"
+      ],
+      "revise": [
+        "dsa_bigo"
+      ],
+      "build": "Implement a sliding window max in TS from scratch",
+      "problem": "Best Time to Buy and Sell Stock (LC #121)",
+      "tip": "Two pointer = two indices moving toward each other. Sliding window = two indices moving same direction.",
+      "phase": "p1"
+    },
+    "2026-04-08": {
+      "learn": [
+        "js_es6",
+        "fundamentals_http"
+      ],
+      "revise": [
+        "dsa_arrays",
+        "js_closures"
+      ],
+      "build": "Rewrite yesterday's solution using ES6+ syntax only",
+      "problem": "Maximum Subarray (LC #53)",
+      "tip": "ES6 destructuring + spread are used in almost every TS codebase. Get these cold.",
+      "phase": "p1"
+    },
+    "2026-04-09": {
+      "learn": [
+        "dsa_hashmaps",
+        "js_this"
+      ],
+      "revise": [
+        "js_async",
+        "dsa_bigo"
+      ],
+      "build": "Build a frequency counter class in TS with typed generics",
+      "problem": "Valid Anagram (LC #242)",
+      "tip": "Most DSA problems solvable in O(n) use a hashmap. When stuck, ask: can a map help here?",
+      "phase": "p1"
+    },
+    "2026-04-10": {
+      "learn": [
+        "ts_types",
+        "fundamentals_dns"
+      ],
+      "revise": [
+        "dsa_hashmaps",
+        "js_es6"
+      ],
+      "build": "Define 5 interfaces and 3 type aliases for a mini e-commerce domain",
+      "problem": "Group Anagrams (LC #49)",
+      "tip": "In TS, prefer interfaces for objects you'll extend, type aliases for unions and primitives.",
+      "phase": "p1"
+    },
+    "2026-04-11": {
+      "learn": [
+        "dsa_stacks"
+      ],
+      "revise": [
+        "ts_types",
+        "dsa_arrays",
+        "js_closures"
+      ],
+      "build": "Implement a Stack class in TS with full type safety",
+      "problem": "Valid Parentheses (LC #20)",
+      "tip": "Stack = LIFO. Every 'matching pair' problem (brackets, tags, temperatures) uses a stack.",
+      "phase": "p1"
+    },
+    "2026-04-12": {
+      "learn": [],
+      "revise": [
+        "dsa_bigo",
+        "dsa_arrays",
+        "dsa_hashmaps",
+        "dsa_stacks",
+        "js_closures",
+        "js_async"
+      ],
+      "build": "Solve 3 problems from this week from memory — no hints",
+      "problem": "Review week: Contains Duplicate + Move Zeroes + Min Stack",
+      "tip": "Sunday = mistakes only. What did you get wrong this week? Fix those first.",
+      "phase": "p1"
+    },
+    "2026-04-13": {
+      "learn": [
+        "dsa_queues",
+        "ts_generics"
+      ],
+      "revise": [
+        "dsa_stacks",
+        "ts_types"
+      ],
+      "build": "Implement a generic Queue<T> class in TypeScript",
+      "problem": "Daily Temperatures (LC #739)",
+      "tip": "Monotonic stack pattern: maintain a stack where elements are always increasing or decreasing.",
+      "phase": "p1"
+    },
+    "2026-04-14": {
+      "learn": [
+        "js_prototypes",
+        "ts_classes"
+      ],
+      "revise": [
+        "ts_generics",
+        "dsa_queues"
+      ],
+      "build": "Build an Animal class hierarchy in TS using inheritance and access modifiers",
+      "problem": "Next Greater Element I (LC #496)",
+      "tip": "TS classes compile to JS prototypes. Understanding prototypes makes TS classes predictable.",
+      "phase": "p1"
+    },
+    "2026-04-15": {
+      "learn": [
+        "dsa_linkedlist"
+      ],
+      "revise": [
+        "ts_classes",
+        "dsa_stacks",
+        "js_async"
+      ],
+      "build": "Implement a doubly linked list in TS from scratch",
+      "problem": "Reverse Linked List (LC #206)",
+      "tip": "Draw the pointer manipulation before coding. Linked lists are 90% visualization.",
+      "phase": "p1"
+    },
+    "2026-04-16": {
+      "learn": [
+        "ts_utility"
+      ],
+      "revise": [
+        "dsa_linkedlist",
+        "ts_generics",
+        "dsa_hashmaps"
+      ],
+      "build": "Write 5 custom utility types using Pick, Omit, Partial, Required, ReturnType",
+      "problem": "Linked List Cycle (LC #141)",
+      "tip": "Fast/slow pointer: fast moves 2 steps, slow moves 1. They meet if there's a cycle.",
+      "phase": "p1"
+    },
+    "2026-04-17": {
+      "learn": [
+        "js_arrays",
+        "ts_enums"
+      ],
+      "revise": [
+        "ts_utility",
+        "dsa_linkedlist",
+        "js_this"
+      ],
+      "build": "Implement map, filter, reduce from scratch in TS without using built-ins",
+      "problem": "Merge Two Sorted Lists (LC #21)",
+      "tip": "Implementing higher-order functions from scratch is a common TS interview warm-up.",
+      "phase": "p1"
+    },
+    "2026-04-18": {
+      "learn": [
+        "js_modules"
+      ],
+      "revise": [
+        "js_arrays",
+        "ts_classes",
+        "dsa_queues"
+      ],
+      "build": "Structure a small TS project with 3 modules importing from each other",
+      "problem": "Remove Nth Node From End (LC #19)",
+      "tip": "Use two pointers: advance one by N first, then move both until the first hits null.",
+      "phase": "p1"
+    },
+    "2026-04-19": {
+      "learn": [],
+      "revise": [
+        "dsa_linkedlist",
+        "dsa_stacks",
+        "dsa_queues",
+        "ts_generics",
+        "ts_utility",
+        "js_async"
+      ],
+      "build": "Build a mini in-memory key-value store in TS — set, get, delete, TTL",
+      "problem": "Review: Reorder List + Sliding Window Maximum",
+      "tip": "Sunday review. Re-solve your two hardest problems from this week without hints.",
+      "phase": "p1"
+    },
+    "2026-04-20": {
+      "learn": [
+        "dsa_binsearch"
+      ],
+      "revise": [
+        "dsa_arrays",
+        "ts_generics"
+      ],
+      "build": "Implement binary search in TS — classic, leftmost, rightmost variants",
+      "problem": "Binary Search (LC #704)",
+      "tip": "Always use lo + Math.floor((hi-lo)/2) to avoid integer overflow. Make this a habit.",
+      "phase": "p1"
+    },
+    "2026-04-21": {
+      "learn": [
+        "fundamentals_http"
+      ],
+      "revise": [
+        "dsa_binsearch",
+        "dsa_hashmaps"
+      ],
+      "build": "Write a typed fetch wrapper in TS with error handling and generics",
+      "problem": "Search in Rotated Sorted Array (LC #33)",
+      "tip": "In rotated array, one half is always sorted. Check which half and binary search accordingly.",
+      "phase": "p1"
+    },
+    "2026-04-22": {
+      "learn": [
+        "dsa_trees_basic"
+      ],
+      "revise": [
+        "dsa_binsearch",
+        "ts_classes",
+        "js_closures"
+      ],
+      "build": "Implement a BinaryTree class in TS with inorder, preorder, postorder methods",
+      "problem": "Invert Binary Tree (LC #226)",
+      "tip": "Tree recursion template: if(!node) return null; left = recurse(left); right = recurse(right); combine.",
+      "phase": "p1"
+    },
+    "2026-04-23": {
+      "learn": [],
+      "revise": [
+        "dsa_binsearch",
+        "dsa_trees_basic",
+        "ts_generics",
+        "ts_utility",
+        "js_async",
+        "fundamentals_http"
+      ],
+      "build": "Timed session: solve 2 problems in 45 minutes — one array, one linked list",
+      "problem": "Final April review: Level Order Traversal + Find Minimum in Rotated Array",
+      "tip": "April ends here. Checkpoint: can you write a 100-line TS program without referencing docs?",
+      "phase": "p1"
+    },
+    "2026-05-01": {
+      "learn": [
+        "py_basics"
+      ],
+      "revise": [
+        "dsa_arrays",
+        "dsa_hashmaps"
+      ],
+      "build": "Re-solve Two Sum and Valid Anagram in Python — feel the syntax difference",
+      "problem": "Two Sum in Python (LC #1)",
+      "tip": "Python day 1. Focus only on syntax today: indentation, f-strings, range(), enumerate(), zip().",
+      "phase": "p2"
+    },
+    "2026-05-02": {
+      "learn": [
+        "py_collections"
+      ],
+      "revise": [
+        "py_basics",
+        "dsa_stacks"
+      ],
+      "build": "Solve 3 problems using Counter and defaultdict only — feel their power",
+      "problem": "Group Anagrams in Python (LC #49)",
+      "tip": "defaultdict(list) eliminates the 'if key not in dict' check. Use it everywhere in DSA.",
+      "phase": "p2"
+    },
+    "2026-05-03": {
+      "learn": [
+        "py_comprehensions"
+      ],
+      "revise": [
+        "py_collections",
+        "dsa_arrays"
+      ],
+      "build": "Rewrite 5 for-loop solutions using list/dict comprehensions",
+      "problem": "Contains Duplicate (Python)",
+      "tip": "Comprehensions are not just syntax sugar — they signal Pythonic thinking to interviewers.",
+      "phase": "p2"
+    },
+    "2026-05-04": {
+      "learn": [
+        "codebase_git"
+      ],
+      "revise": [
+        "py_basics",
+        "dsa_linkedlist"
+      ],
+      "build": "Run: git log --oneline, git bisect, git blame on any open source repo",
+      "problem": "Longest Substring Without Repeating Characters (Python, LC #3)",
+      "tip": "Git bisect finds the commit that introduced a bug using binary search on your commit history.",
+      "phase": "p2"
+    },
+    "2026-05-05": {
+      "learn": [
+        "py_heapq"
+      ],
+      "revise": [
+        "py_collections",
+        "dsa_stacks",
+        "codebase_git"
+      ],
+      "build": "Implement top-K frequent elements using heapq in Python",
+      "problem": "Kth Largest Element in Array (Python, LC #215)",
+      "tip": "Python's heapq is a min-heap by default. For max-heap, negate the values.",
+      "phase": "p2"
+    },
+    "2026-05-06": {
+      "learn": [
+        "ts_advanced"
+      ],
+      "revise": [
+        "ts_utility",
+        "ts_generics"
+      ],
+      "build": "Write 3 mapped types and 2 conditional types in TS",
+      "problem": "Daily Temperatures in Python (LC #739)",
+      "tip": "TS conditional types: T extends U ? X : Y. These show up in advanced codebases constantly.",
+      "phase": "p2"
+    },
+    "2026-05-07": {
+      "learn": [],
+      "revise": [
+        "py_basics",
+        "py_collections",
+        "py_heapq",
+        "dsa_arrays",
+        "dsa_stacks"
+      ],
+      "build": "Build a small Python CLI task manager: add, list, complete, delete tasks",
+      "problem": "Review week: Top K Frequent Elements + Valid Parentheses (Python)",
+      "tip": "Sunday build day. This CLI project practices OOP, file I/O, and clean code in Python.",
+      "phase": "p2"
+    },
+    "2026-05-08": {
+      "learn": [
+        "py_bisect"
+      ],
+      "revise": [
+        "dsa_binsearch",
+        "py_basics"
+      ],
+      "build": "Use bisect.insort to maintain a sorted list dynamically",
+      "problem": "Find Minimum in Rotated Sorted Array (Python, LC #153)",
+      "tip": "bisect.bisect_left and bisect_right are Python's built-in binary search. Know both.",
+      "phase": "p2"
+    },
+    "2026-05-09": {
+      "learn": [
+        "py_oop"
+      ],
+      "revise": [
+        "py_comprehensions",
+        "ts_classes"
+      ],
+      "build": "Build a LinkedList class in Python with __iter__, __len__, __repr__",
+      "problem": "Reorder List (Python, LC #143)",
+      "tip": "Dunder methods make your classes feel native to Python. __repr__ is the most useful one.",
+      "phase": "p2"
+    },
+    "2026-05-10": {
+      "learn": [
+        "codebase_read"
+      ],
+      "revise": [
+        "codebase_git",
+        "ts_modules"
+      ],
+      "build": "Clone expressjs/express — navigate to Router class, understand the structure",
+      "problem": "Search in Rotated Sorted Array (Python, LC #33)",
+      "tip": "In VSCode: Cmd+click to follow definitions. F12 to go to definition. Shift+F12 for all usages.",
+      "phase": "p2"
+    },
+    "2026-05-11": {
+      "learn": [
+        "dsa_trees_adv"
+      ],
+      "revise": [
+        "dsa_trees_basic",
+        "py_collections"
+      ],
+      "build": "Implement BST insert, search, delete in Python from scratch",
+      "problem": "Validate BST (Python, LC #98)",
+      "tip": "BST validation trick: pass min/max bounds down the recursion, not just left/right comparison.",
+      "phase": "p2"
+    },
+    "2026-05-12": {
+      "learn": [
+        "codebase_debug"
+      ],
+      "revise": [
+        "codebase_read",
+        "ts_classes"
+      ],
+      "build": "Set 3 breakpoints in a Node.js/TS project, inspect call stack and variables",
+      "problem": "Lowest Common Ancestor of BST (Python, LC #235)",
+      "tip": "The call stack panel in VSCode debugger is one of the most valuable tools for navigating unfamiliar code.",
+      "phase": "p2"
+    },
+    "2026-05-13": {
+      "learn": [],
+      "revise": [
+        "dsa_trees_basic",
+        "dsa_trees_adv",
+        "py_oop",
+        "py_collections",
+        "codebase_debug"
+      ],
+      "build": "Build a Python BankAccount class — deposit, withdraw, transaction history, overdraft protection",
+      "problem": "Binary Tree Maximum Path Sum (Python, LC #124)",
+      "tip": "Sunday build: focus on clean code — no spaghetti, proper class separation, docstrings.",
+      "phase": "p2"
+    },
+    "2026-05-14": {
+      "learn": [
+        "dsa_graphs_basic"
+      ],
+      "revise": [
+        "dsa_trees_basic",
+        "py_collections"
+      ],
+      "build": "Build an adjacency list graph class in Python",
+      "problem": "Number of Islands (Python, LC #200)",
+      "tip": "Number of Islands = gateway graph problem. Master DFS and BFS solutions for this one.",
+      "phase": "p2"
+    },
+    "2026-05-15": {
+      "learn": [
+        "fundamentals_concurrency"
+      ],
+      "revise": [
+        "dsa_graphs_basic",
+        "js_async"
+      ],
+      "build": "Write a Python script demonstrating threading vs multiprocessing",
+      "problem": "Clone Graph (Python, LC #133)",
+      "tip": "GIL means Python threads don't run in parallel for CPU tasks. Use multiprocessing for that.",
+      "phase": "p2"
+    },
+    "2026-05-16": {
+      "learn": [
+        "ts_decorators"
+      ],
+      "revise": [
+        "ts_classes",
+        "ts_advanced"
+      ],
+      "build": "Write a @log decorator in TS that logs method calls and execution time",
+      "problem": "Course Schedule (Python, LC #207)",
+      "tip": "Decorators in TS are just higher-order functions. NestJS uses them everywhere — understanding them unlocks reading NestJS codebases.",
+      "phase": "p2"
+    },
+    "2026-05-17": {
+      "learn": [],
+      "revise": [
+        "dsa_graphs_basic",
+        "dsa_trees_adv",
+        "py_heapq",
+        "ts_decorators"
+      ],
+      "build": "Timed: 45 min mock session — 2 graph problems back to back",
+      "problem": "Pacific Atlantic Water Flow (LC #417) + Course Schedule II",
+      "tip": "During mocks, say what you're thinking. Interviewers give partial credit for the right approach.",
+      "phase": "p2"
+    },
+    "2026-05-18": {
+      "learn": [
+        "dsa_graphs_adv"
+      ],
+      "revise": [
+        "dsa_graphs_basic",
+        "py_collections"
+      ],
+      "build": "Implement Union-Find (DSU) with path compression in Python from scratch",
+      "problem": "Number of Connected Components (Python, LC #323)",
+      "tip": "Implement Union-Find 3 times this week until you can write it in under 5 minutes cold.",
+      "phase": "p2"
+    },
+    "2026-05-19": {
+      "learn": [],
+      "revise": [
+        "dsa_graphs_adv",
+        "py_oop",
+        "codebase_debug"
+      ],
+      "build": "Navigate prisma/prisma repo — find where query building happens",
+      "problem": "Redundant Connection (Python, LC #684)",
+      "tip": "Reading real codebases: don't read linearly. Start from an entry point, follow the call chain.",
+      "phase": "p2"
+    },
+    "2026-05-20": {
+      "learn": [],
+      "revise": [
+        "dsa_binsearch",
+        "dsa_graphs_basic",
+        "py_bisect"
+      ],
+      "build": "Koko Eating Bananas — implement in Python, then rewrite in TS",
+      "problem": "Koko Eating Bananas (LC #875)",
+      "tip": "'Binary search on answer' pattern: when asked to minimize/maximize a value, BS on the answer space.",
+      "phase": "p2"
+    },
+    "2026-05-21": {
+      "learn": [],
+      "revise": [
+        "dsa_graphs_adv",
+        "dsa_trees_adv",
+        "py_collections",
+        "codebase_read"
+      ],
+      "build": "Sunday: full review + re-solve 5 problems you found hardest this month",
+      "problem": "Alien Dictionary (LC #269) — study the pattern",
+      "tip": "May ends next week. Checkpoint: can you solve any easy in under 10 min in Python?",
+      "phase": "p2"
+    },
+    "2026-05-22": {
+      "learn": [
+        "dsa_heaps"
+      ],
+      "revise": [
+        "py_heapq",
+        "dsa_graphs_adv"
+      ],
+      "build": "Implement MinHeap class in Python from scratch — insert, extract_min, heapify",
+      "problem": "Merge K Sorted Lists (Python, LC #23)",
+      "tip": "Building a heap from scratch is a common follow-up. Practice it until it takes under 10 min.",
+      "phase": "p2"
+    },
+    "2026-05-23": {
+      "learn": [],
+      "revise": [
+        "dsa_heaps",
+        "py_heapq",
+        "ts_generics"
+      ],
+      "build": "Build a typed PriorityQueue<T> class in TypeScript",
+      "problem": "Find Median from Data Stream (Python, LC #295)",
+      "tip": "Two heaps pattern: max-heap for lower half, min-heap for upper half. Median is always at the tops.",
+      "phase": "p2"
+    },
+    "2026-05-24": {
+      "learn": [
+        "codebase_prs"
+      ],
+      "revise": [
+        "codebase_read",
+        "codebase_debug"
+      ],
+      "build": "Read 3 merged PRs on expressjs/express — understand what changed and why",
+      "problem": "Task Scheduler (Python, LC #621)",
+      "tip": "PR reading skill: look at the issue it references first, then the diff. Understand the 'why' not just the 'what'.",
+      "phase": "p2"
+    },
+    "2026-05-25": {
+      "learn": [],
+      "revise": [
+        "dsa_heaps",
+        "dsa_graphs_adv",
+        "py_oop",
+        "ts_advanced"
+      ],
+      "build": "Build a TS REST API — 3 endpoints, typed req/res, error middleware",
+      "problem": "Network Delay Time (Python, LC #743) — Dijkstra",
+      "tip": "Dijkstra: use a min-heap. Pop the node with shortest distance, relax its neighbors.",
+      "phase": "p2"
+    },
+    "2026-05-26": {
+      "learn": [],
+      "revise": [
+        "dsa_heaps",
+        "dsa_graphs_basic",
+        "dsa_trees_basic",
+        "py_collections"
+      ],
+      "build": "Timed mock: 45 min, 2 problems — 1 graph + 1 heap",
+      "problem": "Word Ladder (Python, LC #127)",
+      "tip": "Word Ladder is BFS with a clever trick: treat each word as a node, adjacent = 1 letter change.",
+      "phase": "p2"
+    },
+    "2026-05-27": {
+      "learn": [],
+      "revise": [
+        "dsa_binsearch",
+        "dsa_trees_adv",
+        "py_bisect",
+        "ts_decorators"
+      ],
+      "build": "Re-implement binary search tree in TS with full typed generics",
+      "problem": "Kth Smallest in BST (Python, LC #230)",
+      "tip": "Inorder traversal of BST gives sorted order. The Kth element inorder = Kth smallest.",
+      "phase": "p2"
+    },
+    "2026-05-28": {
+      "learn": [],
+      "revise": [
+        "dsa_heaps",
+        "dsa_graphs_adv",
+        "codebase_debug",
+        "py_oop"
+      ],
+      "build": "Sunday: build a Python Splitwise-lite: add expense, settle up, show balances",
+      "problem": "Review: Merge K Sorted Lists + Find Median from Data Stream",
+      "tip": "Splitwise-lite is a great LLD practice piece — it uses hashmaps, user objects, and clean separation.",
+      "phase": "p2"
+    },
+    "2026-05-29": {
+      "learn": [
+        "dsa_dp1"
+      ],
+      "revise": [
+        "py_comprehensions",
+        "dsa_arrays"
+      ],
+      "build": "Implement Fibonacci 3 ways: recursive, memoized, tabulated",
+      "problem": "Climbing Stairs (Python, LC #70)",
+      "tip": "Before any DP problem write: 'dp[i] means...' in a comment. Clarity on state = clarity on solution.",
+      "phase": "p2"
+    },
+    "2026-05-30": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "py_collections",
+        "ts_utility"
+      ],
+      "build": "Implement House Robber with both top-down memo and bottom-up tabulation",
+      "problem": "House Robber (Python, LC #198)",
+      "tip": "House Robber pattern: at each house, max(rob_this + dp[i-2], skip = dp[i-1]).",
+      "phase": "p2"
+    },
+    "2026-05-31": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_heaps",
+        "py_basics",
+        "codebase_git"
+      ],
+      "build": "May final review: write one function in Python and one in TS from scratch without any reference",
+      "problem": "Coin Change (Python, LC #322)",
+      "tip": "May checkpoint: you should solve any easy in under 10 min Python and debug TS code comfortably.",
+      "phase": "p2"
+    },
+    "2026-06-01": {
+      "learn": [
+        "dsa_dp2"
+      ],
+      "revise": [
+        "dsa_dp1",
+        "py_comprehensions"
+      ],
+      "build": "Fill a 2D DP table by hand for Unique Paths — then code it",
+      "problem": "Unique Paths (Python, LC #62)",
+      "tip": "For 2D DP: always draw the table and fill small examples by hand before coding.",
+      "phase": "p3"
+    },
+    "2026-06-02": {
+      "learn": [
+        "lld_solid"
+      ],
+      "revise": [
+        "ts_classes",
+        "py_oop"
+      ],
+      "build": "Find SOLID violations in a messy TS class you write — then refactor it",
+      "problem": "Longest Common Subsequence (Python, LC #1143)",
+      "tip": "LCS table: dp[i][j] = length of LCS of first i chars of s1 and j chars of s2.",
+      "phase": "p3"
+    },
+    "2026-06-03": {
+      "learn": [],
+      "revise": [
+        "dsa_dp2",
+        "lld_solid",
+        "dsa_trees_basic"
+      ],
+      "build": "Navigate a NestJS starter project — identify controllers, services, modules",
+      "problem": "Edit Distance (Python, LC #72)",
+      "tip": "Edit distance = insert, delete, replace. dp[i][j] = min operations to convert s1[:i] to s2[:j].",
+      "phase": "p3"
+    },
+    "2026-06-04": {
+      "learn": [
+        "lld_patterns1"
+      ],
+      "revise": [
+        "lld_solid",
+        "ts_classes"
+      ],
+      "build": "Implement Factory and Strategy patterns in TS with a real example",
+      "problem": "Partition Equal Subset Sum (Python, LC #416)",
+      "tip": "Factory pattern = delegate object creation. Strategy pattern = swap algorithms at runtime.",
+      "phase": "p3"
+    },
+    "2026-06-05": {
+      "learn": [
+        "lld_design1"
+      ],
+      "revise": [
+        "lld_patterns1",
+        "lld_solid",
+        "py_oop"
+      ],
+      "build": "Design Parking Lot in TS: ParkingLot, Floor, Spot, Vehicle classes",
+      "problem": "Longest Palindromic Substring (Python, LC #5)",
+      "tip": "Parking Lot: think about what changes (spot occupancy) vs what's constant (lot structure).",
+      "phase": "p3"
+    },
+    "2026-06-06": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_dp2",
+        "lld_solid",
+        "lld_patterns1"
+      ],
+      "build": "Saturday mock: 60 min — 1 DP problem + 1 graph problem timed",
+      "problem": "House Robber II (LC #213) + Number of Islands",
+      "tip": "For House Robber II (circular): run House Robber twice — once skip first, once skip last.",
+      "phase": "p3"
+    },
+    "2026-06-07": {
+      "learn": [],
+      "revise": [
+        "lld_design1",
+        "dsa_dp2",
+        "py_oop",
+        "codebase_prs"
+      ],
+      "build": "Sunday: extend Parking Lot design — add pricing, reservations, receipts",
+      "problem": "Review: Edit Distance + Partition Equal Subset Sum",
+      "tip": "Extending a design you built is the best LLD practice. 'What if we add X?' is the real interview.",
+      "phase": "p3"
+    },
+    "2026-06-08": {
+      "learn": [
+        "dsa_backtrack"
+      ],
+      "revise": [
+        "dsa_graphs_basic",
+        "py_comprehensions"
+      ],
+      "build": "Implement permutations generator in Python using backtracking",
+      "problem": "Combination Sum (Python, LC #39)",
+      "tip": "Backtracking template: choose → recurse → unchoose. The 'unchoose' step is what most people forget.",
+      "phase": "p3"
+    },
+    "2026-06-09": {
+      "learn": [],
+      "revise": [
+        "dsa_backtrack",
+        "lld_patterns1",
+        "ts_advanced"
+      ],
+      "build": "Build Observer pattern in TS — EventEmitter from scratch, typed events",
+      "problem": "Subsets II (Python, LC #90)",
+      "tip": "Subsets II: sort first, then skip duplicates at the same recursion level.",
+      "phase": "p3"
+    },
+    "2026-06-10": {
+      "learn": [
+        "dsa_trie"
+      ],
+      "revise": [
+        "dsa_backtrack",
+        "py_oop"
+      ],
+      "build": "Implement Trie in Python with insert, search, startsWith methods",
+      "problem": "Implement Trie (Python, LC #208)",
+      "tip": "Trie node = dict of children + is_end flag. Each character is a key in the dict.",
+      "phase": "p3"
+    },
+    "2026-06-11": {
+      "learn": [
+        "machine_intro"
+      ],
+      "revise": [
+        "lld_solid",
+        "lld_patterns1",
+        "ts_classes"
+      ],
+      "build": "Read machine coding checklist: requirements → design → implement → test",
+      "problem": "Word Search (Python, LC #79)",
+      "tip": "Machine coding: spend 10 min on design before writing any code. Interviewers notice.",
+      "phase": "p3"
+    },
+    "2026-06-12": {
+      "learn": [],
+      "revise": [
+        "dsa_trie",
+        "dsa_backtrack",
+        "machine_intro"
+      ],
+      "build": "Machine coding: build Snake game in TS — 90 min timed",
+      "problem": "Word Search II (Python, LC #212) — Trie + backtracking",
+      "tip": "Snake game: Board, Snake, Food, Direction classes. Game loop with collision detection.",
+      "phase": "p3"
+    },
+    "2026-06-13": {
+      "learn": [],
+      "revise": [
+        "dsa_dp2",
+        "lld_design1",
+        "codebase_debug"
+      ],
+      "build": "Debug exercise: introduce 3 bugs in your Parking Lot code and fix using VSCode debugger",
+      "problem": "Longest Increasing Subsequence (Python, LC #300)",
+      "tip": "LIS: dp[i] = length of longest increasing subsequence ending at index i. Answer = max(dp).",
+      "phase": "p3"
+    },
+    "2026-06-14": {
+      "learn": [],
+      "revise": [
+        "dsa_backtrack",
+        "dsa_trie",
+        "machine_intro",
+        "lld_patterns1"
+      ],
+      "build": "Saturday mock: 90 min machine coding — build a task manager CLI in TS",
+      "problem": "Design Add and Search Words (Python, LC #211)",
+      "tip": "Task manager: Task, TaskList, Priority classes. JSON persistence. Clean CLI interface.",
+      "phase": "p3"
+    },
+    "2026-06-15": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_dp2",
+        "dsa_backtrack",
+        "dsa_trie",
+        "lld_solid"
+      ],
+      "build": "Sunday: full review — list every pattern you know, rate confidence 1–5",
+      "problem": "Re-solve your 3 hardest problems from June so far",
+      "tip": "Self-assessment is a skill. Knowing your weak patterns = knowing what to study next.",
+      "phase": "p3"
+    },
+    "2026-06-16": {
+      "learn": [
+        "lld_patterns2"
+      ],
+      "revise": [
+        "lld_patterns1",
+        "lld_solid"
+      ],
+      "build": "Implement Decorator pattern in TS — add logging and caching to a service class",
+      "problem": "Jump Game (Python, LC #55)",
+      "tip": "Decorator pattern ≠ TS decorators syntax. Understand the OOP pattern first.",
+      "phase": "p3"
+    },
+    "2026-06-17": {
+      "learn": [
+        "fundamentals_db"
+      ],
+      "revise": [
+        "fundamentals_http",
+        "fundamentals_dns"
+      ],
+      "build": "Write SQL queries: JOIN, GROUP BY, subqueries, window functions",
+      "problem": "Jump Game II (Python, LC #45)",
+      "tip": "Jump Game II: greedy — track the furthest you can reach, expand when you hit the current boundary.",
+      "phase": "p3"
+    },
+    "2026-06-18": {
+      "learn": [],
+      "revise": [
+        "lld_patterns2",
+        "lld_design1",
+        "ts_decorators"
+      ],
+      "build": "Read Nest.js source — find where @Injectable decorator is implemented",
+      "problem": "Gas Station (Python, LC #134)",
+      "tip": "Gas Station: if total gas >= total cost, a solution exists. Start from the point where running sum < 0.",
+      "phase": "p3"
+    },
+    "2026-06-19": {
+      "learn": [
+        "machine_snake"
+      ],
+      "revise": [
+        "machine_intro",
+        "lld_patterns1"
+      ],
+      "build": "Review your Snake game — refactor using Strategy pattern for movement",
+      "problem": "LRU Cache (Python, LC #146)",
+      "tip": "LRU Cache = hashmap + doubly linked list. Hashmap for O(1) access, DLL for O(1) reorder.",
+      "phase": "p3"
+    },
+    "2026-06-20": {
+      "learn": [],
+      "revise": [
+        "dsa_graphs_adv",
+        "dsa_heaps",
+        "py_heapq",
+        "lld_patterns2"
+      ],
+      "build": "Implement Dijkstra from scratch in Python — no library, just heapq",
+      "problem": "Cheapest Flights Within K Stops (Python, LC #787)",
+      "tip": "Modified Dijkstra: carry number of stops as part of the state (dist, stops, node).",
+      "phase": "p3"
+    },
+    "2026-06-21": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_dp2",
+        "dsa_backtrack",
+        "machine_intro",
+        "lld_solid"
+      ],
+      "build": "Saturday mock: 45 min DSA — 1 DP hard + 1 graph medium",
+      "problem": "Burst Balloons (Python, LC #312) — study the approach",
+      "tip": "Interval DP: think about what to do last, not first. Burst Balloons: which balloon to burst last?",
+      "phase": "p3"
+    },
+    "2026-06-22": {
+      "learn": [],
+      "revise": [
+        "lld_patterns1",
+        "lld_patterns2",
+        "lld_design1",
+        "fundamentals_db"
+      ],
+      "build": "Sunday: Design URL Shortener on paper — classes, interfaces, storage layer",
+      "problem": "Review: LRU Cache + Word Search II",
+      "tip": "LLD on paper first, code second. Draw class diagram → identify relationships → then implement.",
+      "phase": "p3"
+    },
+    "2026-06-23": {
+      "learn": [
+        "lld_design2"
+      ],
+      "revise": [
+        "lld_patterns1",
+        "lld_solid",
+        "ts_classes"
+      ],
+      "build": "Implement URL Shortener in TS: UrlShortener, UrlRepository, HashGenerator classes",
+      "problem": "Decode Ways (Python, LC #91)",
+      "tip": "URL Shortener: think about collision handling, custom aliases, and expiry from the start.",
+      "phase": "p3"
+    },
+    "2026-06-24": {
+      "learn": [],
+      "revise": [
+        "lld_design2",
+        "codebase_prs",
+        "dsa_dp2"
+      ],
+      "build": "Read 5 PRs on a TS repo — summarize what each one was trying to achieve",
+      "problem": "Word Break (Python, LC #139)",
+      "tip": "Word Break: dp[i] = True if s[:i] can be segmented. For each i, check all j < i.",
+      "phase": "p3"
+    },
+    "2026-06-25": {
+      "learn": [],
+      "revise": [
+        "dsa_trie",
+        "dsa_backtrack",
+        "machine_snake",
+        "lld_design2"
+      ],
+      "build": "Extend URL Shortener — add rate limiting and analytics tracking",
+      "problem": "Palindrome Partitioning (Python, LC #131)",
+      "tip": "Extend your designs every time. 'What if we add analytics?' is a standard interview follow-up.",
+      "phase": "p3"
+    },
+    "2026-06-26": {
+      "learn": [],
+      "revise": [
+        "dsa_heaps",
+        "dsa_graphs_adv",
+        "py_heapq",
+        "lld_patterns2"
+      ],
+      "build": "Timed mock: 60 min — 1 LLD design question (explain out loud)",
+      "problem": "Meeting Rooms II (Python, LC #253)",
+      "tip": "Meeting Rooms II: sort by start, use a min-heap of end times. Heap size = rooms needed.",
+      "phase": "p3"
+    },
+    "2026-06-27": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_dp2",
+        "fundamentals_db",
+        "machine_intro"
+      ],
+      "build": "Saturday: build a small TS project with Docker — Dockerfile + docker-compose",
+      "problem": "Non-overlapping Intervals (Python, LC #435)",
+      "tip": "Non-overlapping: sort by end time. Greedy: always keep the interval that ends earliest.",
+      "phase": "p3"
+    },
+    "2026-06-28": {
+      "learn": [],
+      "revise": [
+        "lld_solid",
+        "lld_patterns1",
+        "lld_patterns2",
+        "lld_design1",
+        "lld_design2"
+      ],
+      "build": "Sunday: June retrospective. List all LLD patterns you know. Rate each 1–5.",
+      "problem": "Review: 3 hardest problems from June",
+      "tip": "June checkpoint: can you design a system from scratch and talk through it for 20 minutes?",
+      "phase": "p3"
+    },
+    "2026-06-29": {
+      "learn": [],
+      "revise": [
+        "dsa_graphs_basic",
+        "dsa_graphs_adv",
+        "py_collections",
+        "codebase_debug"
+      ],
+      "build": "Debug an unfamiliar Node.js codebase — introduce a bug, find it with debugger only",
+      "problem": "Pacific Atlantic Water Flow (Python, LC #417)",
+      "tip": "Reverse BFS trick: instead of flowing water from land, flow from oceans inward.",
+      "phase": "p3"
+    },
+    "2026-06-30": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_dp2",
+        "dsa_backtrack",
+        "lld_patterns1",
+        "machine_intro"
+      ],
+      "build": "June final: timed 45 min mock — 2 medium problems you haven't seen before",
+      "problem": "Longest Consecutive Sequence (Python, LC #128)",
+      "tip": "June ends. You should now feel comfortable with DP patterns and basic LLD design.",
+      "phase": "p3"
+    },
+    "2026-07-01": {
+      "learn": [
+        "lld_design3"
+      ],
+      "revise": [
+        "lld_patterns1",
+        "lld_solid",
+        "py_oop"
+      ],
+      "build": "Design Splitwise in Python: User, Group, Expense, Balance classes",
+      "problem": "Course Schedule II (Python, LC #210)",
+      "tip": "Splitwise: focus on the simplify debts algorithm — reduce N^2 transactions to minimum.",
+      "phase": "p4"
+    },
+    "2026-07-02": {
+      "learn": [
+        "hld_basics"
+      ],
+      "revise": [
+        "fundamentals_http",
+        "fundamentals_db"
+      ],
+      "build": "Draw a load balancer architecture diagram — round robin, least connections, IP hash",
+      "problem": "Accounts Merge (Python, LC #721)",
+      "tip": "HLD for SDE 1: you need the concepts, not deep implementation. Explain trade-offs clearly.",
+      "phase": "p4"
+    },
+    "2026-07-03": {
+      "learn": [
+        "hld_caching"
+      ],
+      "revise": [
+        "hld_basics",
+        "lld_design3"
+      ],
+      "build": "Design a caching layer: write-through vs write-back vs write-around trade-offs",
+      "problem": "Serialize and Deserialize Binary Tree (Python, LC #297)",
+      "tip": "Cache invalidation is the hardest part. Know: TTL, LRU eviction, cache stampede.",
+      "phase": "p4"
+    },
+    "2026-07-04": {
+      "learn": [
+        "machine_taskmgr"
+      ],
+      "revise": [
+        "machine_intro",
+        "machine_snake",
+        "lld_patterns1"
+      ],
+      "build": "Machine coding: Task Manager in TS — 90 min timed, clean OOP",
+      "problem": "Maximum Width of Binary Tree (Python, LC #662)",
+      "tip": "Task Manager: focus on extensibility. Can you add priorities? Due dates? Tags? Show that thinking.",
+      "phase": "p4"
+    },
+    "2026-07-05": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_dp2",
+        "hld_basics",
+        "hld_caching"
+      ],
+      "build": "Saturday mock: 45 min DSA + 20 min HLD discussion out loud",
+      "problem": "Minimum Cost to Connect All Points (Python, LC #1584)",
+      "tip": "Prim's algorithm: greedy MST. Use a heap, always pick the cheapest edge to an unvisited node.",
+      "phase": "p4"
+    },
+    "2026-07-06": {
+      "learn": [],
+      "revise": [
+        "lld_design3",
+        "machine_taskmgr",
+        "lld_patterns2"
+      ],
+      "build": "Sunday: extend Splitwise — add currency conversion, expense categories",
+      "problem": "Review: Accounts Merge + Serialize Binary Tree",
+      "tip": "Extending your own designs is the best LLD prep. Think about what breaks when you add features.",
+      "phase": "p4"
+    },
+    "2026-07-07": {
+      "learn": [
+        "hld_db"
+      ],
+      "revise": [
+        "fundamentals_db",
+        "hld_caching"
+      ],
+      "build": "Write a comparison: when to use Postgres vs MongoDB vs Redis — with real examples",
+      "problem": "Design Underground System (Python, LC #1396)",
+      "tip": "SQL vs NoSQL: it's about access patterns, not just scale. What queries will you run most?",
+      "phase": "p4"
+    },
+    "2026-07-08": {
+      "learn": [
+        "lld_design4"
+      ],
+      "revise": [
+        "lld_patterns1",
+        "lld_patterns2",
+        "lld_solid"
+      ],
+      "build": "Design Chess in TS — Board, Piece, Move, King, Queen, rules engine",
+      "problem": "Find the Celebrity (Python, LC #277)",
+      "tip": "Chess LLD: model pieces polymorphically. Each piece class overrides isValidMove(). Board is passive.",
+      "phase": "p4"
+    },
+    "2026-07-09": {
+      "learn": [
+        "machine_ratelim"
+      ],
+      "revise": [
+        "machine_intro",
+        "hld_caching",
+        "ts_classes"
+      ],
+      "build": "Implement 3 rate limiting algorithms in TS: token bucket, sliding window, fixed window",
+      "problem": "Design Hit Counter (Python, LC #362)",
+      "tip": "Token bucket = smooth traffic. Sliding window = precise limits. Fixed window = simplest, has edge case at boundary.",
+      "phase": "p4"
+    },
+    "2026-07-10": {
+      "learn": [],
+      "revise": [
+        "dsa_heaps",
+        "dsa_graphs_adv",
+        "machine_ratelim",
+        "hld_db"
+      ],
+      "build": "Timed mock: 60 min machine coding — rate limiter with tests in TS",
+      "problem": "Time Based Key-Value Store (Python, LC #981)",
+      "tip": "Time-based store: hashmap of key → sorted list of (timestamp, value) pairs. Binary search for query.",
+      "phase": "p4"
+    },
+    "2026-07-11": {
+      "learn": [],
+      "revise": [
+        "lld_design4",
+        "lld_patterns2",
+        "dsa_backtrack"
+      ],
+      "build": "Extend chess — add castling, en passant, check detection",
+      "problem": "N-Queens (Python, LC #51)",
+      "tip": "N-Queens = backtracking with pruning. Track rows, cols, and both diagonals as sets.",
+      "phase": "p4"
+    },
+    "2026-07-12": {
+      "learn": [],
+      "revise": [
+        "hld_basics",
+        "hld_caching",
+        "hld_db",
+        "fundamentals_concurrency"
+      ],
+      "build": "Saturday mock: 30 min HLD — design a URL shortener at scale, explain out loud",
+      "problem": "Design Twitter (study, no code)",
+      "tip": "HLD mock: structure it — requirements → capacity estimate → components → data model → trade-offs.",
+      "phase": "p4"
+    },
+    "2026-07-13": {
+      "learn": [],
+      "revise": [
+        "lld_design1",
+        "lld_design2",
+        "lld_design3",
+        "lld_design4"
+      ],
+      "build": "Sunday: LLD review — whiteboard all 4 designs from memory in 10 min each",
+      "problem": "Review: 3 hardest problems from July so far",
+      "tip": "Whiteboarding from memory reveals gaps. Note every place you hesitated — those are your weak spots.",
+      "phase": "p4"
+    },
+    "2026-07-14": {
+      "learn": [
+        "machine_lru"
+      ],
+      "revise": [
+        "machine_intro",
+        "lld_patterns1",
+        "py_oop"
+      ],
+      "build": "Implement LRU Cache in both Python and TS — 20 min each",
+      "problem": "LRU Cache (LC #146) — solve without any hints in under 20 min",
+      "tip": "LRU Cache benchmark: you should implement this cleanly in 20 min. It's asked by every company.",
+      "phase": "p4"
+    },
+    "2026-07-15": {
+      "learn": [
+        "docker_basics"
+      ],
+      "revise": [
+        "fundamentals_http",
+        "codebase_debug"
+      ],
+      "build": "Write a Dockerfile for your TS REST API. Build it, run it, curl it.",
+      "problem": "Design a Stack With Increment Operation (Python, LC #1381)",
+      "tip": "Dockerfile: FROM → WORKDIR → COPY package*.json → RUN npm install → COPY . → CMD.",
+      "phase": "p4"
+    },
+    "2026-07-16": {
+      "learn": [],
+      "revise": [
+        "docker_basics",
+        "machine_lru",
+        "lld_patterns2"
+      ],
+      "build": "Docker compose: TS API + Postgres + Redis in one compose file",
+      "problem": "Insert Delete GetRandom O(1) (Python, LC #380)",
+      "tip": "Insert/Delete/GetRandom: combine hashmap (for O(1) insert/delete) with array (for O(1) random).",
+      "phase": "p4"
+    },
+    "2026-07-17": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_dp2",
+        "dsa_graphs_adv",
+        "hld_basics"
+      ],
+      "build": "Timed mock: 45 min — 2 DP problems back to back",
+      "problem": "Regular Expression Matching (Python, LC #10)",
+      "tip": "Regex matching DP: dp[i][j] = can pattern[:j] match text[:i]. Handle '.' and '*' separately.",
+      "phase": "p4"
+    },
+    "2026-07-18": {
+      "learn": [],
+      "revise": [
+        "machine_ratelim",
+        "machine_lru",
+        "machine_taskmgr",
+        "lld_design3"
+      ],
+      "build": "Saturday: full 90-min machine coding mock — build Splitwise CLI in TS",
+      "problem": "Design Tic-Tac-Toe (Python, LC #348)",
+      "tip": "Tic-Tac-Toe: don't use O(n²) check. Track row, col, diagonal sums per player.",
+      "phase": "p4"
+    },
+    "2026-07-19": {
+      "learn": [],
+      "revise": [
+        "hld_basics",
+        "hld_caching",
+        "hld_db",
+        "lld_solid",
+        "lld_patterns1"
+      ],
+      "build": "Sunday: write out your 'design philosophy' — how you approach a system design question",
+      "problem": "Review: LRU Cache + Design Tic-Tac-Toe",
+      "tip": "Having a consistent approach to system design questions is as important as the content. Practice the structure.",
+      "phase": "p4"
+    },
+    "2026-07-20": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_backtrack",
+        "dsa_trie",
+        "machine_lru"
+      ],
+      "build": "Speed drill: solve 5 easy problems in under 8 minutes each in Python",
+      "problem": "Largest Rectangle in Histogram (Python, LC #84)",
+      "tip": "Histogram: monotonic stack, track indices. Pop when smaller bar found, calculate area.",
+      "phase": "p4"
+    },
+    "2026-07-21": {
+      "learn": [],
+      "revise": [
+        "lld_design4",
+        "machine_ratelim",
+        "hld_caching",
+        "docker_basics"
+      ],
+      "build": "Navigate a new open-source TS project you've never seen — find a bug or improvement",
+      "problem": "Trapping Rain Water (Python, LC #42)",
+      "tip": "Rain water: two-pointer. Track maxLeft and maxRight. Water at i = min(maxL, maxR) - height[i].",
+      "phase": "p4"
+    },
+    "2026-07-22": {
+      "learn": [],
+      "revise": [
+        "dsa_graphs_adv",
+        "dsa_heaps",
+        "hld_db",
+        "lld_patterns2"
+      ],
+      "build": "Timed: 45 min mock DSA — 1 graph hard + 1 DP medium",
+      "problem": "Critical Connections in a Network (Python, LC #1192)",
+      "tip": "Bridges in graph: Tarjan's algorithm. Low-link values identify bridges.",
+      "phase": "p4"
+    },
+    "2026-07-23": {
+      "learn": [],
+      "revise": [
+        "machine_intro",
+        "machine_snake",
+        "machine_taskmgr",
+        "machine_ratelim",
+        "machine_lru"
+      ],
+      "build": "Thursday: 90 min timed — new machine coding problem you haven't seen",
+      "problem": "Design In-Memory File System (Python, LC #588)",
+      "tip": "File system LLD: Directory node with children map. File node with content string. ls, mkdir, addFile, readFile.",
+      "phase": "p4"
+    },
+    "2026-07-24": {
+      "learn": [],
+      "revise": [
+        "hld_basics",
+        "hld_caching",
+        "hld_db",
+        "fundamentals_db"
+      ],
+      "build": "HLD mock: 30 min — design Instagram feed out loud. Record yourself.",
+      "problem": "Design Search Autocomplete System (LC #642) — study the approach",
+      "tip": "Recording yourself during HLD mocks is uncomfortable but reveals filler words, hesitations, gaps.",
+      "phase": "p4"
+    },
+    "2026-07-25": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_dp2",
+        "dsa_backtrack",
+        "lld_design1",
+        "lld_design2"
+      ],
+      "build": "Saturday: full mock — 45 min DSA + 30 min LLD + 20 min HLD back to back",
+      "problem": "Best Time to Buy and Sell Stock with Cooldown (Python, LC #309)",
+      "tip": "Full mock day: simulate the real interview sequence. No breaks between sections.",
+      "phase": "p4"
+    },
+    "2026-07-26": {
+      "learn": [],
+      "revise": [
+        "lld_design3",
+        "lld_design4",
+        "machine_lru",
+        "docker_compose"
+      ],
+      "build": "Sunday: July retrospective — list every system you can design. Rate each 1–5.",
+      "problem": "Review: 3 hardest from July",
+      "tip": "July checkpoint: can you implement LRU Cache in 20 min? Design parking lot in 15? If not, July isn't done.",
+      "phase": "p4"
+    },
+    "2026-07-27": {
+      "learn": [
+        "hld_msgqueue"
+      ],
+      "revise": [
+        "hld_basics",
+        "hld_caching",
+        "hld_db"
+      ],
+      "build": "Draw Kafka architecture: producers, topics, partitions, consumers, offsets",
+      "problem": "Find All Anagrams in a String (Python, LC #438)",
+      "tip": "Message queues decouple producers from consumers. Know: ordering, at-least-once, exactly-once.",
+      "phase": "p4"
+    },
+    "2026-07-28": {
+      "learn": [],
+      "revise": [
+        "hld_msgqueue",
+        "hld_caching",
+        "fundamentals_concurrency"
+      ],
+      "build": "Design a notification system using message queues — write the architecture",
+      "problem": "Minimum Number of Arrows to Burst Balloons (Python, LC #452)",
+      "tip": "Interval greedy: sort by end. One arrow can burst all overlapping balloons.",
+      "phase": "p4"
+    },
+    "2026-07-29": {
+      "learn": [],
+      "revise": [
+        "dsa_dp2",
+        "dsa_trie",
+        "machine_ratelim",
+        "hld_msgqueue"
+      ],
+      "build": "Timed mock: 45 min DSA — problems you've never seen before (random LC mediums)",
+      "problem": "Strange Printer (Python, LC #664)",
+      "tip": "Interval DP again. dp[i][j] = min turns to print s[i..j]. Think about where the first print ends.",
+      "phase": "p4"
+    },
+    "2026-07-30": {
+      "learn": [],
+      "revise": [
+        "hld_basics",
+        "hld_db",
+        "hld_msgqueue",
+        "lld_solid",
+        "lld_patterns1"
+      ],
+      "build": "90 min machine coding: build a logger system in TS — levels, transports, formatters",
+      "problem": "Logger Rate Limiter (Python, LC #359)",
+      "tip": "Logger: Strategy pattern for transports (console, file, remote). Chain of responsibility for log levels.",
+      "phase": "p4"
+    },
+    "2026-07-31": {
+      "learn": [],
+      "revise": [
+        "machine_intro",
+        "machine_lru",
+        "machine_ratelim",
+        "hld_design1"
+      ],
+      "build": "July final: design Twitter feed system — write the full design doc",
+      "problem": "Design Twitter (LC #355)",
+      "tip": "July done. August = mock mode. You should be able to solve mediums in under 25 min consistently.",
+      "phase": "p4"
+    },
+    "2026-08-01": {
+      "learn": [
+        "hld_design1"
+      ],
+      "revise": [
+        "hld_basics",
+        "hld_caching",
+        "hld_db",
+        "hld_msgqueue"
+      ],
+      "build": "Full HLD mock: Twitter feed — 45 min, explain every decision",
+      "problem": "Design Twitter (full walkthrough)",
+      "tip": "August = mock month. Every session should feel like an interview. No comfortable practice.",
+      "phase": "p5"
+    },
+    "2026-08-02": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_dp2",
+        "dsa_backtrack",
+        "dsa_trie"
+      ],
+      "build": "Speed drill: 5 DP mediums, 25 min each, no hints",
+      "problem": "Burst Balloons + Strange Printer + Regular Expression Matching",
+      "tip": "If you're over 25 min on any medium, that's your weak spot. Drill that pattern specifically.",
+      "phase": "p5"
+    },
+    "2026-08-03": {
+      "learn": [
+        "hld_design2"
+      ],
+      "revise": [
+        "hld_msgqueue",
+        "hld_caching",
+        "fundamentals_concurrency"
+      ],
+      "build": "Full HLD mock: WhatsApp — 45 min. Focus on message delivery guarantees.",
+      "problem": "HLD: WhatsApp — end-to-end design",
+      "tip": "WhatsApp HLD: online presence, message ordering, delivery receipts, group messages — each is a separate problem.",
+      "phase": "p5"
+    },
+    "2026-08-04": {
+      "learn": [],
+      "revise": [
+        "machine_lru",
+        "machine_ratelim",
+        "lld_design3",
+        "lld_design4"
+      ],
+      "build": "90 min machine coding mock: build an in-memory cache in TS with TTL and LRU eviction",
+      "problem": "Design In-Memory Cache (custom)",
+      "tip": "Combining TTL + LRU: use a heap for TTL expiry, DLL for LRU order. Handle expiry lazily.",
+      "phase": "p5"
+    },
+    "2026-08-05": {
+      "learn": [],
+      "revise": [
+        "dsa_graphs_adv",
+        "dsa_heaps",
+        "dsa_binsearch",
+        "dsa_dp1"
+      ],
+      "build": "Blind 75 audit: go through the list, mark every problem solved/unsolved/shaky",
+      "problem": "Median of Two Sorted Arrays (Python, LC #4)",
+      "tip": "If you have more than 10 'shaky' mediums on Blind 75, spend today re-solving the shakiest ones.",
+      "phase": "p5"
+    },
+    "2026-08-06": {
+      "learn": [],
+      "revise": [
+        "lld_solid",
+        "lld_patterns1",
+        "lld_patterns2",
+        "lld_design1",
+        "lld_design2"
+      ],
+      "build": "LLD mock: design a food delivery system — 45 min, explain aloud",
+      "problem": "LLD: Design food delivery (Swiggy-like)",
+      "tip": "Food delivery LLD: Order, Restaurant, DeliveryAgent, Route, Payment. Focus on state transitions.",
+      "phase": "p5"
+    },
+    "2026-08-07": {
+      "learn": [],
+      "revise": [
+        "hld_design1",
+        "hld_design2",
+        "machine_taskmgr",
+        "machine_ratelim"
+      ],
+      "build": "Full simulation: 45 min DSA + 30 min LLD + 20 min HLD — back to back, no breaks",
+      "problem": "Full mock simulation",
+      "tip": "This is the hardest session. Your brain will tire after 45 min of DSA. Push through — that's the point.",
+      "phase": "p5"
+    },
+    "2026-08-08": {
+      "learn": [],
+      "revise": [
+        "dsa_dp2",
+        "dsa_backtrack",
+        "lld_design3",
+        "lld_design4"
+      ],
+      "build": "Saturday: record a mock HLD session — play it back and critique it",
+      "problem": "Design Dropbox (study pattern)",
+      "tip": "Dropbox HLD: chunked upload, dedup by hash, sync protocol, conflict resolution.",
+      "phase": "p5"
+    },
+    "2026-08-09": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_heaps",
+        "hld_caching",
+        "lld_patterns1"
+      ],
+      "build": "Sunday: identify your 3 strongest patterns — prepare to lead with these in interviews",
+      "problem": "Review: 3 personally hardest problems ever",
+      "tip": "Know your strengths. Interviewers often let you pick the approach — lead with what you're confident in.",
+      "phase": "p5"
+    },
+    "2026-08-10": {
+      "learn": [],
+      "revise": [
+        "dsa_arrays",
+        "dsa_stacks",
+        "dsa_linkedlist",
+        "dsa_trees_basic"
+      ],
+      "build": "Speed drill: 6 easy problems — under 8 min each. No exceptions.",
+      "problem": "Rotate Array + Valid Palindrome + Balanced Parentheses + Reverse LL + Max Depth Tree + Invert Tree",
+      "tip": "Eights are the benchmark: under 8 min for easy = you're interview-ready on fundamentals.",
+      "phase": "p5"
+    },
+    "2026-08-11": {
+      "learn": [],
+      "revise": [
+        "dsa_graphs_basic",
+        "dsa_graphs_adv",
+        "dsa_binsearch",
+        "dsa_heaps"
+      ],
+      "build": "Mock: 45 min DSA — 2 mediums you haven't seen (pick random LC mediums)",
+      "problem": "Find K Closest Elements (Python, LC #658)",
+      "tip": "K closest: binary search for the left bound of the window. Window slides based on distance.",
+      "phase": "p5"
+    },
+    "2026-08-12": {
+      "learn": [],
+      "revise": [
+        "machine_lru",
+        "machine_ratelim",
+        "lld_design2",
+        "lld_design4"
+      ],
+      "build": "Machine coding: build a mini pub/sub event system in TS — 90 min",
+      "problem": "Design Pub/Sub system (custom)",
+      "tip": "Pub/sub: EventBus with subscribe(topic, handler) and publish(topic, data). Handle async delivery.",
+      "phase": "p5"
+    },
+    "2026-08-13": {
+      "learn": [],
+      "revise": [
+        "hld_basics",
+        "hld_caching",
+        "hld_db",
+        "hld_msgqueue",
+        "hld_design1",
+        "hld_design2"
+      ],
+      "build": "HLD mock: design YouTube — 45 min. Focus on video storage and streaming.",
+      "problem": "HLD: Design YouTube",
+      "tip": "YouTube HLD: video chunking, CDN for delivery, separate read/write paths, recommendation is a separate system.",
+      "phase": "p5"
+    },
+    "2026-08-14": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_dp2",
+        "lld_solid",
+        "machine_intro"
+      ],
+      "build": "Full mock: 45 DSA + 30 LLD + 20 HLD — different topics from Aug 7",
+      "problem": "Full mock #2",
+      "tip": "Compare this mock to Aug 7. Are you faster? Less stuck? Progress should be visible.",
+      "phase": "p5"
+    },
+    "2026-08-15": {
+      "learn": [],
+      "revise": [
+        "dsa_backtrack",
+        "dsa_trie",
+        "lld_design1",
+        "lld_design3"
+      ],
+      "build": "Saturday: company-tagged problems — solve 3 Amazon-tagged and 3 Google-tagged mediums",
+      "problem": "Amazon/Google tagged mediums (LC explore)",
+      "tip": "Company tags on LC aren't guaranteed but give signal on what patterns each company favors.",
+      "phase": "p5"
+    },
+    "2026-08-16": {
+      "learn": [],
+      "revise": [
+        "lld_design1",
+        "lld_design2",
+        "lld_design3",
+        "lld_design4",
+        "machine_lru"
+      ],
+      "build": "Sunday: the 'explain to a rubber duck' session — talk through 2 LLD designs out loud for 10 min each",
+      "problem": "Review: hardest 3 problems from August so far",
+      "tip": "If you can't explain it simply, you don't understand it well enough. The rubber duck exposes gaps.",
+      "phase": "p5"
+    },
+    "2026-08-17": {
+      "learn": [],
+      "revise": [
+        "dsa_graphs_adv",
+        "dsa_dp2",
+        "dsa_heaps"
+      ],
+      "build": "Hard problem session: 3 hard LC problems, no time limit, understand fully",
+      "problem": "Minimum Window Substring + Binary Tree Maximum Path Sum + Word Ladder II",
+      "tip": "Hard problems aren't about speed — they're about depth of understanding patterns.",
+      "phase": "p5"
+    },
+    "2026-08-18": {
+      "learn": [],
+      "revise": [
+        "hld_design1",
+        "hld_design2",
+        "fundamentals_db",
+        "docker_compose"
+      ],
+      "build": "Machine coding: build a booking system in TS — seats, reservations, cancellations",
+      "problem": "Design Airline Seat Reservation (custom)",
+      "tip": "Booking system: concurrency is the key challenge. How do you prevent double-booking?",
+      "phase": "p5"
+    },
+    "2026-08-19": {
+      "learn": [],
+      "revise": [
+        "dsa_binsearch",
+        "dsa_arrays",
+        "dsa_stacks",
+        "dsa_linkedlist"
+      ],
+      "build": "Speed audit: solve Blind 75 easy section entirely — 8 min per problem",
+      "problem": "Blind 75 easy sweep",
+      "tip": "If you're clean on all easies in under 8 min, your foundation is solid.",
+      "phase": "p5"
+    },
+    "2026-08-20": {
+      "learn": [],
+      "revise": [
+        "lld_patterns1",
+        "lld_patterns2",
+        "machine_ratelim",
+        "machine_lru"
+      ],
+      "build": "LLD mock: design a notification system — 45 min, whiteboard + explain",
+      "problem": "Design Notification System (custom)",
+      "tip": "Notification: multiple channels (push, SMS, email), user preferences, retry on failure, rate limiting per user.",
+      "phase": "p5"
+    },
+    "2026-08-21": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_dp2",
+        "dsa_backtrack",
+        "hld_design1"
+      ],
+      "build": "Full mock #3: 45 DSA + 30 LLD + 20 HLD — hardest versions of each",
+      "problem": "Full mock #3",
+      "tip": "Three mocks in: you should feel the difference from mock 1. If not, revisit fundamentals.",
+      "phase": "p5"
+    },
+    "2026-08-22": {
+      "learn": [],
+      "revise": [
+        "docker_basics",
+        "docker_compose",
+        "codebase_debug",
+        "codebase_prs"
+      ],
+      "build": "Saturday: containerize your best TS project — add GitHub Actions CI",
+      "problem": "Free choice: any problem you enjoy",
+      "tip": "Your GitHub should show active, clean projects. Interviewers do look at profiles.",
+      "phase": "p5"
+    },
+    "2026-08-23": {
+      "learn": [],
+      "revise": [
+        "lld_design1",
+        "lld_design2",
+        "lld_design3",
+        "lld_design4",
+        "hld_design1",
+        "hld_design2"
+      ],
+      "build": "Sunday: final self-assessment — rate yourself 0–100 on every skill area",
+      "problem": "Review: your personal top 5 hardest problems ever",
+      "tip": "Be honest in your self-assessment. The goal is to know exactly what you know and don't.",
+      "phase": "p5"
+    },
+    "2026-08-24": {
+      "learn": [],
+      "revise": [
+        "dsa_graphs_basic",
+        "dsa_graphs_adv",
+        "dsa_heaps",
+        "dsa_binsearch"
+      ],
+      "build": "Final speed drills: graphs — 3 mediums under 20 min each",
+      "problem": "Swim in Rising Water (LC #778) + Reconstruct Itinerary (LC #332)",
+      "tip": "These are hard graph problems. If you can solve them, you're prepared for anything.",
+      "phase": "p5"
+    },
+    "2026-08-25": {
+      "learn": [],
+      "revise": [
+        "machine_lru",
+        "machine_ratelim",
+        "lld_design4",
+        "hld_msgqueue"
+      ],
+      "build": "Final machine coding: 90 min — most complex thing you can build",
+      "problem": "Design and implement a mini Redis (get, set, expire, pub/sub)",
+      "tip": "Mini Redis: this is a capstone machine coding challenge. Combine everything you know.",
+      "phase": "p5"
+    },
+    "2026-08-26": {
+      "learn": [],
+      "revise": [
+        "hld_basics",
+        "hld_caching",
+        "hld_db",
+        "hld_msgqueue",
+        "hld_design1",
+        "hld_design2"
+      ],
+      "build": "Final HLD mock: design a ride-sharing system — 45 min",
+      "problem": "HLD: Design Uber",
+      "tip": "Uber HLD: location tracking (geohashing), matching algorithm, surge pricing, trip state machine.",
+      "phase": "p5"
+    },
+    "2026-08-27": {
+      "learn": [],
+      "revise": [
+        "dsa_dp1",
+        "dsa_dp2",
+        "dsa_backtrack",
+        "dsa_trie",
+        "dsa_heaps"
+      ],
+      "build": "Final DSA mock: 45 min — 2 problems you've never seen before",
+      "problem": "Final random mediums mock",
+      "tip": "Unknown problems are the real test. Trust your pattern recognition — you've built it over 5 months.",
+      "phase": "p5"
+    },
+    "2026-08-28": {
+      "learn": [],
+      "revise": [
+        "lld_solid",
+        "lld_patterns1",
+        "lld_patterns2",
+        "machine_intro"
+      ],
+      "build": "Final LLD mock: design an e-commerce checkout system — 45 min",
+      "problem": "LLD: Design checkout (cart, payment, inventory, order)",
+      "tip": "Checkout: Cart, Order, Payment, Inventory, Notification — each is a bounded context. Keep them decoupled.",
+      "phase": "p5"
+    },
+    "2026-08-29": {
+      "learn": [],
+      "revise": [
+        "dsa_arrays",
+        "dsa_hashmaps",
+        "dsa_stacks",
+        "dsa_linkedlist",
+        "dsa_trees_basic",
+        "dsa_graphs_basic"
+      ],
+      "build": "Saturday: complete Blind 75 audit — every problem should be green",
+      "problem": "Final Blind 75 sweep",
+      "tip": "Blind 75 complete = interview ready. Any remaining gaps: fix today, not tomorrow.",
+      "phase": "p5"
+    },
+    "2026-08-30": {
+      "learn": [],
+      "revise": [
+        "lld_design1",
+        "lld_design2",
+        "lld_design3",
+        "lld_design4",
+        "hld_design1",
+        "hld_design2"
+      ],
+      "build": "Full final simulation: 2 hour complete interview — DSA + LLD + HLD + behavioural",
+      "problem": "Final complete mock",
+      "tip": "You started at 0% DSA in April. You're here now. The gap between you and an offer is just reps.",
+      "phase": "p5"
+    },
+    "2026-08-31": {
+      "learn": [],
+      "revise": [],
+      "build": "Rest. Review your journey. Write down what you know now vs April 6.",
+      "problem": "No problem today.",
+      "tip": "6 months done. You built this from zero. Go get the offer.",
+      "phase": "p5"
+    }
+  }
+}

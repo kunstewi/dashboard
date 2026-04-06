@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDE Study Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f3f5f9;
+      --surface: #ffffff;
+      --surface2: #f7f9fc;
+      --surface3: #e7ebf3;
+      --border: rgba(20, 32, 51, 0.1);
+      --border2: rgba(20, 32, 51, 0.2);
+      --text: #142033;
+      --muted: #3f4d63;
+      --faint: #5d6b82;
+      --accent: #2f6fd6;
+      --accent-dim: rgba(47, 111, 214, 0.14);
+      --accent-dim2: rgba(47, 111, 214, 0.08);
+      --green: #168f63;
+      --green-dim: rgba(22, 143, 99, 0.13);
+      --amber: #b26a00;
+      --amber-dim: rgba(178, 106, 0, 0.14);
+      --coral: #cc4747;
+      --coral-dim: rgba(204, 71, 71, 0.14);
+      --blue: #2f6fd6;
+      --blue-dim: rgba(47, 111, 214, 0.12);
+      --purple: #8a4fd0;
+      --purple-dim: rgba(138, 79, 208, 0.14);
+      --p1: #2f6fd6;
+      --p2: #c67a00;
+      --p3: #8a4fd0;
+      --p4: #168f63;
+      --p5: #cc4747;
+      --cat-js-bg: rgba(198, 122, 0, 0.14);
+      --cat-js-text: #8a5400;
+      --cat-ts-bg: rgba(47, 111, 214, 0.14);
+      --cat-ts-text: #1f5ab5;
+      --cat-py-bg: rgba(22, 143, 99, 0.14);
+      --cat-py-text: #0f7b54;
+      --cat-dsa-bg: rgba(204, 71, 71, 0.14);
+      --cat-dsa-text: #ad2f2f;
+      --cat-lld-bg: rgba(138, 79, 208, 0.14);
+      --cat-lld-text: #6c39b4;
+      --cat-hld-bg: rgba(116, 94, 196, 0.14);
+      --cat-hld-text: #5e4ab1;
+      --cat-mc-bg: rgba(198, 122, 0, 0.16);
+      --cat-mc-text: #8a5400;
+      --cat-cb-bg: rgba(47, 111, 214, 0.12);
+      --cat-cb-text: #1f5ab5;
+      --cat-fund-bg: rgba(22, 143, 99, 0.12);
+      --cat-fund-text: #0f7b54;
+      --cat-infra-bg: rgba(204, 71, 71, 0.12);
+      --cat-infra-text: #ad2f2f;
+      --cat-mock-bg: rgba(138, 79, 208, 0.12);
+      --cat-mock-text: #6c39b4;
+      --mono: 'DM Mono', monospace;
+      --serif: 'Instrument Serif', serif;
+      --sans: 'DM Sans', sans-serif;
+      --r: 10px;
+      --r-sm: 6px;
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #0e0e10;
+      --surface: #16161a;
+      --surface2: #1e1e24;
+      --surface3: #26262e;
+      --border: rgba(255, 255, 255, 0.07);
+      --border2: rgba(255, 255, 255, 0.12);
+      --text: #e8e8f0;
+      --muted: #8888a0;
+      --faint: #44445a;
+      --accent: #7c6af7;
+      --accent-dim: rgba(124, 106, 247, 0.15);
+      --accent-dim2: rgba(124, 106, 247, 0.08);
+      --green: #3ecf8e;
+      --green-dim: rgba(62, 207, 142, 0.12);
+      --amber: #f5a623;
+      --amber-dim: rgba(245, 166, 35, 0.12);
+      --coral: #f06b6b;
+      --coral-dim: rgba(240, 107, 107, 0.12);
+      --blue: #5b9cf6;
+      --blue-dim: rgba(91, 156, 246, 0.12);
+      --purple: #c084fc;
+      --purple-dim: rgba(192, 132, 252, 0.12);
+      --p1: #5b9cf6;
+      --p2: #f5a623;
+      --p3: #c084fc;
+      --p4: #3ecf8e;
+      --p5: #f06b6b;
+      --cat-js-bg: rgba(245, 166, 35, 0.12);
+      --cat-js-text: #f5a623;
+      --cat-ts-bg: rgba(91, 156, 246, 0.15);
+      --cat-ts-text: #5b9cf6;
+      --cat-py-bg: rgba(62, 207, 142, 0.12);
+      --cat-py-text: #3ecf8e;
+      --cat-dsa-bg: rgba(240, 107, 107, 0.12);
+      --cat-dsa-text: #f06b6b;
+      --cat-lld-bg: rgba(124, 106, 247, 0.15);
+      --cat-lld-text: #a78bf7;
+      --cat-hld-bg: rgba(192, 132, 252, 0.12);
+      --cat-hld-text: #c084fc;
+      --cat-mc-bg: rgba(245, 166, 35, 0.15);
+      --cat-mc-text: #f5c842;
+      --cat-cb-bg: rgba(91, 156, 246, 0.12);
+      --cat-cb-text: #7eb8f7;
+      --cat-fund-bg: rgba(62, 207, 142, 0.1);
+      --cat-fund-text: #6edbb0;
+      --cat-infra-bg: rgba(240, 107, 107, 0.1);
+      --cat-infra-text: #f59898;
+      --cat-mock-bg: rgba(124, 106, 247, 0.1);
+      --cat-mock-text: #c4b5ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    /* LAYOUT */
+    .shell {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      grid-template-rows: 56px 1fr;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* HEADER */
+    header {
+      grid-column: 1 / -1;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      gap: 16px;
+    }
+
+    .logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+      }
+    }
+
+    .header-center {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .date-nav-btn {
+      background: none;
+      border: 1px solid var(--border2);
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: var(--r-sm);
+      padding: 5px 10px;
+      font-size: 13px;
+      font-family: var(--sans);
+      transition: all 0.15s;
+    }
+
+    .date-nav-btn:hover {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    .current-date-display {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text);
+      min-width: 130px;
+      text-align: center;
+    }
+
+    .today-btn {
+      background: var(--accent-dim);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      cursor: pointer;
+      border-radius: var(--r-sm);
+      padding: 4px 10px;
+      font-size: 12px;
+      font-family: var(--sans);
+      transition: all 0.15s;
+    }
+
+    .today-btn:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle {
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      cursor: pointer;
+      border-radius: var(--r-sm);
+      padding: 5px 10px;
+      font-size: 12px;
+      font-family: var(--sans);
+      transition: all 0.15s;
+    }
+
+    .theme-toggle:hover {
+      background: var(--surface3);
+    }
+
+    .phase-pill {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+
+    .progress-mini {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .progress-mini-bar {
+      width: 80px;
+      height: 3px;
+      background: var(--surface3);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-mini-fill {
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    /* SIDEBAR */
+    aside {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 16px 0;
+    }
+
+    aside::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    aside::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    aside::-webkit-scrollbar-thumb {
+      background: var(--surface3);
+      border-radius: 2px;
+    }
+
+    .sidebar-section-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--faint);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0 16px 8px;
+      margin-top: 8px;
+    }
+
+    .phase-group {
+      margin-bottom: 4px;
+    }
+
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      cursor: pointer;
+      border-radius: 0;
+      transition: background 0.1s;
+    }
+
+    .phase-header:hover {
+      background: var(--surface2);
+    }
+
+    .phase-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .phase-name {
+      font-size: 12px;
+      color: var(--muted);
+      flex: 1;
+      font-weight: 400;
+    }
+
+    .phase-count {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--faint);
+    }
+
+    .week-list {
+      padding: 0 8px 4px 24px;
+      display: none;
+    }
+
+    .week-list.open {
+      display: block;
+    }
+
+    .week-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 8px;
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--faint);
+      transition: all 0.1s;
+    }
+
+    .week-item:hover {
+      background: var(--surface2);
+      color: var(--muted);
+    }
+
+    .week-item.active {
+      background: var(--accent-dim2);
+      color: var(--accent);
+    }
+
+    .week-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+      opacity: 0.5;
+    }
+
+    /* MAIN */
+    main {
+      overflow-y: auto;
+      padding: 24px;
+      background: var(--bg);
+    }
+
+    main::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    main::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    main::-webkit-scrollbar-thumb {
+      background: var(--surface3);
+      border-radius: 3px;
+    }
+
+    /* DAY HEADER */
+    .day-header {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .day-header-left {}
+
+    .day-number {
+      font-family: var(--serif);
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 2px;
+    }
+
+    .day-title {
+      font-family: var(--serif);
+      font-size: 32px;
+      color: var(--text);
+      font-weight: 400;
+      line-height: 1.1;
+    }
+
+    .day-phase-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      margin-top: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid;
+    }
+
+    .no-data-msg {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--muted);
+    }
+
+    .no-data-msg h2 {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 8px;
+      color: var(--faint);
+    }
+
+    /* GRID LAYOUT */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .col-span-2 {
+      grid-column: span 2;
+    }
+
+    .col-span-full {
+      grid-column: 1 / -1;
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 16px;
+    }
+
+    .card-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--faint);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-label-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+
+    /* TOPIC ITEMS */
+    .topic-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .topic-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--surface2);
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border);
+      transition: border-color 0.15s;
+      cursor: default;
+    }
+
+    .topic-item:hover {
+      border-color: var(--border2);
+    }
+
+    .topic-cat {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .topic-text {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    .topic-check {
+      width: 16px;
+      height: 16px;
+      border: 1px solid var(--border2);
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .topic-check.checked {
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .topic-check.checked::after {
+      content: '';
+      display: block;
+      width: 8px;
+      height: 5px;
+      border-left: 1.5px solid white;
+      border-bottom: 1.5px solid white;
+      transform: rotate(-45deg) translateY(-1px);
+    }
+
+    /* PROBLEM CARD */
+    .problem-display {
+      padding: 14px 16px;
+      background: var(--surface2);
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border);
+    }
+
+    .problem-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .problem-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .diff-badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .diff-easy {
+      background: var(--green-dim);
+      color: var(--green);
+    }
+
+    .diff-med {
+      background: var(--amber-dim);
+      color: var(--amber);
+    }
+
+    .diff-hard {
+      background: var(--coral-dim);
+      color: var(--coral);
+    }
+
+    /* BUILD CARD */
+    .build-task {
+      padding: 14px 16px;
+      background: var(--surface2);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--r-sm) var(--r-sm) 0;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* TIP CARD */
+    .tip-text {
+      padding: 14px 16px;
+      background: var(--accent-dim2);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--r-sm) var(--r-sm) 0;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* REVISE ITEMS */
+    .revise-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: var(--surface2);
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border);
+    }
+
+    .revise-icon {
+      font-size: 10px;
+      font-family: var(--mono);
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: var(--amber-dim);
+      color: var(--amber);
+      flex-shrink: 0;
+    }
+
+    .revise-text {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* EMPTY STATES */
+    .empty-revise {
+      padding: 12px 16px;
+      background: var(--surface2);
+      border-radius: var(--r-sm);
+      font-size: 12px;
+      color: var(--faint);
+      font-family: var(--mono);
+    }
+
+    /* PROGRESS OVERVIEW */
+    .phase-progress-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .phase-prog-label {
+      font-size: 11px;
+      color: var(--muted);
+      width: 80px;
+      flex-shrink: 0;
+    }
+
+    .phase-prog-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--surface3);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .phase-prog-fill {
+      height: 4px;
+      border-radius: 2px;
+      transition: width 0.6s ease;
+    }
+
+    .phase-prog-pct {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--faint);
+      width: 32px;
+      text-align: right;
+    }
+
+    /* STATS ROW */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px 16px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--faint);
+    }
+
+    /* CATEGORY COLOR MAP */
+    .cat-js {
+      background: var(--cat-js-bg);
+      color: var(--cat-js-text);
+    }
+
+    .cat-ts {
+      background: var(--cat-ts-bg);
+      color: var(--cat-ts-text);
+    }
+
+    .cat-py {
+      background: var(--cat-py-bg);
+      color: var(--cat-py-text);
+    }
+
+    .cat-dsa {
+      background: var(--cat-dsa-bg);
+      color: var(--cat-dsa-text);
+    }
+
+    .cat-lld {
+      background: var(--cat-lld-bg);
+      color: var(--cat-lld-text);
+    }
+
+    .cat-hld {
+      background: var(--cat-hld-bg);
+      color: var(--cat-hld-text);
+    }
+
+    .cat-mc {
+      background: var(--cat-mc-bg);
+      color: var(--cat-mc-text);
+    }
+
+    .cat-cb {
+      background: var(--cat-cb-bg);
+      color: var(--cat-cb-text);
+    }
+
+    .cat-fund {
+      background: var(--cat-fund-bg);
+      color: var(--cat-fund-text);
+    }
+
+    .cat-infra {
+      background: var(--cat-infra-bg);
+      color: var(--cat-infra-text);
+    }
+
+    .cat-mock {
+      background: var(--cat-mock-bg);
+      color: var(--cat-mock-text);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .shell {
+        grid-template-columns: 1fr;
+        grid-template-rows: 56px auto 1fr;
+      }
+
+      aside {
+        display: none;
+      }
+
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .col-span-2 {
+        grid-column: 1;
+      }
+
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* SCROLLED-IN ANIMATION */
+    @keyframes fadein {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fadein {
+      animation: fadein 0.3s ease forwards;
+    }
+
+    .off-plan-msg {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 40px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .off-plan-msg h3 {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+
+    <header>
+      <div class="logo">
+        <div class="logo-dot"></div>
+        sde.study
+      </div>
+
+      <div class="header-center">
+        <button class="date-nav-btn" id="prev-day">←</button>
+        <div class="current-date-display" id="date-display">—</div>
+        <button class="date-nav-btn" id="next-day">→</button>
+        <button class="today-btn" id="go-today">today</button>
+      </div>
+
+      <div class="header-right">
+        <div class="progress-mini">
+          <div class="progress-mini-bar">
+            <div class="progress-mini-fill" id="global-prog-fill"></div>
+          </div>
+          <span id="global-prog-text">0%</span>
+        </div>
+        <div class="phase-pill" id="phase-pill">—</div>
+        <button class="theme-toggle" id="theme-toggle">Dark view</button>
+      </div>
+    </header>
+
+    <aside id="sidebar">
+      <div class="sidebar-section-label">Timeline</div>
+      <div id="sidebar-phases"></div>
+    </aside>
+
+    <main id="main-content">
+      <div class="no-data-msg">
+        <h2>Loading your plan...</h2>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    let curriculum = null;
+    let viewDate = null;
+    let completions = {};
+    let currentTheme = 'light';
+    const START = new Date('2026-04-06');
+    const END = new Date('2026-08-31');
+    const THEME_KEY = 'sde_theme';
+
+    const PHASE_COLORS = { p1: '#5b9cf6', p2: '#f5a623', p3: '#c084fc', p4: '#3ecf8e', p5: '#f06b6b' };
+    const PHASE_NAMES = { p1: 'JS/TS Foundations', p2: 'Python + TS Coding', p3: 'DSA Depth + LLD', p4: 'Advanced + HLD', p5: 'Mock + Polish' };
+    const PHASE_MONTHS = { p1: 'April', p2: 'May', p3: 'June', p4: 'July', p5: 'August' };
+
+    const CAT_CLASS = {
+      'JavaScript': 'cat-js', 'TypeScript': 'cat-ts', 'Python': 'cat-py', 'DSA': 'cat-dsa',
+      'LLD': 'cat-lld', 'HLD': 'cat-hld', 'Machine Coding': 'cat-mc', 'Codebase': 'cat-cb',
+      'Fundamentals': 'cat-fund', 'Infra': 'cat-infra', 'Mock': 'cat-mock'
+    };
+
+    function fmt(date) {
+      return date.toISOString().split('T')[0];
+    }
+
+    function parseDate(str) {
+      const [y, m, d] = str.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+
+    function daysBetween(a, b) {
+      return Math.round((b - a) / (1000 * 60 * 60 * 24));
+    }
+
+    function getTotalDays() {
+      return daysBetween(START, END) + 1;
+    }
+
+    function getDayNumber(date) {
+      return daysBetween(START, date) + 1;
+    }
+
+    function getDifficultyFromName(name) {
+      const n = name.toLowerCase();
+      if (n.includes('hard')) return 'hard';
+      if (n.includes('ii') || n.includes('iii')) return 'med';
+      return 'med';
+    }
+
+    function inferDifficulty(problemStr) {
+      if (!problemStr) return 'med';
+      const s = problemStr.toLowerCase();
+      if (s.includes('hard') || s.includes('#4') || s.includes('#10') || s.includes('#42') || s.includes('#84') || s.includes('#124') || s.includes('#212') || s.includes('#269') || s.includes('#297') || s.includes('#312') || s.includes('#664') || s.includes('#778')) return 'hard';
+      if (s.includes('easy') || s.includes('#1') || s.includes('#20') || s.includes('#21') || s.includes('#70') || s.includes('#121') || s.includes('#141') || s.includes('#206') || s.includes('#226') || s.includes('#242')) return 'easy';
+      return 'med';
+    }
+
+    function loadCompletions() {
+      try {
+        const saved = localStorage.getItem('sde_completions');
+        if (saved) completions = JSON.parse(saved);
+      } catch (e) { }
+    }
+
+    function saveCompletions() {
+      try {
+        localStorage.setItem('sde_completions', JSON.stringify(completions));
+      } catch (e) { }
+    }
+
+    function loadTheme() {
+      try {
+        const savedTheme = localStorage.getItem(THEME_KEY);
+        if (savedTheme === 'dark' || savedTheme === 'light') return savedTheme;
+      } catch (e) { }
+      return 'light';
+    }
+
+    function saveTheme(theme) {
+      try {
+        localStorage.setItem(THEME_KEY, theme);
+      } catch (e) { }
+    }
+
+    function applyTheme(theme) {
+      currentTheme = theme === 'dark' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      const toggleBtn = document.getElementById('theme-toggle');
+      if (toggleBtn) {
+        toggleBtn.textContent = currentTheme === 'dark' ? 'Light view' : 'Dark view';
+      }
+    }
+
+    function toggleTheme() {
+      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+      saveTheme(nextTheme);
+    }
+
+    function toggleCompletion(dateStr, topicId) {
+      if (!completions[dateStr]) completions[dateStr] = {};
+      completions[dateStr][topicId] = !completions[dateStr][topicId];
+      saveCompletions();
+      renderDay(viewDate);
+      updateGlobalProgress();
+    }
+
+    function updateGlobalProgress() {
+      const today = new Date();
+      const clampedToday = today > END ? END : today;
+      const daysElapsed = Math.max(0, daysBetween(START, clampedToday));
+      const total = getTotalDays();
+      const pct = Math.round((daysElapsed / total) * 100);
+      document.getElementById('global-prog-fill').style.width = pct + '%';
+      document.getElementById('global-prog-text').style.opacity = 1;
+      document.getElementById('global-prog-text').textContent = pct + '%';
+    }
+
+    function buildSidebar() {
+      const container = document.getElementById('sidebar-phases');
+      const phases = ['p1', 'p2', 'p3', 'p4', 'p5'];
+
+      phases.forEach(phase => {
+        const color = PHASE_COLORS[phase];
+        const group = document.createElement('div');
+        group.className = 'phase-group';
+
+        const ph = document.createElement('div');
+        ph.className = 'phase-header';
+        ph.innerHTML = `<div class="phase-dot" style="background:${color}"></div>
+      <span class="phase-name">${PHASE_MONTHS[phase]}</span>
+      <span class="phase-count">${PHASE_NAMES[phase].split(' ')[0]}</span>`;
+
+        const wl = document.createElement('div');
+        wl.className = 'week-list';
+        wl.id = `wl-${phase}`;
+
+        const phaseDays = Object.entries(curriculum.schedule)
+          .filter(([_, d]) => d.phase === phase)
+          .map(([dateStr]) => parseDate(dateStr));
+
+        const weekMap = {};
+        phaseDays.forEach(d => {
+          const wk = getWeekOf(d);
+          if (!weekMap[wk]) weekMap[wk] = d;
+        });
+
+        Object.entries(weekMap).sort().forEach(([wk, d]) => {
+          const wi = document.createElement('div');
+          wi.className = 'week-item';
+          wi.id = `wi-${fmt(d)}`;
+          wi.innerHTML = `<div class="week-dot"></div>Week of ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+          wi.onclick = () => navigateTo(d);
+          wl.appendChild(wi);
+        });
+
+        ph.onclick = () => {
+          wl.classList.toggle('open');
+        };
+
+        group.appendChild(ph);
+        group.appendChild(wl);
+        container.appendChild(group);
+      });
+    }
+
+    function getWeekOf(date) {
+      const d = new Date(date);
+      d.setDate(d.getDate() - d.getDay());
+      return fmt(d);
+    }
+
+    function navigateTo(date) {
+      viewDate = new Date(date);
+      renderDay(viewDate);
+      updateHeader();
+    }
+
+    function updateHeader() {
+      const d = viewDate;
+      const dateStr = fmt(d);
+      const dayData = curriculum.schedule[dateStr];
+
+      document.getElementById('date-display').textContent =
+        d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+
+      if (dayData) {
+        const phase = dayData.phase;
+        const color = PHASE_COLORS[phase];
+        const pill = document.getElementById('phase-pill');
+        pill.textContent = PHASE_MONTHS[phase];
+        pill.style.background = color + '22';
+        pill.style.color = color;
+        pill.style.border = `1px solid ${color}55`;
+      } else {
+        const pill = document.getElementById('phase-pill');
+        pill.textContent = '—';
+        pill.style.background = 'transparent';
+        pill.style.color = 'var(--faint)';
+        pill.style.border = '1px solid var(--border)';
+      }
+
+      updateGlobalProgress();
+    }
+
+    function renderDay(date) {
+      const dateStr = fmt(date);
+      const dayData = curriculum.schedule[dateStr];
+      const main = document.getElementById('main-content');
+      const dayNum = getDayNumber(date);
+      const totalDays = getTotalDays();
+
+      if (!dayData) {
+        const inRange = date >= START && date <= END;
+        main.innerHTML = `<div class="off-plan-msg fadein">
+      <h3>${inRange ? 'Rest day' : 'Outside the plan'}</h3>
+      <p>${inRange ? 'No structured session today. Review previous topics or rest.' : 'This date is outside your April–August study plan.'}</p>
+    </div>`;
+        return;
+      }
+
+      const phase = dayData.phase;
+      const phaseColor = PHASE_COLORS[phase];
+      const dc = completions[dateStr] || {};
+
+      const learnTopics = (dayData.learn || []).map(id => curriculum.topics[id]).filter(Boolean);
+      const reviseTopics = (dayData.revise || []).map(id => curriculum.topics[id]).filter(Boolean);
+
+      const learnDone = learnTopics.filter(t => {
+        const id = Object.keys(curriculum.topics).find(k => curriculum.topics[k] === t);
+        return dc[id];
+      }).length;
+
+      const reviseDone = reviseTopics.filter(t => {
+        const id = Object.keys(curriculum.topics).find(k => curriculum.topics[k] === t);
+        return dc[`rev_${id}`];
+      }).length;
+
+      const probDone = dc['problem'] || false;
+      const buildDone = dc['build'] || false;
+
+      function topicItemHTML(t, topicId, prefix) {
+        const catClass = CAT_CLASS[t.category] || 'cat-fund';
+        const key = prefix + topicId;
+        const checked = dc[key] ? ' checked' : '';
+        return `<div class="topic-item">
+      <span class="topic-cat ${catClass}">${t.category}</span>
+      <span class="topic-text">${t.label}</span>
+      <div class="topic-check${checked}" onclick="toggleCompletion('${dateStr}','${key}')"></div>
+    </div>`;
+      }
+
+      const learnHTML = learnTopics.length
+        ? learnTopics.map(t => {
+          const id = Object.keys(curriculum.topics).find(k => curriculum.topics[k] === t);
+          return topicItemHTML(t, id, '');
+        }).join('')
+        : '<div class="empty-revise">No new topics — revision + practice day</div>';
+
+      const reviseHTML = reviseTopics.length
+        ? reviseTopics.map(t => {
+          const id = Object.keys(curriculum.topics).find(k => curriculum.topics[k] === t);
+          return `<div class="revise-item">
+          <span class="revise-icon">rev</span>
+          <span class="revise-text">${t.label}</span>
+          <div class="topic-check${dc['rev_' + id] ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','rev_${id}')"></div>
+        </div>`;
+        }).join('')
+        : '<div class="empty-revise">Nothing to revise today — you\'re on day 1!</div>';
+
+      const diff = inferDifficulty(dayData.problem);
+      const probHTML = `<div class="problem-display">
+    <div class="problem-name">${dayData.problem || '—'}</div>
+    <div class="problem-meta">
+      <span class="diff-badge diff-${diff}">${diff}</span>
+      <div class="topic-check${probDone ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','problem')"></div>
+    </div>
+  </div>`;
+
+      const buildHTML = `<div class="build-task">${dayData.build || '—'}</div>
+    <div style="margin-top:8px;display:flex;align-items:center;gap:8px">
+      <div class="topic-check${buildDone ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','build')"></div>
+      <span style="font-size:12px;color:var(--faint)">mark complete</span>
+    </div>`;
+
+      const totalTasks = learnTopics.length + reviseTopics.length + 2;
+      const doneTasks = learnDone + reviseDone + (probDone ? 1 : 0) + (buildDone ? 1 : 0);
+      const dayPct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+
+      main.innerHTML = `<div class="fadein">
+    <div class="day-header">
+      <div class="day-header-left">
+        <div class="day-number">Day ${dayNum} of ${totalDays} · ${dayPct}% done today</div>
+        <div class="day-title">${date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</div>
+        <div class="day-phase-tag" style="color:${phaseColor};border-color:${phaseColor}44;background:${phaseColor}12">
+          <span style="width:5px;height:5px;border-radius:50%;background:${phaseColor};display:inline-block"></span>
+          ${PHASE_NAMES[phase]}
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-label"><div class="card-label-dot" style="background:${phaseColor}"></div>Learn today</div>
+        <div class="topic-list">${learnHTML}</div>
+      </div>
+      <div class="card">
+        <div class="card-label"><div class="card-label-dot" style="background:var(--amber)"></div>Revise today</div>
+        <div class="topic-list">${reviseHTML}</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-label"><div class="card-label-dot" style="background:var(--coral)"></div>Problem of the day</div>
+        ${probHTML}
+      </div>
+      <div class="card">
+        <div class="card-label"><div class="card-label-dot" style="background:var(--green)"></div>Build / code</div>
+        ${buildHTML}
+      </div>
+    </div>
+
+    <div class="card col-span-full">
+      <div class="card-label"><div class="card-label-dot" style="background:var(--accent)"></div>Today's insight</div>
+      <div class="tip-text">${dayData.tip || '—'}</div>
+    </div>
+  </div>`;
+    }
+
+    function init() {
+      loadCompletions();
+      applyTheme(loadTheme());
+
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) themeToggle.onclick = toggleTheme;
+
+      fetch('curriculum.json')
+        .then(r => r.json())
+        .then(data => {
+          curriculum = data;
+          buildSidebar();
+
+          const today = new Date();
+          const clampedToday = today < START ? START : today > END ? END : today;
+          viewDate = new Date(clampedToday);
+          viewDate.setHours(0, 0, 0, 0);
+
+          renderDay(viewDate);
+          updateHeader();
+          updateGlobalProgress();
+
+          document.getElementById('prev-day').onclick = () => {
+            viewDate.setDate(viewDate.getDate() - 1);
+            renderDay(viewDate);
+            updateHeader();
+          };
+
+          document.getElementById('next-day').onclick = () => {
+            viewDate.setDate(viewDate.getDate() + 1);
+            renderDay(viewDate);
+            updateHeader();
+          };
+
+          document.getElementById('go-today').onclick = () => {
+            const today = new Date();
+            viewDate = today < START ? new Date(START) : today > END ? new Date(END) : new Date(today);
+            viewDate.setHours(0, 0, 0, 0);
+            renderDay(viewDate);
+            updateHeader();
+          };
+
+          document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowLeft') document.getElementById('prev-day').click();
+            if (e.key === 'ArrowRight') document.getElementById('next-day').click();
+          });
+        })
+        .catch(err => {
+          document.getElementById('main-content').innerHTML = `<div class="off-plan-msg"><h3>Could not load curriculum.json</h3><p>Make sure the file is in the same folder as index.html and open via a local server (e.g. <code>npx serve .</code>)</p></div>`;
+        });
+    }
+
+    init();
+  </script>
+</body>
+
+</html>
