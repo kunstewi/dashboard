@@ -1,0 +1,342 @@
+{
+  "js_closures": {
+    "label": "JS Closures & Scope",
+    "category": "JavaScript",
+    "phase": "p1"
+  },
+  "js_async": {
+    "label": "JS Async / Promises / Event Loop",
+    "category": "JavaScript",
+    "phase": "p1"
+  },
+  "js_prototypes": {
+    "label": "JS Prototypes & Inheritance",
+    "category": "JavaScript",
+    "phase": "p1"
+  },
+  "js_es6": {
+    "label": "ES6+ Features",
+    "category": "JavaScript",
+    "phase": "p1"
+  },
+  "js_arrays": {
+    "label": "JS Array Methods (map/filter/reduce)",
+    "category": "JavaScript",
+    "phase": "p1"
+  },
+  "js_this": {
+    "label": "JS 'this' keyword & binding",
+    "category": "JavaScript",
+    "phase": "p1"
+  },
+  "js_modules": {
+    "label": "JS Modules (ESM vs CJS)",
+    "category": "JavaScript",
+    "phase": "p1"
+  },
+  "ts_types": {
+    "label": "TS Types & Interfaces",
+    "category": "TypeScript",
+    "phase": "p1"
+  },
+  "ts_generics": {
+    "label": "TS Generics",
+    "category": "TypeScript",
+    "phase": "p1"
+  },
+  "ts_utility": {
+    "label": "TS Utility Types (Pick/Omit/Partial)",
+    "category": "TypeScript",
+    "phase": "p1"
+  },
+  "ts_classes": {
+    "label": "TS Classes & Access Modifiers",
+    "category": "TypeScript",
+    "phase": "p1"
+  },
+  "ts_enums": {
+    "label": "TS Enums & Literal Types",
+    "category": "TypeScript",
+    "phase": "p1"
+  },
+  "ts_decorators": {
+    "label": "TS Decorators",
+    "category": "TypeScript",
+    "phase": "p2"
+  },
+  "ts_advanced": {
+    "label": "TS Conditional & Mapped Types",
+    "category": "TypeScript",
+    "phase": "p2"
+  },
+  "dsa_bigo": {
+    "label": "Big O Notation & Complexity Analysis",
+    "category": "DSA",
+    "phase": "p1"
+  },
+  "dsa_arrays": {
+    "label": "Arrays: Two Pointer & Sliding Window",
+    "category": "DSA",
+    "phase": "p1"
+  },
+  "dsa_hashmaps": {
+    "label": "Hashmaps & Frequency Counting",
+    "category": "DSA",
+    "phase": "p1"
+  },
+  "dsa_stacks": {
+    "label": "Stacks & Monotonic Stack",
+    "category": "DSA",
+    "phase": "p1"
+  },
+  "dsa_queues": {
+    "label": "Queues & Deque",
+    "category": "DSA",
+    "phase": "p1"
+  },
+  "dsa_linkedlist": {
+    "label": "Linked Lists & Fast/Slow Pointer",
+    "category": "DSA",
+    "phase": "p1"
+  },
+  "dsa_binsearch": {
+    "label": "Binary Search & Variants",
+    "category": "DSA",
+    "phase": "p2"
+  },
+  "dsa_trees_basic": {
+    "label": "Trees: DFS/BFS Traversals",
+    "category": "DSA",
+    "phase": "p2"
+  },
+  "dsa_trees_adv": {
+    "label": "Trees: BST, LCA, Path Problems",
+    "category": "DSA",
+    "phase": "p2"
+  },
+  "dsa_graphs_basic": {
+    "label": "Graphs: DFS/BFS & Components",
+    "category": "DSA",
+    "phase": "p2"
+  },
+  "dsa_graphs_adv": {
+    "label": "Graphs: Topo Sort, Union-Find, Dijkstra",
+    "category": "DSA",
+    "phase": "p3"
+  },
+  "dsa_heaps": {
+    "label": "Heaps & Priority Queues",
+    "category": "DSA",
+    "phase": "p3"
+  },
+  "dsa_dp1": {
+    "label": "Dynamic Programming: 1D Patterns",
+    "category": "DSA",
+    "phase": "p3"
+  },
+  "dsa_dp2": {
+    "label": "Dynamic Programming: 2D & String DP",
+    "category": "DSA",
+    "phase": "p3"
+  },
+  "dsa_backtrack": {
+    "label": "Backtracking & Recursion",
+    "category": "DSA",
+    "phase": "p3"
+  },
+  "dsa_trie": {
+    "label": "Tries",
+    "category": "DSA",
+    "phase": "p3"
+  },
+  "py_basics": {
+    "label": "Python Syntax & Builtins",
+    "category": "Python",
+    "phase": "p2"
+  },
+  "py_collections": {
+    "label": "Python: collections module (deque, Counter, defaultdict)",
+    "category": "Python",
+    "phase": "p2"
+  },
+  "py_heapq": {
+    "label": "Python: heapq module",
+    "category": "Python",
+    "phase": "p2"
+  },
+  "py_bisect": {
+    "label": "Python: bisect module",
+    "category": "Python",
+    "phase": "p2"
+  },
+  "py_comprehensions": {
+    "label": "Python: List/Dict Comprehensions",
+    "category": "Python",
+    "phase": "p2"
+  },
+  "py_oop": {
+    "label": "Python OOP: Classes & Dunder Methods",
+    "category": "Python",
+    "phase": "p2"
+  },
+  "codebase_git": {
+    "label": "Git: rebase, bisect, blame, stash",
+    "category": "Codebase",
+    "phase": "p2"
+  },
+  "codebase_read": {
+    "label": "Reading open source TS repos (Express/Prisma)",
+    "category": "Codebase",
+    "phase": "p2"
+  },
+  "codebase_debug": {
+    "label": "VSCode debugger: breakpoints, call stack, watch",
+    "category": "Codebase",
+    "phase": "p2"
+  },
+  "codebase_prs": {
+    "label": "Reading GitHub PRs & understanding diffs",
+    "category": "Codebase",
+    "phase": "p3"
+  },
+  "lld_solid": {
+    "label": "SOLID Principles",
+    "category": "LLD",
+    "phase": "p3"
+  },
+  "lld_patterns1": {
+    "label": "Design Patterns: Factory, Strategy, Observer",
+    "category": "LLD",
+    "phase": "p3"
+  },
+  "lld_patterns2": {
+    "label": "Design Patterns: Decorator, Singleton, Adapter",
+    "category": "LLD",
+    "phase": "p4"
+  },
+  "lld_design1": {
+    "label": "LLD: Design Parking Lot",
+    "category": "LLD",
+    "phase": "p3"
+  },
+  "lld_design2": {
+    "label": "LLD: Design URL Shortener",
+    "category": "LLD",
+    "phase": "p4"
+  },
+  "lld_design3": {
+    "label": "LLD: Design Splitwise",
+    "category": "LLD",
+    "phase": "p4"
+  },
+  "lld_design4": {
+    "label": "LLD: Design Chess Game",
+    "category": "LLD",
+    "phase": "p4"
+  },
+  "machine_intro": {
+    "label": "Machine Coding: Approach & Checklist",
+    "category": "Machine Coding",
+    "phase": "p3"
+  },
+  "machine_snake": {
+    "label": "Machine Coding: Snake Game",
+    "category": "Machine Coding",
+    "phase": "p3"
+  },
+  "machine_taskmgr": {
+    "label": "Machine Coding: Task Manager CLI",
+    "category": "Machine Coding",
+    "phase": "p4"
+  },
+  "machine_ratelim": {
+    "label": "Machine Coding: Rate Limiter",
+    "category": "Machine Coding",
+    "phase": "p4"
+  },
+  "machine_lru": {
+    "label": "Machine Coding: LRU Cache",
+    "category": "Machine Coding",
+    "phase": "p4"
+  },
+  "hld_basics": {
+    "label": "HLD: Load Balancing & CDN",
+    "category": "HLD",
+    "phase": "p4"
+  },
+  "hld_caching": {
+    "label": "HLD: Caching Strategies (Redis)",
+    "category": "HLD",
+    "phase": "p4"
+  },
+  "hld_db": {
+    "label": "HLD: SQL vs NoSQL & DB Sharding",
+    "category": "HLD",
+    "phase": "p4"
+  },
+  "hld_msgqueue": {
+    "label": "HLD: Message Queues (Kafka concepts)",
+    "category": "HLD",
+    "phase": "p5"
+  },
+  "hld_design1": {
+    "label": "HLD: Design Twitter Feed",
+    "category": "HLD",
+    "phase": "p5"
+  },
+  "hld_design2": {
+    "label": "HLD: Design WhatsApp",
+    "category": "HLD",
+    "phase": "p5"
+  },
+  "mock_dsa": {
+    "label": "Mock: Full DSA Round (45 min)",
+    "category": "Mock",
+    "phase": "p5"
+  },
+  "mock_machine": {
+    "label": "Mock: Full Machine Coding Round (90 min)",
+    "category": "Mock",
+    "phase": "p5"
+  },
+  "mock_lld": {
+    "label": "Mock: LLD Design Interview",
+    "category": "Mock",
+    "phase": "p5"
+  },
+  "mock_hld": {
+    "label": "Mock: HLD System Design Interview",
+    "category": "Mock",
+    "phase": "p5"
+  },
+  "fundamentals_http": {
+    "label": "HTTP: headers, methods, status codes, REST",
+    "category": "Fundamentals",
+    "phase": "p1"
+  },
+  "fundamentals_dns": {
+    "label": "DNS, TCP/IP, how the internet works",
+    "category": "Fundamentals",
+    "phase": "p1"
+  },
+  "fundamentals_concurrency": {
+    "label": "Processes vs Threads, Concurrency basics",
+    "category": "Fundamentals",
+    "phase": "p2"
+  },
+  "fundamentals_db": {
+    "label": "Database basics: indexes, transactions, ACID",
+    "category": "Fundamentals",
+    "phase": "p3"
+  },
+  "docker_basics": {
+    "label": "Docker: images, containers, Dockerfile",
+    "category": "Infra",
+    "phase": "p4"
+  },
+  "docker_compose": {
+    "label": "Docker Compose for local dev",
+    "category": "Infra",
+    "phase": "p4"
+  }
+}

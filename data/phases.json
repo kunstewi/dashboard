@@ -1,0 +1,32 @@
+[
+  {
+    "id": "p1",
+    "name": "JS/TS Foundations",
+    "months": "April",
+    "color": "#4A90D9"
+  },
+  {
+    "id": "p2",
+    "name": "Python + TS Coding",
+    "months": "May",
+    "color": "#E07B4A"
+  },
+  {
+    "id": "p3",
+    "name": "DSA Depth + Codebase",
+    "months": "June",
+    "color": "#7B5EA7"
+  },
+  {
+    "id": "p4",
+    "name": "Advanced DSA + LLD",
+    "months": "July",
+    "color": "#3BAF7E"
+  },
+  {
+    "id": "p5",
+    "name": "Mock + Polish",
+    "months": "August",
+    "color": "#C45C8A"
+  }
+]

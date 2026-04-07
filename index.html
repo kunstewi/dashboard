@@ -1256,10 +1256,14 @@
       const themeToggle = document.getElementById('theme-toggle');
       if (themeToggle) themeToggle.onclick = toggleTheme;
 
-      fetch('curriculum.json')
-        .then(r => r.json())
-        .then(data => {
-          curriculum = data;
+      Promise.all([
+        fetch('data/meta.json').then(r => r.json()),
+        fetch('data/phases.json').then(r => r.json()),
+        fetch('data/topics.json').then(r => r.json()),
+        fetch('data/schedule.json').then(r => r.json())
+      ])
+        .then(([meta, phases, topics, schedule]) => {
+          curriculum = { meta, phases, topics, schedule };
           buildSidebar();
 
           const today = new Date();
@@ -1297,7 +1301,7 @@
           });
         })
         .catch(err => {
-          document.getElementById('main-content').innerHTML = `<div class="off-plan-msg"><h3>Could not load curriculum.json</h3><p>Make sure the file is in the same folder as index.html and open via a local server (e.g. <code>npx serve .</code>)</p></div>`;
+          document.getElementById('main-content').innerHTML = `<div class="off-plan-msg"><h3>Could not load curriculum data</h3><p>Make sure the data/ folder (meta.json, phases.json, topics.json, schedule.json) is in the same directory as index.html and open via a local server (e.g. <code>npx serve .</code>)</p></div>`;
         });
     }
 
