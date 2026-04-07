@@ -380,6 +380,170 @@ function renderDay(date) {
       <div class="card-label"><div class="card-label-dot" style="background:var(--accent)"></div>Today's insight</div>
       <div class="tip-text">${dayData.tip}</div>
     </div>` : ''}
+
+    ${renderActivityGraph()}
+  </div>`;
+}
+
+// ── Activity Graph ──
+
+function getActivityLevel(dateStr) {
+  const dayData = curriculum.schedule[dateStr];
+  if (!dayData) return { level: 0, done: 0, total: 0 };
+
+  function countItems(val) {
+    if (Array.isArray(val)) return val.length;
+    if (val) return 1;
+    return 0;
+  }
+
+  const total =
+    countItems(dayData.learn) +
+    countItems(dayData.revise) +
+    countItems(dayData.problem) +
+    countItems(dayData.build);
+
+  if (total === 0) return { level: 0, done: 0, total: 0 };
+
+  const dc = completions[dateStr] || {};
+  const done = Object.values(dc).filter(Boolean).length;
+  const pct = Math.min(done / total, 1);
+
+  let level = 0;
+  if (pct > 0 && pct < 0.25) level = 1;
+  else if (pct >= 0.25 && pct < 0.5) level = 2;
+  else if (pct >= 0.5 && pct < 1) level = 3;
+  else if (pct >= 1) level = 4;
+
+  return { level, done, total };
+}
+
+function renderActivityGraph() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const todayStr = fmt(today);
+  const year = today.getFullYear();
+
+  // Start from the first Sunday of the year (or Jan 1 if Sunday)
+  const jan1 = new Date(year, 0, 1);
+  const startDate = new Date(jan1);
+  startDate.setDate(startDate.getDate() - startDate.getDay());
+
+  // Build 53 weeks
+  const weeks = [];
+  const d = new Date(startDate);
+  for (let w = 0; w < 53; w++) {
+    const week = [];
+    for (let dow = 0; dow < 7; dow++) {
+      week.push(new Date(d));
+      d.setDate(d.getDate() + 1);
+    }
+    weeks.push(week);
+  }
+
+  // Month labels
+  const monthLabels = [];
+  let lastMonth = -1;
+  for (let w = 0; w < weeks.length; w++) {
+    const firstDayOfWeek = weeks[w][0];
+    const m = firstDayOfWeek.getMonth();
+    if (m !== lastMonth && firstDayOfWeek.getFullYear() === year) {
+      monthLabels.push({ index: w, name: MONTH_NAMES[m].slice(0, 3) });
+      lastMonth = m;
+    }
+  }
+
+  // Compute month label positions as inline widths
+  let monthLabelHTML = '';
+  for (let i = 0; i < monthLabels.length; i++) {
+    const startW = monthLabels[i].index;
+    const endW = i < monthLabels.length - 1 ? monthLabels[i + 1].index : weeks.length;
+    const span = endW - startW;
+    const width = span * 14; // 11px cell + 3px gap
+    monthLabelHTML += `<span class="activity-month-label" style="width:${width}px">${monthLabels[i].name}</span>`;
+  }
+
+  // Day labels (Mon, Wed, Fri)
+  const dayLabels = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
+  const dayLabelHTML = dayLabels
+    .map(l => `<div class="activity-day-label">${l}</div>`)
+    .join('');
+
+  // Build columns
+  let totalDone = 0;
+  let totalActive = 0;
+  let currentStreak = 0;
+  let streakBroken = false;
+
+  // Compute streaks by walking backwards from today
+  const streakDate = new Date(today);
+  while (true) {
+    const sStr = fmt(streakDate);
+    const info = curriculum.schedule[sStr] ? getActivityLevel(sStr) : null;
+    if (info && info.total > 0 && info.done > 0) {
+      currentStreak++;
+      streakDate.setDate(streakDate.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+
+  let colsHTML = '';
+  for (let w = 0; w < weeks.length; w++) {
+    let cells = '';
+    for (let dow = 0; dow < 7; dow++) {
+      const cellDate = weeks[w][dow];
+      const ds = fmt(cellDate);
+      const isFuture = cellDate > today;
+      const isToday = ds === todayStr;
+      const { level, done, total } = getActivityLevel(ds);
+
+      if (!isFuture && total > 0) {
+        totalActive++;
+        if (done > 0) totalDone++;
+      }
+
+      const classes = ['activity-cell'];
+      if (isToday) classes.push('is-today');
+      if (isFuture) classes.push('is-future');
+
+      const dateLabel = cellDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const tip = isFuture
+        ? `${dateLabel} — upcoming`
+        : total === 0
+          ? `${dateLabel} — no tasks`
+          : `${dateLabel} — ${done}/${total} done`;
+
+      const lvl = isFuture ? 0 : level;
+      cells += `<div class="${classes.join(' ')}" data-level="${lvl}" data-tip="${tip}"></div>`;
+    }
+    colsHTML += `<div class="activity-col">${cells}</div>`;
+  }
+
+  return `<div class="card activity-graph-card">
+    <div class="activity-graph-header">
+      <div class="card-label" style="margin-bottom:0"><div class="card-label-dot" style="background:var(--green)"></div>Activity — ${year}</div>
+      <div class="activity-graph-stats">
+        <span class="activity-stat"><strong>${totalDone}</strong> active days</span>
+        <span class="activity-stat"><strong>${currentStreak}</strong> day streak</span>
+      </div>
+    </div>
+    <div class="activity-graph-wrapper">
+      <div class="activity-month-labels">${monthLabelHTML}</div>
+      <div class="activity-graph-inner">
+        <div class="activity-day-labels">${dayLabelHTML}</div>
+        ${colsHTML}
+      </div>
+    </div>
+    <div class="activity-legend">
+      <span class="activity-legend-label">Less</span>
+      <div class="activity-legend-cell activity-cell" data-level="0"></div>
+      <div class="activity-legend-cell activity-cell" data-level="1"></div>
+      <div class="activity-legend-cell activity-cell" data-level="2"></div>
+      <div class="activity-legend-cell activity-cell" data-level="3"></div>
+      <div class="activity-legend-cell activity-cell" data-level="4"></div>
+      <span class="activity-legend-label">More</span>
+    </div>
   </div>`;
 }
 
