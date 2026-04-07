@@ -16,6 +16,10 @@ function save(data) {
   fs.writeFileSync(FILE, JSON.stringify(data, null, 2) + '\n');
 }
 
+function emptyPhase() {
+  return { id: '', name: '', months: '', color: '#888888' };
+}
+
 module.exports = {
   async add(ask) {
     console.log(`\n${c.cyan}Add a new phase${c.reset}`);
@@ -77,20 +81,27 @@ module.exports = {
 
     if (idx === -1) { console.log(`${c.red}  ✗ Phase not found${c.reset}`); return; }
 
-    const confirm = await ask(`  Delete "${phases[idx].name}" (${phases[idx].id})? ${c.dim}(y/N)${c.reset}: `);
+    const confirm = await ask(`  Reset "${phases[idx].name}" (${phases[idx].id}) to empty defaults? ${c.dim}(y/N)${c.reset}: `);
     if (confirm.trim().toLowerCase() !== 'y') { console.log(`${c.dim}  Cancelled${c.reset}`); return; }
 
-    phases.splice(idx, 1);
+    phases[idx] = emptyPhase();
     save(phases);
-    console.log(`${c.green}  ✓ Phase deleted${c.reset}`);
+    console.log(`${c.green}  ✓ Phase reset to defaults${c.reset}`);
   },
 
   async removeAll(ask) {
-    const confirm = await ask(`  ${c.red}Delete ALL phases${c.reset} and keep one blank example? ${c.dim}(y/N)${c.reset}: `);
+    const confirm = await ask(`  ${c.red}Reset ALL phases${c.reset} to empty defaults? ${c.dim}(y/N)${c.reset}: `);
     if (confirm.trim().toLowerCase() !== 'y') { console.log(`${c.dim}  Cancelled${c.reset}`); return; }
 
-    save([{ id: '', name: '', months: '', color: '#888888' }]);
-    console.log(`${c.green}  ✓ All phases removed. One blank example kept.${c.reset}`);
+    const phases = load();
+    if (phases.length === 0) {
+      save([emptyPhase()]);
+      console.log(`${c.green}  ✓ Phases were empty. One default blank phase kept.${c.reset}`);
+      return;
+    }
+
+    save(phases.map(() => emptyPhase()));
+    console.log(`${c.green}  ✓ All phases reset to defaults${c.reset}`);
   },
 
   list() {

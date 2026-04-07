@@ -244,34 +244,59 @@ function renderDay(date) {
 
   function normalizeTaskItem(item, index, type) {
     if (typeof item === 'string') {
-      return { label: item, key: `${type}_${index}` };
+      return { label: item, link: '', key: `${type}_${index}` };
     }
     if (item && typeof item === 'object') {
       const label = typeof item.label === 'string' && item.label.trim()
         ? item.label
         : `Task ${index + 1}`;
-      return { label, key: `${type}_${index}` };
+      const link = typeof item.link === 'string' && item.link.trim() ? item.link.trim() : '';
+      return { label, link, key: `${type}_${index}` };
     }
-    return { label: String(item), key: `${type}_${index}` };
+    return { label: String(item), link: '', key: `${type}_${index}` };
+  }
+
+  function normalizeTaskArray(value, type, legacyKey) {
+    const rawItems = Array.isArray(value) ? value : (value ? [value] : []);
+    return rawItems.map((item, index) => {
+      const normalized = normalizeTaskItem(item, index, type);
+      if (legacyKey && index === 0) normalized.legacyKey = legacyKey;
+      return normalized;
+    });
+  }
+
+  function isTaskDone(task) {
+    if (dc[task.key]) return true;
+    if (task.legacyKey && dc[task.legacyKey]) return true;
+    return false;
+  }
+
+  function renderLabelOrLink(label, link) {
+    if (link) {
+      return `<a href="${link}" target="_blank" rel="noopener noreferrer" class="task-link">${label}</a>`;
+    }
+    return label;
   }
 
   const learnTopics = (dayData.learn || []).map((item, index) => normalizeTaskItem(item, index, 'learn'));
   const reviseTopics = (dayData.revise || []).map((item, index) => normalizeTaskItem(item, index, 'revise'));
+  const probTopics = normalizeTaskArray(dayData.problem, 'problem', 'problem');
+  const buildTopics = normalizeTaskArray(dayData.build, 'build', 'build');
 
-  const learnDone = learnTopics.filter(t => dc[t.key]).length;
-  const reviseDone = reviseTopics.filter(t => dc[t.key]).length;
-  const probDone = dc['problem'] || false;
-  const buildDone = dc['build'] || false;
+  const learnDone = learnTopics.filter(isTaskDone).length;
+  const reviseDone = reviseTopics.filter(isTaskDone).length;
+  const probDone = probTopics.filter(isTaskDone).length;
+  const buildDone = buildTopics.filter(isTaskDone).length;
 
-  const totalTasks = learnTopics.length + reviseTopics.length + (dayData.problem ? 1 : 0) + (dayData.build ? 1 : 0);
-  const doneTasks = learnDone + reviseDone + (probDone ? 1 : 0) + (buildDone ? 1 : 0);
+  const totalTasks = learnTopics.length + reviseTopics.length + probTopics.length + buildTopics.length;
+  const doneTasks = learnDone + reviseDone + probDone + buildDone;
   const dayPct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
 
   function topicItemHTML(t) {
-    const checked = dc[t.key] ? ' checked' : '';
+    const checked = isTaskDone(t) ? ' checked' : '';
     return `<div class="topic-item">
-      <span class="topic-text">${t.label}</span>
       <div class="topic-check${checked}" onclick="toggleCompletion('${dateStr}','${t.key}')"></div>
+      <span class="topic-text">${renderLabelOrLink(t.label, t.link)}</span>
     </div>`;
   }
 
@@ -282,28 +307,24 @@ function renderDay(date) {
   const reviseHTML = reviseTopics.length
     ? reviseTopics.map(t => {
       return `<div class="revise-item">
+          <div class="topic-check${isTaskDone(t) ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','${t.key}')"></div>
           <span class="revise-icon">rev</span>
-          <span class="revise-text">${t.label}</span>
-          <div class="topic-check${dc[t.key] ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','${t.key}')"></div>
+          <span class="revise-text">${renderLabelOrLink(t.label, t.link)}</span>
         </div>`;
     }).join('')
     : '<div class="empty-revise">Nothing to revise today</div>';
 
-  const probHTML = dayData.problem
-    ? `<div class="problem-display">
-        <div class="problem-name">${dayData.problem}</div>
-        <div class="problem-meta">
-          <div class="topic-check${probDone ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','problem')"></div>
-        </div>
-      </div>`
+  const probHTML = probTopics.length
+    ? probTopics.map(t => topicItemHTML(t)).join('')
     : '<div class="empty-revise">No problem assigned</div>';
 
-  const buildHTML = dayData.build
-    ? `<div class="build-task">${dayData.build}</div>
-      <div style="margin-top:8px;display:flex;align-items:center;gap:8px">
-        <div class="topic-check${buildDone ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','build')"></div>
-        <span style="font-size:12px;color:var(--faint)">mark complete</span>
-      </div>`
+  const buildHTML = buildTopics.length
+    ? buildTopics.map(t => {
+      return `<div class="build-task">
+        <div class="topic-check${isTaskDone(t) ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','${t.key}')"></div>
+        <span>${renderLabelOrLink(t.label, t.link)}</span>
+      </div>`;
+    }).join('')
     : '<div class="empty-revise">No build task assigned</div>';
 
   main.innerHTML = `<div class="fadein">
@@ -332,7 +353,7 @@ function renderDay(date) {
     <div class="grid-2">
       <div class="card">
         <div class="card-label"><div class="card-label-dot" style="background:var(--coral)"></div>Problem of the day</div>
-        ${probHTML}
+        <div class="topic-list">${probHTML}</div>
       </div>
       <div class="card">
         <div class="card-label"><div class="card-label-dot" style="background:var(--green)"></div>Build / code</div>

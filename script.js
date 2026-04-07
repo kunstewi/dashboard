@@ -27,8 +27,8 @@ async function manageModule(name, mod) {
     const choice = await showMenu(`${name}`, [
       'Add',
       'Update',
-      'Delete',
-      'Delete All',
+      'Reset',
+      'Reset All',
       'List',
       'Back',
     ]);
