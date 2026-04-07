@@ -14,6 +14,21 @@ const MONTH_COLORS = [
   '#5b9cf6', '#f5a623', '#c084fc', '#3ecf8e', '#f06b6b', '#e67e22'
 ];
 
+const PHASES = [
+  { id: 'p1', name: 'January Baseline Plan', months: 'January', color: '#5b9cf6' },
+  { id: 'p2', name: 'February Baseline Plan', months: 'February', color: '#f5a623' },
+  { id: 'p3', name: 'March Baseline Plan', months: 'March', color: '#c084fc' },
+  { id: 'p4', name: 'April Baseline Plan', months: 'April', color: '#3ecf8e' },
+  { id: 'p5', name: 'May Baseline Plan', months: 'May', color: '#f06b6b' },
+  { id: 'p6', name: 'June Baseline Plan', months: 'June', color: '#e67e22' },
+  { id: 'p7', name: 'July Baseline Plan', months: 'July', color: '#5b9cf6' },
+  { id: 'p8', name: 'August Baseline Plan', months: 'August', color: '#f5a623' },
+  { id: 'p9', name: 'September Baseline Plan', months: 'September', color: '#c084fc' },
+  { id: 'p10', name: 'October Baseline Plan', months: 'October', color: '#3ecf8e' },
+  { id: 'p11', name: 'November Baseline Plan', months: 'November', color: '#f06b6b' },
+  { id: 'p12', name: 'December Baseline Plan', months: 'December', color: '#e67e22' }
+];
+
 // ── Date helpers ──
 
 function fmt(date) {
@@ -377,12 +392,10 @@ function init() {
   const themeToggle = document.getElementById('theme-toggle');
   if (themeToggle) themeToggle.onclick = toggleTheme;
 
-  Promise.all([
-    fetch('data/phases.json').then(r => r.json()),
-    fetch('data/schedule.json').then(r => r.json())
-  ])
-    .then(([phases, schedule]) => {
-      curriculum = { phases, schedule };
+  fetch('data/schedule.json')
+    .then(r => r.json())
+    .then(schedule => {
+      curriculum = { phases: PHASES, schedule };
       buildSidebar();
 
       viewDate = new Date();
