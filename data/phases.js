@@ -96,9 +96,35 @@ module.exports = {
   list() {
     const phases = load();
     console.log(`\n${c.cyan}  Phases (${phases.length})${c.reset}`);
-    console.log(`  ${c.dim}${'─'.repeat(50)}${c.reset}`);
-    phases.forEach(p => {
-      console.log(`  ${c.bold}${p.id || '(no id)'}${c.reset}  ${p.name || '(blank)'}  ${c.dim}│ ${p.months}  ${p.color}${c.reset}`);
+    if (phases.length === 0) {
+      console.log(`  ${c.dim}(no phases found)${c.reset}`);
+      return;
+    }
+
+    const rows = phases.map(p => ({
+      id: p.id || '(no id)',
+      name: p.name || '(blank)',
+      months: p.months || '—',
+      color: p.color || '—',
+    }));
+
+    const headers = { id: 'ID', name: 'Name', months: 'Months', color: 'Color' };
+    const idWidth = Math.max(headers.id.length, ...rows.map(r => r.id.length));
+    const nameWidth = Math.max(headers.name.length, ...rows.map(r => r.name.length));
+    const monthsWidth = Math.max(headers.months.length, ...rows.map(r => r.months.length));
+    const colorWidth = Math.max(headers.color.length, ...rows.map(r => r.color.length));
+
+    const tableWidth = idWidth + 2 + nameWidth + 2 + 1 + 2 + monthsWidth + 2 + colorWidth;
+    console.log(`  ${c.dim}${'─'.repeat(tableWidth)}${c.reset}`);
+    console.log(
+      `  ${c.dim}${headers.id.padEnd(idWidth)}  ${headers.name.padEnd(nameWidth)}  │  ${headers.months.padEnd(monthsWidth)}  ${headers.color.padEnd(colorWidth)}${c.reset}`
+    );
+    console.log(`  ${c.dim}${'─'.repeat(tableWidth)}${c.reset}`);
+
+    rows.forEach(r => {
+      console.log(
+        `  ${c.bold}${r.id.padEnd(idWidth)}${c.reset}  ${r.name.padEnd(nameWidth)}  ${c.dim}│${c.reset}  ${c.dim}${r.months.padEnd(monthsWidth)}  ${r.color.padEnd(colorWidth)}${c.reset}`
+      );
     });
   },
 };
