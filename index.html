@@ -283,6 +283,10 @@
       margin-top: 8px;
     }
 
+    :root[data-theme="dark"] .sidebar-section-label {
+      color: #c0c6d9;
+    }
+
     .phase-group {
       margin-bottom: 4px;
     }
@@ -350,6 +354,20 @@
     .week-item.active {
       background: var(--accent-dim2);
       color: var(--accent);
+    }
+
+    :root[data-theme="dark"] .week-item {
+      color: #c6cada;
+    }
+
+    :root[data-theme="dark"] .week-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #eef1ff;
+    }
+
+    :root[data-theme="dark"] .week-item.active {
+      background: rgba(124, 106, 247, 0.24);
+      color: #f3f4ff;
     }
 
     .week-dot {
@@ -473,6 +491,10 @@
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+
+    :root[data-theme="dark"] .card-label {
+      color: #c4cade;
     }
 
     .card-label-dot {
@@ -811,6 +833,14 @@
       font-weight: 500;
     }
 
+    :root[data-theme="dark"] .activity-stat {
+      color: #c5cbe0;
+    }
+
+    :root[data-theme="dark"] .activity-stat strong {
+      color: #f3f5ff;
+    }
+
     .activity-graph-wrapper {
       overflow-x: auto;
       padding-bottom: 4px;
@@ -917,8 +947,7 @@
     }
 
     .activity-cell.is-today {
-      outline: 2px solid var(--accent);
-      outline-offset: -1px;
+      outline: none;
     }
 
     .activity-cell.is-future {
