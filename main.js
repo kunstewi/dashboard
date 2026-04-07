@@ -106,9 +106,9 @@ function toggleTheme() {
   saveTheme(next);
 }
 
-function toggleCompletion(dateStr, topicId) {
+function toggleCompletion(dateStr, taskId) {
   if (!completions[dateStr]) completions[dateStr] = {};
-  completions[dateStr][topicId] = !completions[dateStr][topicId];
+  completions[dateStr][taskId] = !completions[dateStr][taskId];
   saveCompletions();
   renderDay(viewDate);
   updateProgress();
@@ -293,50 +293,50 @@ function renderDay(date) {
     return label;
   }
 
-  const learnTopics = (dayData.learn || []).map((item, index) => normalizeTaskItem(item, index, 'learn'));
-  const reviseTopics = (dayData.revise || []).map((item, index) => normalizeTaskItem(item, index, 'revise'));
-  const probTopics = normalizeTaskArray(dayData.problem, 'problem', 'problem');
-  const buildTopics = normalizeTaskArray(dayData.build, 'build', 'build');
+  const learnTasks = (dayData.learn || []).map((item, index) => normalizeTaskItem(item, index, 'learn'));
+  const reviseTasks = (dayData.revise || []).map((item, index) => normalizeTaskItem(item, index, 'revise'));
+  const problemTasks = normalizeTaskArray(dayData.problem, 'problem', 'problem');
+  const buildTasks = normalizeTaskArray(dayData.build, 'build', 'build');
 
-  const learnDone = learnTopics.filter(isTaskDone).length;
-  const reviseDone = reviseTopics.filter(isTaskDone).length;
-  const probDone = probTopics.filter(isTaskDone).length;
-  const buildDone = buildTopics.filter(isTaskDone).length;
+  const learnDone = learnTasks.filter(isTaskDone).length;
+  const reviseDone = reviseTasks.filter(isTaskDone).length;
+  const problemDone = problemTasks.filter(isTaskDone).length;
+  const buildDone = buildTasks.filter(isTaskDone).length;
 
-  const totalTasks = learnTopics.length + reviseTopics.length + probTopics.length + buildTopics.length;
-  const doneTasks = learnDone + reviseDone + probDone + buildDone;
+  const totalTasks = learnTasks.length + reviseTasks.length + problemTasks.length + buildTasks.length;
+  const doneTasks = learnDone + reviseDone + problemDone + buildDone;
   const dayPct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
 
-  function topicItemHTML(t) {
-    const checked = isTaskDone(t) ? ' checked' : '';
-    return `<div class="topic-item">
-      <div class="topic-check${checked}" onclick="toggleCompletion('${dateStr}','${t.key}')"></div>
-      <span class="topic-text">${renderLabelOrLink(t.label, t.link)}</span>
+  function taskItemHTML(task) {
+    const checked = isTaskDone(task) ? ' checked' : '';
+    return `<div class="task-item">
+      <div class="task-check${checked}" onclick="toggleCompletion('${dateStr}','${task.key}')"></div>
+      <span class="task-text">${renderLabelOrLink(task.label, task.link)}</span>
     </div>`;
   }
 
-  const learnHTML = learnTopics.length
-    ? learnTopics.map(t => topicItemHTML(t)).join('')
-    : '<div class="empty-revise">No new topics today</div>';
+  const learnHTML = learnTasks.length
+    ? learnTasks.map(t => taskItemHTML(t)).join('')
+    : '<div class="empty-revise">No learning tasks today</div>';
 
-  const reviseHTML = reviseTopics.length
-    ? reviseTopics.map(t => {
+  const reviseHTML = reviseTasks.length
+    ? reviseTasks.map(t => {
       return `<div class="revise-item">
-          <div class="topic-check${isTaskDone(t) ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','${t.key}')"></div>
+          <div class="task-check${isTaskDone(t) ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','${t.key}')"></div>
           <span class="revise-icon">rev</span>
           <span class="revise-text">${renderLabelOrLink(t.label, t.link)}</span>
         </div>`;
     }).join('')
     : '<div class="empty-revise">Nothing to revise today</div>';
 
-  const probHTML = probTopics.length
-    ? probTopics.map(t => topicItemHTML(t)).join('')
+  const probHTML = problemTasks.length
+    ? problemTasks.map(t => taskItemHTML(t)).join('')
     : '<div class="empty-revise">No problem assigned</div>';
 
-  const buildHTML = buildTopics.length
-    ? buildTopics.map(t => {
+  const buildHTML = buildTasks.length
+    ? buildTasks.map(t => {
       return `<div class="build-task">
-        <div class="topic-check${isTaskDone(t) ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','${t.key}')"></div>
+        <div class="task-check${isTaskDone(t) ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','${t.key}')"></div>
         <span>${renderLabelOrLink(t.label, t.link)}</span>
       </div>`;
     }).join('')
@@ -357,18 +357,18 @@ function renderDay(date) {
     <div class="grid-2">
       <div class="card">
         <div class="card-label"><div class="card-label-dot" style="background:${phaseColor}"></div>Learn today</div>
-        <div class="topic-list">${learnHTML}</div>
+        <div class="task-list">${learnHTML}</div>
       </div>
       <div class="card">
         <div class="card-label"><div class="card-label-dot" style="background:var(--amber)"></div>Revise today</div>
-        <div class="topic-list">${reviseHTML}</div>
+        <div class="task-list">${reviseHTML}</div>
       </div>
     </div>
 
     <div class="grid-2">
       <div class="card">
         <div class="card-label"><div class="card-label-dot" style="background:var(--coral)"></div>Problem of the day</div>
-        <div class="topic-list">${probHTML}</div>
+        <div class="task-list">${probHTML}</div>
       </div>
       <div class="card">
         <div class="card-label"><div class="card-label-dot" style="background:var(--green)"></div>Build / code</div>

@@ -26,7 +26,7 @@ Then open http://localhost:8080
 Install the "Live Server" extension, right-click index.html → "Open with Live Server"
 
 ## Features
-- Shows today's topics to learn, topics to revise, problem of the day, and build task
+- Shows today's learning tasks, revision tasks, problem of the day, and build task
 - Navigate day by day with ← → buttons or arrow keys
 - Check off each task as you complete it (saves to localStorage)
 - Phase progress bar in the header
@@ -34,7 +34,6 @@ Install the "Live Server" extension, right-click index.html → "Open with Live 
 
 ## Customising
 All study content is in `curriculum.json`. You can edit:
-- `topics` — add new topics or change labels
 - `schedule` — change what's scheduled on any day
 - Each day has: `learn`, `revise`, `build`, `problem`, `tip`, `phase`
 

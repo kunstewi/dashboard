@@ -40,28 +40,6 @@
       --p3: #8a4fd0;
       --p4: #168f63;
       --p5: #cc4747;
-      --cat-js-bg: rgba(198, 122, 0, 0.14);
-      --cat-js-text: #8a5400;
-      --cat-ts-bg: rgba(47, 111, 214, 0.14);
-      --cat-ts-text: #1f5ab5;
-      --cat-py-bg: rgba(22, 143, 99, 0.14);
-      --cat-py-text: #0f7b54;
-      --cat-dsa-bg: rgba(204, 71, 71, 0.14);
-      --cat-dsa-text: #ad2f2f;
-      --cat-lld-bg: rgba(138, 79, 208, 0.14);
-      --cat-lld-text: #6c39b4;
-      --cat-hld-bg: rgba(116, 94, 196, 0.14);
-      --cat-hld-text: #5e4ab1;
-      --cat-mc-bg: rgba(198, 122, 0, 0.16);
-      --cat-mc-text: #8a5400;
-      --cat-cb-bg: rgba(47, 111, 214, 0.12);
-      --cat-cb-text: #1f5ab5;
-      --cat-fund-bg: rgba(22, 143, 99, 0.12);
-      --cat-fund-text: #0f7b54;
-      --cat-infra-bg: rgba(204, 71, 71, 0.12);
-      --cat-infra-text: #ad2f2f;
-      --cat-mock-bg: rgba(138, 79, 208, 0.12);
-      --cat-mock-text: #6c39b4;
       --mono: 'DM Mono', monospace;
       --serif: 'Instrument Serif', serif;
       --sans: 'DM Sans', sans-serif;
@@ -98,28 +76,6 @@
       --p3: #c084fc;
       --p4: #3ecf8e;
       --p5: #f06b6b;
-      --cat-js-bg: rgba(245, 166, 35, 0.12);
-      --cat-js-text: #f5a623;
-      --cat-ts-bg: rgba(91, 156, 246, 0.15);
-      --cat-ts-text: #5b9cf6;
-      --cat-py-bg: rgba(62, 207, 142, 0.12);
-      --cat-py-text: #3ecf8e;
-      --cat-dsa-bg: rgba(240, 107, 107, 0.12);
-      --cat-dsa-text: #f06b6b;
-      --cat-lld-bg: rgba(124, 106, 247, 0.15);
-      --cat-lld-text: #a78bf7;
-      --cat-hld-bg: rgba(192, 132, 252, 0.12);
-      --cat-hld-text: #c084fc;
-      --cat-mc-bg: rgba(245, 166, 35, 0.15);
-      --cat-mc-text: #f5c842;
-      --cat-cb-bg: rgba(91, 156, 246, 0.12);
-      --cat-cb-text: #7eb8f7;
-      --cat-fund-bg: rgba(62, 207, 142, 0.1);
-      --cat-fund-text: #6edbb0;
-      --cat-infra-bg: rgba(240, 107, 107, 0.1);
-      --cat-infra-text: #f59898;
-      --cat-mock-bg: rgba(124, 106, 247, 0.1);
-      --cat-mock-text: #c4b5ff;
     }
 
     * {
@@ -525,14 +481,14 @@
       border-radius: 50%;
     }
 
-    /* TOPIC ITEMS */
-    .topic-list {
+    /* TASK ITEMS */
+    .task-list {
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
 
-    .topic-item {
+    .task-item {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -544,27 +500,18 @@
       cursor: default;
     }
 
-    .topic-item:hover {
+    .task-item:hover {
       border-color: var(--border2);
     }
 
-    .topic-cat {
-      font-family: var(--mono);
-      font-size: 10px;
-      padding: 2px 7px;
-      border-radius: 4px;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .topic-text {
+    .task-text {
       font-size: 13px;
       color: var(--text);
       line-height: 1.4;
       flex: 1;
     }
 
-    .topic-check {
+    .task-check {
       width: 16px;
       height: 16px;
       border: 1px solid var(--border2);
@@ -577,12 +524,12 @@
       transition: all 0.15s;
     }
 
-    .topic-check.checked {
+    .task-check.checked {
       background: var(--green);
       border-color: var(--green);
     }
 
-    .topic-check.checked::after {
+    .task-check.checked::after {
       content: '';
       display: block;
       width: 8px;
@@ -774,62 +721,6 @@
     .stat-lbl {
       font-size: 11px;
       color: var(--faint);
-    }
-
-    /* CATEGORY COLOR MAP */
-    .cat-js {
-      background: var(--cat-js-bg);
-      color: var(--cat-js-text);
-    }
-
-    .cat-ts {
-      background: var(--cat-ts-bg);
-      color: var(--cat-ts-text);
-    }
-
-    .cat-py {
-      background: var(--cat-py-bg);
-      color: var(--cat-py-text);
-    }
-
-    .cat-dsa {
-      background: var(--cat-dsa-bg);
-      color: var(--cat-dsa-text);
-    }
-
-    .cat-lld {
-      background: var(--cat-lld-bg);
-      color: var(--cat-lld-text);
-    }
-
-    .cat-hld {
-      background: var(--cat-hld-bg);
-      color: var(--cat-hld-text);
-    }
-
-    .cat-mc {
-      background: var(--cat-mc-bg);
-      color: var(--cat-mc-text);
-    }
-
-    .cat-cb {
-      background: var(--cat-cb-bg);
-      color: var(--cat-cb-text);
-    }
-
-    .cat-fund {
-      background: var(--cat-fund-bg);
-      color: var(--cat-fund-text);
-    }
-
-    .cat-infra {
-      background: var(--cat-infra-bg);
-      color: var(--cat-infra-text);
-    }
-
-    .cat-mock {
-      background: var(--cat-mock-bg);
-      color: var(--cat-mock-text);
     }
 
     /* RESPONSIVE */
