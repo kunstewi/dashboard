@@ -1,32 +1,74 @@
 [
   {
     "id": "p1",
-    "name": "JS/TS Foundations",
-    "months": "April",
-    "color": "#4A90D9"
+    "name": "January Baseline Plan",
+    "months": "January",
+    "color": "#5b9cf6"
   },
   {
     "id": "p2",
-    "name": "Python + TS Coding",
-    "months": "May",
-    "color": "#E07B4A"
+    "name": "February Baseline Plan",
+    "months": "February",
+    "color": "#f5a623"
   },
   {
     "id": "p3",
-    "name": "DSA Depth + Codebase",
-    "months": "June",
-    "color": "#7B5EA7"
+    "name": "March Baseline Plan",
+    "months": "March",
+    "color": "#c084fc"
   },
   {
     "id": "p4",
-    "name": "Advanced DSA + LLD",
-    "months": "July",
-    "color": "#3BAF7E"
+    "name": "April Baseline Plan",
+    "months": "April",
+    "color": "#3ecf8e"
   },
   {
     "id": "p5",
-    "name": "Mock + Polish",
+    "name": "May Baseline Plan",
+    "months": "May",
+    "color": "#f06b6b"
+  },
+  {
+    "id": "p6",
+    "name": "June Baseline Plan",
+    "months": "June",
+    "color": "#e67e22"
+  },
+  {
+    "id": "p7",
+    "name": "July Baseline Plan",
+    "months": "July",
+    "color": "#5b9cf6"
+  },
+  {
+    "id": "p8",
+    "name": "August Baseline Plan",
     "months": "August",
-    "color": "#C45C8A"
+    "color": "#f5a623"
+  },
+  {
+    "id": "p9",
+    "name": "September Baseline Plan",
+    "months": "September",
+    "color": "#c084fc"
+  },
+  {
+    "id": "p10",
+    "name": "October Baseline Plan",
+    "months": "October",
+    "color": "#3ecf8e"
+  },
+  {
+    "id": "p11",
+    "name": "November Baseline Plan",
+    "months": "November",
+    "color": "#f06b6b"
+  },
+  {
+    "id": "p12",
+    "name": "December Baseline Plan",
+    "months": "December",
+    "color": "#e67e22"
   }
 ]

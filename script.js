@@ -1,7 +1,6 @@
 const readline = require('readline');
 const phases = require('./data/phases');
 const schedule = require('./data/schedule');
-const topics = require('./data/topics');
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -55,15 +54,13 @@ async function main() {
     const choice = await showMenu('What would you like to manage?', [
       'Phases',
       'Schedule',
-      'Topics',
       'Exit',
     ]);
 
     switch (choice) {
       case 1: await manageModule('Phases', phases); break;
       case 2: await manageModule('Schedule', schedule); break;
-      case 3: await manageModule('Topics', topics); break;
-      case 4:
+      case 3:
         console.log(`\n${c.dim}  Bye!${c.reset}\n`);
         rl.close();
         return;
