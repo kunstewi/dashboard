@@ -207,15 +207,11 @@ async function resetEntry() {
     return;
   }
 
-  const date = (await ask('\n  Date to reset (YYYY-MM-DD): ')).trim();
+  const today = getTodayDate();
+  const rawDate = (await ask(`\n  Date to reset [YYYY-MM-DD, Enter=${today}]: `)).trim();
+  const date = rawDate || today;
   if (!schedule[date]) {
     console.log(`${c.red}  X No entry found for ${date}${c.reset}`);
-    return;
-  }
-
-  const confirm = await ask(`  Reset ${date}? ${c.dim}(y/N)${c.reset}: `);
-  if (confirm.trim().toLowerCase() !== 'y') {
-    console.log(`${c.dim}  Cancelled${c.reset}`);
     return;
   }
 

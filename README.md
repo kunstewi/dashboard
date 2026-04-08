@@ -35,7 +35,7 @@ Install the "Live Server" extension, right-click index.html → "Open with Live 
 ## CLI commands
 - `1`, `a`, `add` — Add tasks for a date (Enter defaults to today).
 - `2`, `u`, `update` — Update tasks for an existing date (Enter defaults to today).
-- `3`, `r`, `reset` — Reset one date to empty defaults.
+- `3`, `r`, `reset` — Reset one date to empty defaults (Enter defaults to today).
 - `4`, `rall`, `resetall` — Reset all dates to empty defaults.
 - `5`, `l`, `list` — List schedule entries grouped by phase.
 - `6`, `e`, `exit` — Exit the schedule editor.
