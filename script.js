@@ -287,12 +287,42 @@ function listEntries() {
 
 async function showScheduleMenu() {
   console.log(`\n${c.bold}${c.cyan}Schedule Editor${c.reset}`);
-  const options = ['Add', 'Update', 'Reset', 'Reset All', 'List', 'Exit'];
+  const options = [
+    'Add [a]',
+    'Update [u]',
+    'Reset [r]',
+    'Reset All [rall]',
+    'List [l]',
+    'Exit [e]',
+  ];
   options.forEach((opt, i) => {
     console.log(`  ${c.dim}${i + 1}.${c.reset} ${opt}`);
   });
-  const choice = (await ask(`\n  ${c.bold}>${c.reset} `)).trim();
-  return parseInt(choice, 10);
+
+  const input = (await ask(`\n  ${c.bold}>${c.reset} `)).trim().toLowerCase();
+  const normalized = input.replace(/\s+/g, '');
+  const aliases = {
+    '1': 'add',
+    a: 'add',
+    add: 'add',
+    '2': 'update',
+    u: 'update',
+    update: 'update',
+    '3': 'reset',
+    r: 'reset',
+    reset: 'reset',
+    '4': 'resetAll',
+    rall: 'resetAll',
+    resetall: 'resetAll',
+    '5': 'list',
+    l: 'list',
+    list: 'list',
+    '6': 'exit',
+    e: 'exit',
+    exit: 'exit',
+  };
+
+  return aliases[normalized] || null;
 }
 
 async function main() {
@@ -304,12 +334,12 @@ async function main() {
     const choice = await showScheduleMenu();
 
     switch (choice) {
-      case 1: await addEntry(); break;
-      case 2: await updateEntry(); break;
-      case 3: await resetEntry(); break;
-      case 4: await resetAllEntries(); break;
-      case 5: listEntries(); break;
-      case 6:
+      case 'add': await addEntry(); break;
+      case 'update': await updateEntry(); break;
+      case 'reset': await resetEntry(); break;
+      case 'resetAll': await resetAllEntries(); break;
+      case 'list': listEntries(); break;
+      case 'exit':
         console.log(`\n${c.dim}  Bye!${c.reset}\n`);
         rl.close();
         return;
