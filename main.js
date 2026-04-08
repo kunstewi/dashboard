@@ -49,6 +49,12 @@ function getWeekOf(date) {
   return fmt(d);
 }
 
+function isTodayDateStr(dateStr) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return dateStr === fmt(today);
+}
+
 // ── Schedule helpers ──
 
 function getScheduleDates() {
@@ -107,6 +113,7 @@ function toggleTheme() {
 }
 
 function toggleCompletion(dateStr, taskId) {
+  if (!isTodayDateStr(dateStr)) return;
   if (!completions[dateStr]) completions[dateStr] = {};
   completions[dateStr][taskId] = !completions[dateStr][taskId];
   saveCompletions();
@@ -255,6 +262,7 @@ function renderDay(date) {
   const phaseInfo = phaseMap[phase];
   const phaseColor = (phaseInfo && phaseInfo.color) || 'var(--accent)';
   const phaseName = (phaseInfo && phaseInfo.name) || phase || '—';
+  const canEditChecklist = isTodayDateStr(dateStr);
   const dc = completions[dateStr] || {};
 
   function normalizeTaskItem(item, index, type) {
@@ -307,10 +315,16 @@ function renderDay(date) {
   const doneTasks = learnDone + reviseDone + problemDone + buildDone;
   const dayPct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
 
-  function taskItemHTML(task) {
+  function taskCheckHTML(task) {
     const checked = isTaskDone(task) ? ' checked' : '';
+    const disabled = canEditChecklist ? '' : ' disabled';
+    const onclick = canEditChecklist ? ` onclick="toggleCompletion('${dateStr}','${task.key}')"` : '';
+    return `<div class="task-check${checked}${disabled}"${onclick}></div>`;
+  }
+
+  function taskItemHTML(task) {
     return `<div class="task-item">
-      <div class="task-check${checked}" onclick="toggleCompletion('${dateStr}','${task.key}')"></div>
+      ${taskCheckHTML(task)}
       <span class="task-text">${renderLabelOrLink(task.label, task.link)}</span>
     </div>`;
   }
@@ -322,7 +336,7 @@ function renderDay(date) {
   const reviseHTML = reviseTasks.length
     ? reviseTasks.map(t => {
       return `<div class="revise-item">
-          <div class="task-check${isTaskDone(t) ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','${t.key}')"></div>
+          ${taskCheckHTML(t)}
           <span class="revise-icon">rev</span>
           <span class="revise-text">${renderLabelOrLink(t.label, t.link)}</span>
         </div>`;
@@ -336,7 +350,7 @@ function renderDay(date) {
   const buildHTML = buildTasks.length
     ? buildTasks.map(t => {
       return `<div class="build-task">
-        <div class="task-check${isTaskDone(t) ? ' checked' : ''}" onclick="toggleCompletion('${dateStr}','${t.key}')"></div>
+        ${taskCheckHTML(t)}
         <span>${renderLabelOrLink(t.label, t.link)}</span>
       </div>`;
     }).join('')
