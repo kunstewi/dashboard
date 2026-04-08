@@ -768,33 +768,11 @@
     "phase": "p4"
   },
   "2026-04-07": {
-    "learn": [
-      "Binary Search basics",
-      {
-        "label": "Two Pointers technique",
-        "link": "https://leetcode.com/tag/two-pointers/"
-      }
-    ],
-    "revise": [
-      "Arrays fundamentals",
-      {
-        "label": "Sliding Window patterns",
-        "link": "https://leetcode.com/tag/sliding-window/"
-      }
-    ],
-    "build": [
-      {
-        "label": "Build a LRU Cache and whatever the fuck that means who cares who doesn't well sometimes it doesn't make sense",
-        "link": "https://leetcode.com/problems/lru-cache/"
-      }
-    ],
-    "problem": [
-      {
-        "label": "Two Sum",
-        "link": "https://leetcode.com/problems/two-sum/"
-      }
-    ],
-    "tip": "Focus on understanding the time complexity of each approach",
+    "learn": [],
+    "revise": [],
+    "build": [],
+    "problem": [],
+    "tip": "",
     "phase": "p4"
   },
   "2026-04-08": {
