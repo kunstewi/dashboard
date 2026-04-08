@@ -102,13 +102,11 @@ function formatItemList(items) {
 }
 
 async function promptMultiple(fieldName) {
-  console.log(`  ${c.dim}Add ${fieldName} entries - press Enter on empty line to finish${c.reset}`);
-  console.log(`  ${c.dim}After each label you'll be asked for an optional link${c.reset}`);
   const items = [];
   while (true) {
-    const val = (await ask(`    ${fieldName} ${items.length + 1}: `)).trim();
+    const val = (await ask(`  ${fieldName} ${items.length + 1}: `)).trim();
     if (!val) break;
-    const link = (await ask(`    ${c.dim}link (optional):${c.reset} `)).trim();
+    const link = (await ask('  link: ')).trim();
     items.push(link ? { label: val, link } : val);
   }
   return items;
@@ -116,13 +114,13 @@ async function promptMultiple(fieldName) {
 
 async function promptMultipleWithCurrent(fieldName, current) {
   if (current.length > 0) {
-    console.log(`  ${c.dim}Current ${fieldName}:${c.reset}`);
+    console.log(`  ${fieldName}:`);
     current.forEach((item, i) => {
       console.log(`    ${c.dim}${i + 1}.${c.reset} ${formatItemDisplay(item)}`);
     });
-    const action = (await ask(`  ${fieldName}: ${c.dim}(k)eep / (r)eplace / (a)dd more [k]${c.reset}: `)).trim().toLowerCase();
-    if (action === 'r') return await promptMultiple(fieldName);
-    if (action === 'a') {
+    const action = (await ask(`  ${fieldName} [k/r/a]: `)).trim().toLowerCase();
+    if (action === 'r' || action === 'replace') return await promptMultiple(fieldName);
+    if (action === 'a' || action === 'add') {
       const extra = await promptMultiple(fieldName);
       return [...current, ...extra];
     }
@@ -132,10 +130,8 @@ async function promptMultipleWithCurrent(fieldName, current) {
 }
 
 async function addEntry() {
-  console.log(`\n${c.cyan}Add a new schedule entry${c.reset}`);
-
   const today = getTodayDate();
-  const rawDate = (await ask(`  Date (YYYY-MM-DD) ${c.dim}[Enter for ${today}]${c.reset}: `)).trim();
+  const rawDate = (await ask(`\n  Date [YYYY-MM-DD, Enter=${today}]: `)).trim();
   const date = rawDate || today;
   if (!isValidDate(date)) {
     console.log(`${c.red}  X Invalid date format. Use YYYY-MM-DD${c.reset}`);
@@ -144,7 +140,7 @@ async function addEntry() {
 
   const schedule = load();
   if (entryHasUserContent(schedule[date])) {
-    const overwrite = await ask(`  ${c.yellow}Entry for ${date} already exists.${c.reset} Overwrite? ${c.dim}(y/N)${c.reset}: `);
+    const overwrite = await ask(`  ${c.yellow}${date} has values.${c.reset} Overwrite? ${c.dim}(y/N)${c.reset}: `);
     if (overwrite.trim().toLowerCase() !== 'y') {
       console.log(`${c.dim}  Cancelled${c.reset}`);
       return;
@@ -176,7 +172,7 @@ async function updateEntry() {
   }
 
   const today = getTodayDate();
-  const rawDate = (await ask(`  Enter date to update (YYYY-MM-DD) ${c.dim}[Enter for ${today}]${c.reset}: `)).trim();
+  const rawDate = (await ask(`\n  Date [YYYY-MM-DD, Enter=${today}]: `)).trim();
   const date = rawDate || today;
   if (!schedule[date]) {
     console.log(`${c.red}  X No entry found for ${date}${c.reset}`);
@@ -190,13 +186,12 @@ async function updateEntry() {
   console.log(`    build:   [${formatItemList(entry.build)}]`);
   console.log(`    problem: [${formatItemList(entry.problem)}]`);
   console.log(`    tip:     ${entry.tip}`);
-  console.log(`\n${c.dim}  Leave text fields blank to keep current value${c.reset}`);
 
   const learn = await promptMultipleWithCurrent('learn', entry.learn);
   const revise = await promptMultipleWithCurrent('revise', entry.revise);
   const build = await promptMultipleWithCurrent('build', normArr(entry.build));
   const problem = await promptMultipleWithCurrent('problem', normArr(entry.problem));
-  const tip = (await ask(`  Tip ${c.dim}[keep current]${c.reset}: `)).trim() || entry.tip;
+  const tip = (await ask('  Tip [Enter=keep]: ')).trim() || entry.tip;
   const phase = phaseFromDate(date);
 
   schedule[date] = { learn, revise, build, problem, tip, phase };
@@ -208,19 +203,17 @@ async function resetEntry() {
   const schedule = load();
   const dates = Object.keys(schedule);
   if (dates.length === 0) {
-    console.log(`${c.yellow}  No schedule entries to delete${c.reset}`);
+    console.log(`${c.yellow}  No schedule entries to reset${c.reset}`);
     return;
   }
 
-  const date = (await ask('  Enter date to delete (YYYY-MM-DD): ')).trim();
+  const date = (await ask('\n  Date to reset (YYYY-MM-DD): ')).trim();
   if (!schedule[date]) {
     console.log(`${c.red}  X No entry found for ${date}${c.reset}`);
     return;
   }
 
-  const entry = schedule[date];
-  console.log(`${c.dim}    problem: [${formatItemList(entry.problem)}]  phase: ${entry.phase}${c.reset}`);
-  const confirm = await ask(`  Reset entry for ${date} to empty defaults? ${c.dim}(y/N)${c.reset}: `);
+  const confirm = await ask(`  Reset ${date}? ${c.dim}(y/N)${c.reset}: `);
   if (confirm.trim().toLowerCase() !== 'y') {
     console.log(`${c.dim}  Cancelled${c.reset}`);
     return;
@@ -232,7 +225,7 @@ async function resetEntry() {
 }
 
 async function resetAllEntries() {
-  const confirm = await ask(`  ${c.red}Reset ALL schedule entries${c.reset} to empty defaults? ${c.dim}(y/N)${c.reset}: `);
+  const confirm = await ask(`\n  ${c.red}Reset all entries?${c.reset} ${c.dim}(y/N)${c.reset}: `);
   if (confirm.trim().toLowerCase() !== 'y') {
     console.log(`${c.dim}  Cancelled${c.reset}`);
     return;
@@ -288,12 +281,12 @@ function listEntries() {
 async function showScheduleMenu() {
   console.log(`\n${c.bold}${c.cyan}Schedule Editor${c.reset}`);
   const options = [
-    'Add [a]',
-    'Update [u]',
-    'Reset [r]',
-    'Reset All [rall]',
-    'List [l]',
-    'Exit [e]',
+    'Add',
+    'Update',
+    'Reset',
+    'Reset All',
+    'List',
+    'Exit',
   ];
   options.forEach((opt, i) => {
     console.log(`  ${c.dim}${i + 1}.${c.reset} ${opt}`);
