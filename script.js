@@ -26,6 +26,38 @@ function isValidDate(str) {
   return /^\d{4}-\d{2}-\d{2}$/.test(str) && !isNaN(Date.parse(str));
 }
 
+function getTodayDate() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function hasMeaningfulValue(value) {
+  if (Array.isArray(value)) {
+    return value.some(item => {
+      if (typeof item === 'string') return item.trim().length > 0;
+      if (item && typeof item === 'object') {
+        return Object.values(item).some(v => typeof v === 'string' ? v.trim().length > 0 : Boolean(v));
+      }
+      return Boolean(item);
+    });
+  }
+
+  if (typeof value === 'string') return value.trim().length > 0;
+  return Boolean(value);
+}
+
+function entryHasUserContent(entry) {
+  if (!entry || typeof entry !== 'object') return false;
+  return hasMeaningfulValue(entry.learn)
+    || hasMeaningfulValue(entry.revise)
+    || hasMeaningfulValue(entry.build)
+    || hasMeaningfulValue(entry.problem)
+    || hasMeaningfulValue(entry.tip);
+}
+
 function phaseFromDate(dateStr) {
   const month = parseInt(dateStr.split('-')[1], 10);
   return `p${month}`;
@@ -102,14 +134,16 @@ async function promptMultipleWithCurrent(fieldName, current) {
 async function addEntry() {
   console.log(`\n${c.cyan}Add a new schedule entry${c.reset}`);
 
-  const date = (await ask('  Date (YYYY-MM-DD): ')).trim();
-  if (!date || !isValidDate(date)) {
+  const today = getTodayDate();
+  const rawDate = (await ask(`  Date (YYYY-MM-DD) ${c.dim}[Enter for ${today}]${c.reset}: `)).trim();
+  const date = rawDate || today;
+  if (!isValidDate(date)) {
     console.log(`${c.red}  X Invalid date format. Use YYYY-MM-DD${c.reset}`);
     return;
   }
 
   const schedule = load();
-  if (schedule[date]) {
+  if (entryHasUserContent(schedule[date])) {
     const overwrite = await ask(`  ${c.yellow}Entry for ${date} already exists.${c.reset} Overwrite? ${c.dim}(y/N)${c.reset}: `);
     if (overwrite.trim().toLowerCase() !== 'y') {
       console.log(`${c.dim}  Cancelled${c.reset}`);
@@ -141,7 +175,9 @@ async function updateEntry() {
     return;
   }
 
-  const date = (await ask('  Enter date to update (YYYY-MM-DD): ')).trim();
+  const today = getTodayDate();
+  const rawDate = (await ask(`  Enter date to update (YYYY-MM-DD) ${c.dim}[Enter for ${today}]${c.reset}: `)).trim();
+  const date = rawDate || today;
   if (!schedule[date]) {
     console.log(`${c.red}  X No entry found for ${date}${c.reset}`);
     return;
