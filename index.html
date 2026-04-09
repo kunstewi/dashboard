@@ -356,6 +356,15 @@
       color: var(--accent);
     }
 
+    .week-item.current-week {
+      background: color-mix(in srgb, var(--week-highlight, #3ecf8e) 20%, transparent);
+      color: var(--week-highlight, #3ecf8e);
+    }
+
+    .week-item.current-week .week-dot {
+      opacity: 0.95;
+    }
+
     :root[data-theme="dark"] .week-item {
       color: #c6cada;
     }
@@ -368,6 +377,11 @@
     :root[data-theme="dark"] .week-item.active {
       background: rgba(124, 106, 247, 0.24);
       color: #f3f4ff;
+    }
+
+    :root[data-theme="dark"] .week-item.current-week {
+      background: color-mix(in srgb, var(--week-highlight, #3ecf8e) 30%, transparent);
+      color: color-mix(in srgb, var(--week-highlight, #3ecf8e) 70%, white);
     }
 
     .week-dot {

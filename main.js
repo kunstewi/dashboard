@@ -181,9 +181,15 @@ function buildSidebar() {
       if (!weekMap[wk]) weekMap[wk] = d;
     }
 
-    Object.entries(weekMap).sort().forEach(([, d]) => {
+    const currentWeekKey = getWeekOf(new Date());
+
+    Object.entries(weekMap).sort().forEach(([wk, d]) => {
       const wi = document.createElement('div');
       wi.className = 'week-item';
+      if (wk === currentWeekKey) {
+        wi.classList.add('current-week');
+        wi.style.setProperty('--week-highlight', color);
+      }
       wi.innerHTML = `<div class="week-dot"></div>Week of ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
       wi.onclick = () => navigateTo(d);
       wl.appendChild(wi);
