@@ -1,8 +1,12 @@
 let curriculum = null;
 let viewDate = null;
 let completions = {};
+let scheduleOverrides = {};
+let scheduleEditState = null;
 let currentTheme = 'light';
 const THEME_KEY = 'sde_theme';
+const COMPLETIONS_KEY = 'sde_completions';
+const SCHEDULE_OVERRIDES_KEY = 'sde_schedule_overrides';
 
 const MONTH_NAMES = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -55,6 +59,116 @@ function isTodayDateStr(dateStr) {
   return dateStr === fmt(today);
 }
 
+function isCurrentOrFutureDateStr(dateStr) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return dateStr >= fmt(today);
+}
+
+function phaseFromDate(dateStr) {
+  const month = parseInt(dateStr.slice(5, 7), 10);
+  if (!Number.isFinite(month) || month < 1 || month > 12) return 'p1';
+  return `p${month}`;
+}
+
+function emptyScheduleEntry(dateStr) {
+  return {
+    learn: [],
+    revise: [],
+    build: [],
+    problem: [],
+    tip: '',
+    phase: phaseFromDate(dateStr)
+  };
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function safeExternalLink(link) {
+  if (!link || typeof link !== 'string') return '';
+  const trimmed = link.trim();
+  if (!trimmed) return '';
+  try {
+    const parsed = new URL(trimmed, window.location.href);
+    if (parsed.protocol === 'http:' || parsed.protocol === 'https:') return parsed.href;
+  } catch (e) { }
+  return '';
+}
+
+function normalizeEditableArray(value) {
+  const raw = Array.isArray(value) ? value : (value ? [value] : []);
+  const out = [];
+  for (const item of raw) {
+    if (typeof item === 'string') {
+      const label = item.trim();
+      if (label) out.push(label);
+      continue;
+    }
+    if (item && typeof item === 'object') {
+      const label = typeof item.label === 'string' ? item.label.trim() : '';
+      const link = safeExternalLink(item.link);
+      if (!label) continue;
+      out.push(link ? { label, link } : label);
+      continue;
+    }
+    const label = String(item).trim();
+    if (label) out.push(label);
+  }
+  return out;
+}
+
+function normalizeScheduleEntry(entry, dateStr) {
+  const source = entry && typeof entry === 'object' ? entry : {};
+  return {
+    learn: normalizeEditableArray(source.learn),
+    revise: normalizeEditableArray(source.revise),
+    problem: normalizeEditableArray(source.problem),
+    build: normalizeEditableArray(source.build),
+    tip: typeof source.tip === 'string' ? source.tip.trim() : '',
+    phase: typeof source.phase === 'string' && source.phase ? source.phase : phaseFromDate(dateStr)
+  };
+}
+
+function parseEditorTaskLines(rawText) {
+  return rawText
+    .split('\n')
+    .map(line => line.trim())
+    .filter(Boolean)
+    .map(line => {
+      const sepIndex = line.lastIndexOf('|');
+      if (sepIndex === -1) return line;
+      const label = line.slice(0, sepIndex).trim();
+      const link = safeExternalLink(line.slice(sepIndex + 1));
+      if (!label || !link) return line;
+      return { label, link };
+    });
+}
+
+function taskLineForEditor(item) {
+  if (typeof item === 'string') return item;
+  if (item && typeof item === 'object') {
+    const label = typeof item.label === 'string' ? item.label : '';
+    const link = typeof item.link === 'string' ? item.link : '';
+    return link ? `${label} | ${link}` : label;
+  }
+  return String(item);
+}
+
+function ensureScheduleEntry(dateStr) {
+  if (!curriculum.schedule[dateStr]) {
+    curriculum.schedule[dateStr] = emptyScheduleEntry(dateStr);
+  }
+  curriculum.schedule[dateStr] = normalizeScheduleEntry(curriculum.schedule[dateStr], dateStr);
+  return curriculum.schedule[dateStr];
+}
+
 // ── Schedule helpers ──
 
 function getScheduleDates() {
@@ -76,15 +190,81 @@ function getPhaseMap() {
 
 function loadCompletions() {
   try {
-    const saved = localStorage.getItem('sde_completions');
+    const saved = localStorage.getItem(COMPLETIONS_KEY);
     if (saved) completions = JSON.parse(saved);
   } catch (e) { }
 }
 
 function saveCompletions() {
   try {
-    localStorage.setItem('sde_completions', JSON.stringify(completions));
+    localStorage.setItem(COMPLETIONS_KEY, JSON.stringify(completions));
   } catch (e) { }
+}
+
+function loadScheduleOverrides() {
+  try {
+    const saved = localStorage.getItem(SCHEDULE_OVERRIDES_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed && typeof parsed === 'object') scheduleOverrides = parsed;
+    }
+  } catch (e) { }
+}
+
+function saveScheduleOverrides() {
+  try {
+    localStorage.setItem(SCHEDULE_OVERRIDES_KEY, JSON.stringify(scheduleOverrides));
+  } catch (e) { }
+}
+
+function applyScheduleOverrides() {
+  const dates = Object.keys(scheduleOverrides);
+  for (const dateStr of dates) {
+    curriculum.schedule[dateStr] = normalizeScheduleEntry(scheduleOverrides[dateStr], dateStr);
+  }
+}
+
+function upsertScheduleEntry(dateStr, entry) {
+  const normalized = normalizeScheduleEntry(entry, dateStr);
+  curriculum.schedule[dateStr] = normalized;
+  scheduleOverrides[dateStr] = normalized;
+  saveScheduleOverrides();
+}
+
+function openTaskEditor(dateStr, section) {
+  if (!isCurrentOrFutureDateStr(dateStr)) return;
+  scheduleEditState = { dateStr, section };
+  renderDay(viewDate);
+}
+
+function closeTaskEditor() {
+  scheduleEditState = null;
+  renderDay(viewDate);
+}
+
+function saveTaskEditor(dateStr, section) {
+  if (!isCurrentOrFutureDateStr(dateStr)) return;
+
+  const input = document.getElementById('task-editor-input');
+  if (!input) return;
+
+  const value = input.value || '';
+  const nextEntry = { ...ensureScheduleEntry(dateStr) };
+
+  if (section === 'tip') {
+    nextEntry.tip = value.trim();
+  } else if (['learn', 'revise', 'problem', 'build'].includes(section)) {
+    nextEntry[section] = parseEditorTaskLines(value);
+  } else {
+    return;
+  }
+
+  nextEntry.phase = nextEntry.phase || phaseFromDate(dateStr);
+  upsertScheduleEntry(dateStr, nextEntry);
+  scheduleEditState = null;
+  buildSidebar();
+  renderDay(viewDate);
+  updateHeader();
 }
 
 function loadTheme() {
@@ -213,13 +393,14 @@ function buildSidebar() {
 
 function navigateTo(date) {
   viewDate = new Date(date);
+  scheduleEditState = null;
   renderDay(viewDate);
   updateHeader();
 }
 
 function updateHeader() {
   const dateStr = fmt(viewDate);
-  const dayData = curriculum.schedule[dateStr];
+  const dayData = curriculum.schedule[dateStr] || (isCurrentOrFutureDateStr(dateStr) ? emptyScheduleEntry(dateStr) : null);
   const phaseMap = getPhaseMap();
 
   document.getElementById('date-display').textContent =
@@ -252,19 +433,24 @@ function updateHeader() {
 
 function renderDay(date) {
   const dateStr = fmt(date);
-  const dayData = curriculum.schedule[dateStr];
+  let dayData = curriculum.schedule[dateStr];
   const main = document.getElementById('main-content');
   const phaseMap = getPhaseMap();
+  const canEditSchedule = isCurrentOrFutureDateStr(dateStr);
+
+  if (!dayData && canEditSchedule) {
+    dayData = emptyScheduleEntry(dateStr);
+  }
 
   if (!dayData) {
     main.innerHTML = `<div class="off-plan-msg fadein">
       <h3>No plan for this day</h3>
-      <p>Nothing scheduled. Add an entry in schedule.json or enjoy the day off.</p>
+      <p>No saved tasks for this past date.</p>
     </div>`;
     return;
   }
 
-  const phase = dayData.phase;
+  const phase = dayData.phase || phaseFromDate(dateStr);
   const phaseInfo = phaseMap[phase];
   const phaseColor = (phaseInfo && phaseInfo.color) || 'var(--accent)';
   const phaseName = (phaseInfo && phaseInfo.name) || phase || '—';
@@ -301,10 +487,42 @@ function renderDay(date) {
   }
 
   function renderLabelOrLink(label, link) {
-    if (link) {
-      return `<a href="${link}" target="_blank" rel="noopener noreferrer" class="task-link">${label}</a>`;
+    const safeLabel = escapeHtml(label);
+    const safeLink = safeExternalLink(link);
+    if (safeLink) {
+      return `<a href="${escapeHtml(safeLink)}" target="_blank" rel="noopener noreferrer" class="task-link">${safeLabel}</a>`;
     }
-    return label;
+    return safeLabel;
+  }
+
+  function cardHeaderHTML(label, dotColor, section) {
+    const editButton = canEditSchedule
+      ? `<button class="card-edit-btn" type="button" title="Edit" onclick="openTaskEditor('${dateStr}','${section}')">&#9998;</button>`
+      : '';
+    return `<div class="card-head">
+      <div class="card-label"><div class="card-label-dot" style="background:${dotColor}"></div>${label}</div>
+      ${editButton}
+    </div>`;
+  }
+
+  function renderCardEditorHTML(section, valueLines, options = {}) {
+    if (!scheduleEditState) return '';
+    if (scheduleEditState.dateStr !== dateStr || scheduleEditState.section !== section) return '';
+    const isTipEditor = section === 'tip';
+    const value = valueLines.join('\n');
+    const helper = isTipEditor
+      ? 'Write a quick daily note.'
+      : 'One task per line. Optional link format: Task | https://...';
+    const placeholder = options.placeholder || '';
+    const rows = options.rows || (isTipEditor ? 3 : 6);
+    return `<div class="card-editor">
+      <div class="card-editor-help">${helper}</div>
+      <textarea id="task-editor-input" class="card-editor-input" rows="${rows}" placeholder="${escapeHtml(placeholder)}">${escapeHtml(value)}</textarea>
+      <div class="card-editor-actions">
+        <button class="editor-btn editor-btn-primary" type="button" onclick="saveTaskEditor('${dateStr}','${section}')">Save</button>
+        <button class="editor-btn" type="button" onclick="closeTaskEditor()">Cancel</button>
+      </div>
+    </div>`;
   }
 
   const learnTasks = (dayData.learn || []).map((item, index) => normalizeTaskItem(item, index, 'learn'));
@@ -362,6 +580,11 @@ function renderDay(date) {
     }).join('')
     : '<div class="empty-revise">No build task assigned</div>';
 
+  const tipText = typeof dayData.tip === 'string' ? dayData.tip.trim() : '';
+  const tipHTML = tipText
+    ? `<div class="tip-text">${escapeHtml(tipText).replace(/\n/g, '<br>')}</div>`
+    : '<div class="empty-revise">No insight added yet</div>';
+
   main.innerHTML = `<div class="fadein">
     <div class="day-header">
       <div class="day-header-left">
@@ -376,30 +599,46 @@ function renderDay(date) {
 
     <div class="grid-2">
       <div class="card">
-        <div class="card-label"><div class="card-label-dot" style="background:${phaseColor}"></div>Learn today</div>
+        ${cardHeaderHTML('Learn today', phaseColor, 'learn')}
+        ${renderCardEditorHTML('learn', normalizeEditableArray(dayData.learn).map(taskLineForEditor), {
+          placeholder: 'Example: Binary search patterns'
+        })}
         <div class="task-list">${learnHTML}</div>
       </div>
       <div class="card">
-        <div class="card-label"><div class="card-label-dot" style="background:var(--amber)"></div>Revise today</div>
+        ${cardHeaderHTML('Revise today', 'var(--amber)', 'revise')}
+        ${renderCardEditorHTML('revise', normalizeEditableArray(dayData.revise).map(taskLineForEditor), {
+          placeholder: 'Example: JS closures, async/await'
+        })}
         <div class="task-list">${reviseHTML}</div>
       </div>
     </div>
 
     <div class="grid-2">
       <div class="card">
-        <div class="card-label"><div class="card-label-dot" style="background:var(--coral)"></div>Problem of the day</div>
+        ${cardHeaderHTML('Problem of the day', 'var(--coral)', 'problem')}
+        ${renderCardEditorHTML('problem', normalizeEditableArray(dayData.problem).map(taskLineForEditor), {
+          placeholder: 'Example: 2 Sum | https://leetcode.com/...'
+        })}
         <div class="task-list">${probHTML}</div>
       </div>
       <div class="card">
-        <div class="card-label"><div class="card-label-dot" style="background:var(--green)"></div>Build / code</div>
+        ${cardHeaderHTML('Build / code', 'var(--green)', 'build')}
+        ${renderCardEditorHTML('build', normalizeEditableArray(dayData.build).map(taskLineForEditor), {
+          placeholder: 'Example: Implement LRU cache'
+        })}
         ${buildHTML}
       </div>
     </div>
 
-    ${dayData.tip ? `<div class="card col-span-full">
-      <div class="card-label"><div class="card-label-dot" style="background:var(--accent)"></div>Today's insight</div>
-      <div class="tip-text">${dayData.tip}</div>
-    </div>` : ''}
+    <div class="card col-span-full">
+      ${cardHeaderHTML("Today's insight", 'var(--accent)', 'tip')}
+      ${renderCardEditorHTML('tip', tipText ? [tipText] : [], {
+        placeholder: 'Add a quick insight, reminder, or note',
+        rows: 4
+      })}
+      ${tipHTML}
+    </div>
 
     ${renderActivityGraph()}
   </div>`;
@@ -493,7 +732,6 @@ function renderActivityGraph() {
   let totalDone = 0;
   let totalActive = 0;
   let currentStreak = 0;
-  let streakBroken = false;
 
   // Compute streaks by walking backwards from today
   const streakDate = new Date(today);
@@ -569,53 +807,70 @@ function renderActivityGraph() {
 
 // ── Init ──
 
-function init() {
+async function loadBaseSchedule() {
+  try {
+    const response = await fetch('data/schedule.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error('schedule fetch failed');
+    const schedule = await response.json();
+    if (!schedule || typeof schedule !== 'object' || Array.isArray(schedule)) {
+      throw new Error('invalid schedule payload');
+    }
+    const normalized = {};
+    Object.keys(schedule).sort().forEach(dateStr => {
+      normalized[dateStr] = normalizeScheduleEntry(schedule[dateStr], dateStr);
+    });
+    return normalized;
+  } catch (e) {
+    return {};
+  }
+}
+
+async function init() {
   loadCompletions();
+  loadScheduleOverrides();
   applyTheme(loadTheme());
 
   const themeToggle = document.getElementById('theme-toggle');
   if (themeToggle) themeToggle.onclick = toggleTheme;
 
-  fetch('data/schedule.json')
-    .then(r => r.json())
-    .then(schedule => {
-      curriculum = { phases: PHASES, schedule };
-      buildSidebar();
+  const schedule = await loadBaseSchedule();
+  curriculum = { phases: PHASES, schedule };
+  applyScheduleOverrides();
+  buildSidebar();
 
-      viewDate = new Date();
-      viewDate.setHours(0, 0, 0, 0);
+  viewDate = new Date();
+  viewDate.setHours(0, 0, 0, 0);
 
-      renderDay(viewDate);
-      updateHeader();
-      updateProgress();
+  renderDay(viewDate);
+  updateHeader();
+  updateProgress();
 
-      document.getElementById('prev-day').onclick = () => {
-        viewDate.setDate(viewDate.getDate() - 1);
-        renderDay(viewDate);
-        updateHeader();
-      };
+  document.getElementById('prev-day').onclick = () => {
+    scheduleEditState = null;
+    viewDate.setDate(viewDate.getDate() - 1);
+    renderDay(viewDate);
+    updateHeader();
+  };
 
-      document.getElementById('next-day').onclick = () => {
-        viewDate.setDate(viewDate.getDate() + 1);
-        renderDay(viewDate);
-        updateHeader();
-      };
+  document.getElementById('next-day').onclick = () => {
+    scheduleEditState = null;
+    viewDate.setDate(viewDate.getDate() + 1);
+    renderDay(viewDate);
+    updateHeader();
+  };
 
-      document.getElementById('go-today').onclick = () => {
-        viewDate = new Date();
-        viewDate.setHours(0, 0, 0, 0);
-        renderDay(viewDate);
-        updateHeader();
-      };
+  document.getElementById('go-today').onclick = () => {
+    scheduleEditState = null;
+    viewDate = new Date();
+    viewDate.setHours(0, 0, 0, 0);
+    renderDay(viewDate);
+    updateHeader();
+  };
 
-      document.addEventListener('keydown', e => {
-        if (e.key === 'ArrowLeft') document.getElementById('prev-day').click();
-        if (e.key === 'ArrowRight') document.getElementById('next-day').click();
-      });
-    })
-    .catch(() => {
-      document.getElementById('main-content').innerHTML = `<div class="off-plan-msg"><h3>Could not load curriculum data</h3><p>Make sure the data/ folder is served via a local server (e.g. <code>npx serve .</code>)</p></div>`;
-    });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') document.getElementById('prev-day').click();
+    if (e.key === 'ArrowRight') document.getElementById('next-day').click();
+  });
 }
 
 init();

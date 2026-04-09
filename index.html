@@ -517,6 +517,108 @@
       border-radius: 50%;
     }
 
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .card-head .card-label {
+      margin-bottom: 0;
+    }
+
+    .card-edit-btn {
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      background: var(--surface2);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .card-edit-btn:hover {
+      background: var(--surface3);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .card-editor {
+      margin-bottom: 12px;
+      padding: 10px;
+      border: 1px dashed var(--border2);
+      border-radius: var(--r-sm);
+      background: var(--surface2);
+    }
+
+    .card-editor-help {
+      font-size: 11px;
+      color: var(--faint);
+      margin-bottom: 6px;
+    }
+
+    .card-editor-input {
+      width: 100%;
+      resize: vertical;
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 13px;
+      line-height: 1.45;
+      padding: 8px 10px;
+      min-height: 78px;
+    }
+
+    .card-editor-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-dim2);
+    }
+
+    .card-editor-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .editor-btn {
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--muted);
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .editor-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .editor-btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .editor-btn-primary:hover {
+      background: color-mix(in srgb, var(--accent) 88%, black);
+      border-color: color-mix(in srgb, var(--accent) 88%, black);
+      color: #fff;
+    }
+
     /* TASK ITEMS */
     .task-list {
       display: flex;

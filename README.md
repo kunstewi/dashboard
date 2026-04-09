@@ -4,11 +4,14 @@ Your personal daily study tracker for the April–August SDE 1/2 preparation pla
 
 ## Files
 - `index.html` — the dashboard UI
-- `curriculum.json` — the full study plan (every day mapped out)
+- `main.js` — dashboard logic + local persistence
+- `data/schedule.json` — optional base schedule seed
 
 ## How to run
 
-You MUST serve this over HTTP (not by opening the HTML file directly) because it loads `curriculum.json` via fetch.
+You can open `index.html` directly, or serve it over HTTP.
+- If `data/schedule.json` is reachable, it is used as the base plan.
+- If not, the app still works using local storage edits from the page.
 
 ### Option 1 — Node.js (recommended)
 ```bash
@@ -29,6 +32,7 @@ Install the "Live Server" extension, right-click index.html → "Open with Live 
 - Shows today's learning tasks, revision tasks, problem of the day, and build task
 - Navigate day by day with ← → buttons or arrow keys
 - Check off each task as you complete it (saves to localStorage)
+- Add/edit tasks directly on each card using the pencil icon (today + future dates)
 - Phase progress bar in the header
 - Sidebar with full timeline navigation
 
@@ -41,8 +45,9 @@ Install the "Live Server" extension, right-click index.html → "Open with Live 
 - `6`, `e`, `exit` — Exit the schedule editor.
 
 ## Customising
-All study content is in `curriculum.json`. You can edit:
-- `schedule` — change what's scheduled on any day
+Study content can be edited directly in the UI (pencil icon per card).
+If you want a base file, edit `data/schedule.json`:
+- `schedule` entries are keyed by date (`YYYY-MM-DD`)
 - Each day has: `learn`, `revise`, `build`, `problem`, `tip`, `phase`
 
 ## Dates covered
