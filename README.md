@@ -30,6 +30,8 @@ Install the "Live Server" extension, right-click index.html → "Open with Live 
 
 ## Features
 - Shows today's learning tasks, revision tasks, problem of the day, and build task
+- Auto-generates spaced reviews (D1, D3, D7, D14, D30) from past learn/problem/build entries
+- Generated review items include one-click links to jump back to the source date
 - Navigate day by day with ← → buttons or arrow keys
 - Check off each task as you complete it (saves to localStorage)
 - Add/edit tasks directly on each card using the pencil icon (today + future dates)

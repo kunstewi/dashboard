@@ -33,6 +33,20 @@ const PHASES = [
   { id: 'p12', name: 'December Baseline Plan', months: 'December', color: '#e67e22' }
 ];
 
+const SPACED_REVIEW_STEPS = [
+  { days: 1, label: 'D1' },
+  { days: 3, label: 'D3' },
+  { days: 7, label: 'D7' },
+  { days: 14, label: 'D14' },
+  { days: 30, label: 'D30' }
+];
+
+const AUTO_REVIEW_TARGETS = [
+  { field: 'learn', label: 'learnings' },
+  { field: 'problem', label: 'problems' },
+  { field: 'build', label: 'build/code' }
+];
+
 // ── Date helpers ──
 
 function fmt(date) {
@@ -45,6 +59,12 @@ function fmt(date) {
 function parseDate(str) {
   const [y, m, d] = str.split('-').map(Number);
   return new Date(y, m - 1, d);
+}
+
+function addDaysToDateStr(dateStr, days) {
+  const d = parseDate(dateStr);
+  d.setDate(d.getDate() + days);
+  return fmt(d);
 }
 
 function getWeekOf(date) {
@@ -69,6 +89,42 @@ function phaseFromDate(dateStr) {
   const month = parseInt(dateStr.slice(5, 7), 10);
   if (!Number.isFinite(month) || month < 1 || month > 12) return 'p1';
   return `p${month}`;
+}
+
+function countTaskItems(value) {
+  if (Array.isArray(value)) return value.length;
+  if (value) return 1;
+  return 0;
+}
+
+function shortDateLabel(dateStr) {
+  const d = parseDate(dateStr);
+  if (!Number.isFinite(d.getTime())) return dateStr;
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function getAutoReviewTasks(targetDateStr) {
+  if (!curriculum || !curriculum.schedule) return [];
+
+  const tasks = [];
+  for (const step of SPACED_REVIEW_STEPS) {
+    const sourceDate = addDaysToDateStr(targetDateStr, -step.days);
+    const sourceData = curriculum.schedule[sourceDate];
+    if (!sourceData) continue;
+
+    for (const target of AUTO_REVIEW_TARGETS) {
+      if (countTaskItems(sourceData[target.field]) === 0) continue;
+      tasks.push({
+        label: `Revise ${shortDateLabel(sourceDate)} ${target.label}`,
+        link: '',
+        key: `auto_revise_${step.label}_${sourceDate}_${target.field}`,
+        sourceDate,
+        reviewStep: step.label
+      });
+    }
+  }
+
+  return tasks;
 }
 
 function emptyScheduleEntry(dateStr) {
@@ -417,6 +473,12 @@ function navigateTo(date) {
   updateHeader();
 }
 
+function jumpToDate(dateStr) {
+  if (!dateStr || typeof dateStr !== 'string') return;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return;
+  navigateTo(parseDate(dateStr));
+}
+
 function updateHeader() {
   const dateStr = fmt(viewDate);
   const dayData = curriculum.schedule[dateStr] || (isCurrentOrFutureDateStr(dateStr) ? emptyScheduleEntry(dateStr) : null);
@@ -514,6 +576,14 @@ function renderDay(date) {
     return safeLabel;
   }
 
+  function renderTaskLabel(task) {
+    if (task.sourceDate) {
+      const safeDate = escapeHtml(task.sourceDate);
+      return `<button type="button" class="task-link-btn" onclick="jumpToDate('${safeDate}')">${escapeHtml(task.label)}</button>`;
+    }
+    return renderLabelOrLink(task.label, task.link);
+  }
+
   function cardHeaderHTML(label, dotColor, section) {
     const editButton = canEditSchedule
       ? `<button class="card-edit-btn" style="--editor-accent:${dotColor}" type="button" title="Edit" onclick="openTaskEditor('${dateStr}','${section}')">&#9998;</button>`
@@ -545,7 +615,9 @@ function renderDay(date) {
   }
 
   const learnTasks = (dayData.learn || []).map((item, index) => normalizeTaskItem(item, index, 'learn'));
-  const reviseTasks = (dayData.revise || []).map((item, index) => normalizeTaskItem(item, index, 'revise'));
+  const manualReviseTasks = (dayData.revise || []).map((item, index) => normalizeTaskItem(item, index, 'revise'));
+  const autoReviseTasks = getAutoReviewTasks(dateStr);
+  const reviseTasks = [...manualReviseTasks, ...autoReviseTasks];
   const problemTasks = normalizeTaskArray(dayData.problem, 'problem', 'problem');
   const buildTasks = normalizeTaskArray(dayData.build, 'build', 'build');
 
@@ -568,7 +640,7 @@ function renderDay(date) {
   function taskItemHTML(task) {
     return `<div class="task-item">
       ${taskCheckHTML(task)}
-      <span class="task-text">${renderLabelOrLink(task.label, task.link)}</span>
+      <span class="task-text">${renderTaskLabel(task)}</span>
     </div>`;
   }
 
@@ -580,8 +652,8 @@ function renderDay(date) {
     ? reviseTasks.map(t => {
       return `<div class="revise-item">
           ${taskCheckHTML(t)}
-          <span class="revise-icon">rev</span>
-          <span class="revise-text">${renderLabelOrLink(t.label, t.link)}</span>
+          <span class="revise-icon">${escapeHtml(t.reviewStep || 'rev')}</span>
+          <span class="revise-text">${renderTaskLabel(t)}</span>
         </div>`;
     }).join('')
     : '<div class="empty-revise">Nothing to revise today</div>';
@@ -669,22 +741,44 @@ function getActivityLevel(dateStr) {
   const dayData = curriculum.schedule[dateStr];
   if (!dayData) return { level: 0, done: 0, total: 0 };
 
-  function countItems(val) {
-    if (Array.isArray(val)) return val.length;
-    if (val) return 1;
-    return 0;
-  }
+  const learnCount = countTaskItems(dayData.learn);
+  const manualReviseCount = countTaskItems(dayData.revise);
+  const autoReviseTasks = getAutoReviewTasks(dateStr);
+  const problemCount = countTaskItems(dayData.problem);
+  const buildCount = countTaskItems(dayData.build);
 
   const total =
-    countItems(dayData.learn) +
-    countItems(dayData.revise) +
-    countItems(dayData.problem) +
-    countItems(dayData.build);
+    learnCount +
+    manualReviseCount +
+    autoReviseTasks.length +
+    problemCount +
+    buildCount;
 
   if (total === 0) return { level: 0, done: 0, total: 0 };
 
   const dc = completions[dateStr] || {};
-  const done = Object.values(dc).filter(Boolean).length;
+  let done = 0;
+
+  for (let i = 0; i < learnCount; i++) {
+    if (dc[`learn_${i}`]) done++;
+  }
+
+  for (let i = 0; i < manualReviseCount; i++) {
+    if (dc[`revise_${i}`]) done++;
+  }
+
+  for (const task of autoReviseTasks) {
+    if (dc[task.key]) done++;
+  }
+
+  for (let i = 0; i < problemCount; i++) {
+    if (dc[`problem_${i}`] || (i === 0 && dc.problem)) done++;
+  }
+
+  for (let i = 0; i < buildCount; i++) {
+    if (dc[`build_${i}`] || (i === 0 && dc.build)) done++;
+  }
+
   const pct = Math.min(done / total, 1);
 
   let level = 0;

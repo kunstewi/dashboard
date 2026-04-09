@@ -771,11 +771,38 @@
       text-decoration: underline;
     }
 
+    .task-link-btn {
+      border: 0;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      font: inherit;
+      color: var(--accent);
+      text-decoration: underline;
+      cursor: pointer;
+      text-align: left;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .task-link-btn:hover {
+      color: var(--accent-soft);
+    }
+
     :root[data-theme="dark"] .task-link {
       color: #9fc2ff;
     }
 
     :root[data-theme="dark"] .task-link:hover {
+      color: #c7dcff;
+    }
+
+    :root[data-theme="dark"] .task-link-btn {
+      color: #9fc2ff;
+    }
+
+    :root[data-theme="dark"] .task-link-btn:hover {
       color: #c7dcff;
     }
 
