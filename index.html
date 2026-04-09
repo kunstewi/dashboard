@@ -629,7 +629,7 @@
 
     .task-item {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
       padding: 10px 12px;
       background: var(--surface2);
@@ -637,6 +637,8 @@
       border: 1px solid var(--border);
       transition: border-color 0.15s;
       cursor: default;
+      min-width: 0;
+      max-width: 100%;
     }
 
     .task-item:hover {
@@ -648,6 +650,10 @@
       color: var(--text);
       line-height: 1.4;
       flex: 1;
+      min-width: 0;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .task-check {
@@ -739,13 +745,26 @@
       color: var(--text);
       line-height: 1.5;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .build-task span {
+      flex: 1;
+      min-width: 0;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .task-link {
       color: var(--accent);
       text-decoration: none;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .task-link:hover {
@@ -776,12 +795,14 @@
     /* REVISE ITEMS */
     .revise-item {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
       padding: 8px 12px;
       background: var(--surface2);
       border-radius: var(--r-sm);
       border: 1px solid var(--border);
+      min-width: 0;
+      max-width: 100%;
     }
 
     .revise-icon {
@@ -797,6 +818,11 @@
     .revise-text {
       font-size: 13px;
       color: var(--muted);
+      flex: 1;
+      min-width: 0;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     /* EMPTY STATES */
