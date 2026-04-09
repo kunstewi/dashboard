@@ -532,10 +532,10 @@
     .card-edit-btn {
       width: 24px;
       height: 24px;
-      border: 1px solid var(--border2);
+      border: 1px solid color-mix(in srgb, var(--editor-accent, var(--accent)) 35%, var(--border2));
       border-radius: 6px;
-      background: var(--surface2);
-      color: var(--muted);
+      background: color-mix(in srgb, var(--editor-accent, var(--accent)) 10%, var(--surface2));
+      color: color-mix(in srgb, var(--editor-accent, var(--accent)) 70%, var(--muted));
       font-family: var(--mono);
       font-size: 12px;
       cursor: pointer;
@@ -546,29 +546,29 @@
     }
 
     .card-edit-btn:hover {
-      background: var(--surface3);
-      border-color: var(--accent);
-      color: var(--accent);
+      background: color-mix(in srgb, var(--editor-accent, var(--accent)) 17%, var(--surface3));
+      border-color: var(--editor-accent, var(--accent));
+      color: var(--editor-accent, var(--accent));
     }
 
     .card-editor {
       margin-bottom: 12px;
       padding: 10px;
-      border: 1px dashed var(--border2);
+      border: 1px dashed color-mix(in srgb, var(--editor-accent, var(--accent)) 45%, var(--border2));
       border-radius: var(--r-sm);
-      background: var(--surface2);
+      background: color-mix(in srgb, var(--editor-accent, var(--accent)) 8%, var(--surface2));
     }
 
     .card-editor-help {
       font-size: 11px;
-      color: var(--faint);
+      color: color-mix(in srgb, var(--editor-accent, var(--accent)) 52%, var(--faint));
       margin-bottom: 6px;
     }
 
     .card-editor-input {
       width: 100%;
       resize: vertical;
-      border: 1px solid var(--border2);
+      border: 1px solid color-mix(in srgb, var(--editor-accent, var(--accent)) 30%, var(--border2));
       border-radius: 6px;
       background: var(--surface);
       color: var(--text);
@@ -581,8 +581,8 @@
 
     .card-editor-input:focus {
       outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px var(--accent-dim2);
+      border-color: var(--editor-accent, var(--accent));
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--editor-accent, var(--accent)) 22%, transparent);
     }
 
     .card-editor-actions {
@@ -593,29 +593,30 @@
     }
 
     .editor-btn {
-      border: 1px solid var(--border2);
+      border: 1px solid color-mix(in srgb, var(--editor-accent, var(--accent)) 28%, var(--border2));
       border-radius: 6px;
-      background: var(--surface);
-      color: var(--muted);
+      background: color-mix(in srgb, var(--editor-accent, var(--accent)) 6%, var(--surface));
+      color: color-mix(in srgb, var(--editor-accent, var(--accent)) 65%, var(--muted));
       padding: 5px 10px;
       font-size: 12px;
       cursor: pointer;
     }
 
     .editor-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
+      border-color: var(--editor-accent, var(--accent));
+      color: var(--editor-accent, var(--accent));
+      background: color-mix(in srgb, var(--editor-accent, var(--accent)) 12%, var(--surface2));
     }
 
     .editor-btn-primary {
-      background: var(--accent);
-      border-color: var(--accent);
+      background: var(--editor-accent, var(--accent));
+      border-color: var(--editor-accent, var(--accent));
       color: #fff;
     }
 
     .editor-btn-primary:hover {
-      background: color-mix(in srgb, var(--accent) 88%, black);
-      border-color: color-mix(in srgb, var(--accent) 88%, black);
+      background: color-mix(in srgb, var(--editor-accent, var(--accent)) 88%, black);
+      border-color: color-mix(in srgb, var(--editor-accent, var(--accent)) 88%, black);
       color: #fff;
     }
 
