@@ -253,6 +253,14 @@ function focusTaskEditorInput() {
   });
 }
 
+function handleTaskEditorKeydown(event, dateStr, section) {
+  if (!event || event.isComposing) return;
+  if (event.key === 'Enter' && event.shiftKey) {
+    event.preventDefault();
+    saveTaskEditor(dateStr, section);
+  }
+}
+
 function saveTaskEditor(dateStr, section) {
   if (!isCurrentOrFutureDateStr(dateStr)) return;
 
@@ -522,13 +530,13 @@ function renderDay(date) {
     const isTipEditor = section === 'tip';
     const value = valueLines.join('\n');
     const helper = isTipEditor
-      ? 'Write a quick daily note.'
-      : 'One task per line. Optional link format: Task | https://...';
+      ? 'Write a quick daily note. Enter = new line, Shift+Enter = save.'
+      : 'One task per line. Optional link format: Task | https://... Enter = new line, Shift+Enter = save.';
     const placeholder = options.placeholder || '';
     const rows = options.rows || (isTipEditor ? 3 : 6);
     return `<div class="card-editor" style="--editor-accent:${accentColor}">
       <div class="card-editor-help">${helper}</div>
-      <textarea id="task-editor-input" class="card-editor-input" rows="${rows}" placeholder="${escapeHtml(placeholder)}">${escapeHtml(value)}</textarea>
+      <textarea id="task-editor-input" class="card-editor-input" rows="${rows}" placeholder="${escapeHtml(placeholder)}" onkeydown="handleTaskEditorKeydown(event,'${dateStr}','${section}')">${escapeHtml(value)}</textarea>
       <div class="card-editor-actions">
         <button class="editor-btn editor-btn-primary" type="button" onclick="saveTaskEditor('${dateStr}','${section}')">Save</button>
         <button class="editor-btn" type="button" onclick="closeTaskEditor()">Cancel</button>
