@@ -235,11 +235,22 @@ function openTaskEditor(dateStr, section) {
   if (!isCurrentOrFutureDateStr(dateStr)) return;
   scheduleEditState = { dateStr, section };
   renderDay(viewDate);
+  focusTaskEditorInput();
 }
 
 function closeTaskEditor() {
   scheduleEditState = null;
   renderDay(viewDate);
+}
+
+function focusTaskEditorInput() {
+  requestAnimationFrame(() => {
+    const input = document.getElementById('task-editor-input');
+    if (!input) return;
+    input.focus();
+    const end = input.value.length;
+    input.setSelectionRange(end, end);
+  });
 }
 
 function saveTaskEditor(dateStr, section) {
