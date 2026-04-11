@@ -824,6 +824,8 @@ function updateHeader() {
 
 function renderLoadingState(message) {
   const main = document.getElementById('main-content');
+  if (main && main.dataset.screen === 'loading') return;
+
   const graphColumns = Array.from({ length: 12 }, () => `
     <div class="skeleton-graph-col">
       <div class="skeleton-block skeleton-graph-cell"></div>
@@ -914,6 +916,7 @@ function renderLoadingState(message) {
       </div>
     </div>
   </div>`;
+  main.dataset.screen = 'loading';
 }
 
 function renderSetupState() {
@@ -932,6 +935,7 @@ function renderSetupState() {
       <button class="gate-btn gate-btn-supabase" type="button" onclick="window.location.reload()">Reload after setup</button>
     </div>
   </div></div>`;
+  main.dataset.screen = 'setup';
 }
 
 function renderSignedOutState() {
@@ -948,6 +952,7 @@ function renderSignedOutState() {
       <button class="gate-btn gate-btn-github" type="button" onclick="signInWithGitHub()">Continue with GitHub</button>
     </div>
   </div></div>`;
+  main.dataset.screen = 'signed-out';
 }
 
 function renderErrorState(title, message) {
@@ -956,6 +961,7 @@ function renderErrorState(title, message) {
     <h2>${escapeHtml(title || 'Something went wrong')}</h2>
     <p>${escapeHtml(message || 'Please check your Supabase setup and try again.')}</p>
   </div></div>`;
+  main.dataset.screen = 'error';
 }
 
 // ── Render ──
@@ -1174,6 +1180,7 @@ function renderDay(date) {
 
     ${renderActivityGraph()}
   </div>`;
+  main.dataset.screen = `day:${dateStr}`;
 }
 
 // ── Activity Graph ──
