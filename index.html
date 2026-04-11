@@ -1366,6 +1366,118 @@
       border: 1px dashed var(--border2);
       overflow-x: auto;
     }
+
+    .skeleton-dashboard {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .skeleton-block {
+      position: relative;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+    }
+
+    .skeleton-block::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+      animation: skeleton-shimmer 1.25s ease-in-out infinite;
+    }
+
+    :root[data-theme="dark"] .skeleton-block::after {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+    }
+
+    @keyframes skeleton-shimmer {
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    .skeleton-line {
+      height: 12px;
+    }
+
+    .skeleton-line-lg {
+      height: 18px;
+    }
+
+    .skeleton-line-xl {
+      height: 34px;
+      border-radius: 16px;
+    }
+
+    .skeleton-day-header {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .skeleton-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 200px;
+    }
+
+    .skeleton-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .skeleton-card-items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .skeleton-task {
+      height: 42px;
+      border-radius: var(--r-sm);
+    }
+
+    .skeleton-graph {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 210px;
+    }
+
+    .skeleton-graph-grid {
+      display: grid;
+      grid-template-columns: 44px repeat(12, 1fr);
+      gap: 8px;
+      align-items: end;
+    }
+
+    .skeleton-graph-labels {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 14px;
+    }
+
+    .skeleton-graph-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .skeleton-graph-cell {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
   </style>
 </head>
 

@@ -811,10 +811,96 @@ function updateHeader() {
 
 function renderLoadingState(message) {
   const main = document.getElementById('main-content');
-  main.innerHTML = `<div class="gate-shell"><div class="gate-card fadein">
-    <h2>${escapeHtml(message || 'Loading your plan...')}</h2>
-    <p>Checking your session and syncing the latest schedule from Supabase.</p>
-  </div></div>`;
+  const graphColumns = Array.from({ length: 12 }, () => `
+    <div class="skeleton-graph-col">
+      <div class="skeleton-block skeleton-graph-cell"></div>
+      <div class="skeleton-block skeleton-graph-cell"></div>
+      <div class="skeleton-block skeleton-graph-cell"></div>
+      <div class="skeleton-block skeleton-graph-cell"></div>
+      <div class="skeleton-block skeleton-graph-cell"></div>
+      <div class="skeleton-block skeleton-graph-cell"></div>
+      <div class="skeleton-block skeleton-graph-cell"></div>
+    </div>
+  `).join('');
+
+  main.innerHTML = `<div class="skeleton-dashboard fadein" aria-label="${escapeHtml(message || 'Loading your plan...')}">
+    <div class="skeleton-day-header">
+      <div class="skeleton-block skeleton-line" style="width:128px"></div>
+      <div class="skeleton-block skeleton-line-xl" style="width:min(480px,72%)"></div>
+      <div class="skeleton-block skeleton-line" style="width:116px"></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card skeleton-card">
+        <div class="skeleton-card-head">
+          <div class="skeleton-block skeleton-line" style="width:124px"></div>
+          <div class="skeleton-block" style="width:24px;height:24px;border-radius:6px"></div>
+        </div>
+        <div class="skeleton-card-items">
+          <div class="skeleton-block skeleton-task"></div>
+          <div class="skeleton-block skeleton-task"></div>
+          <div class="skeleton-block skeleton-task"></div>
+        </div>
+      </div>
+      <div class="card skeleton-card">
+        <div class="skeleton-card-head">
+          <div class="skeleton-block skeleton-line" style="width:128px"></div>
+          <div class="skeleton-block" style="width:24px;height:24px;border-radius:6px"></div>
+        </div>
+        <div class="skeleton-card-items">
+          <div class="skeleton-block skeleton-task"></div>
+          <div class="skeleton-block skeleton-task"></div>
+          <div class="skeleton-block skeleton-task"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card skeleton-card">
+        <div class="skeleton-card-head">
+          <div class="skeleton-block skeleton-line" style="width:148px"></div>
+          <div class="skeleton-block" style="width:24px;height:24px;border-radius:6px"></div>
+        </div>
+        <div class="skeleton-card-items">
+          <div class="skeleton-block skeleton-task"></div>
+          <div class="skeleton-block skeleton-task"></div>
+        </div>
+      </div>
+      <div class="card skeleton-card">
+        <div class="skeleton-card-head">
+          <div class="skeleton-block skeleton-line" style="width:112px"></div>
+          <div class="skeleton-block" style="width:24px;height:24px;border-radius:6px"></div>
+        </div>
+        <div class="skeleton-card-items">
+          <div class="skeleton-block skeleton-task"></div>
+          <div class="skeleton-block skeleton-task"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card skeleton-card col-span-full">
+      <div class="skeleton-card-head">
+        <div class="skeleton-block skeleton-line" style="width:120px"></div>
+        <div class="skeleton-block" style="width:24px;height:24px;border-radius:6px"></div>
+      </div>
+      <div class="skeleton-block" style="height:84px;border-radius:12px"></div>
+    </div>
+
+    <div class="card activity-graph-card skeleton-graph">
+      <div class="skeleton-card-head">
+        <div class="skeleton-block skeleton-line" style="width:108px"></div>
+        <div class="skeleton-block skeleton-line" style="width:148px"></div>
+      </div>
+      <div class="skeleton-graph-grid">
+        <div class="skeleton-graph-labels">
+          <div class="skeleton-block skeleton-line" style="width:24px"></div>
+          <div class="skeleton-block skeleton-line" style="width:24px"></div>
+          <div class="skeleton-block skeleton-line" style="width:24px"></div>
+        </div>
+        ${graphColumns}
+      </div>
+    </div>
+  </div>`;
 }
 
 function renderSetupState() {
