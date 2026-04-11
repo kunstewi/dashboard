@@ -1006,31 +1006,6 @@
       color: var(--faint);
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      .shell {
-        grid-template-columns: 1fr;
-        grid-template-rows: 56px auto 1fr;
-      }
-
-      aside {
-        display: none;
-      }
-
-      .grid-2,
-      .grid-3 {
-        grid-template-columns: 1fr;
-      }
-
-      .col-span-2 {
-        grid-column: 1;
-      }
-
-      .stats-row {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
     /* SCROLLED-IN ANIMATION */
     @keyframes fadein {
       from {
@@ -1105,6 +1080,10 @@
     .activity-graph-wrapper {
       overflow-x: auto;
       padding-bottom: 4px;
+    }
+
+    .activity-graph-wrapper-desktop {
+      display: block;
     }
 
     .activity-graph-wrapper::-webkit-scrollbar {
@@ -1250,6 +1229,63 @@
       width: 11px;
       height: 11px;
       border-radius: 2px;
+    }
+
+    .activity-graph-mobile {
+      display: none;
+    }
+
+    .activity-mobile-daynames {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr) 50px;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .activity-mobile-weeklist {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .activity-mobile-row {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr) 50px;
+      gap: 10px;
+      align-items: center;
+      padding: 9px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .activity-mobile-weeklist .activity-mobile-row:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .activity-mobile-week-label,
+    .activity-mobile-summary,
+    .activity-mobile-day-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--faint);
+    }
+
+    .activity-mobile-summary {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .activity-mobile-grid,
+    .activity-mobile-day-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 4px;
+      justify-items: center;
+      min-width: 0;
+    }
+
+    .activity-mobile-day-grid .activity-mobile-day-label {
+      text-align: center;
     }
 
     .gate-card {
@@ -1477,6 +1513,249 @@
       width: 12px;
       height: 12px;
       border-radius: 3px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .shell {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
+        min-height: 100vh;
+        height: auto;
+        overflow: visible;
+      }
+
+      header {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .logo,
+      .header-center,
+      .header-right {
+        width: 100%;
+      }
+
+      .header-center {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .header-right {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      aside {
+        display: block;
+        grid-row: 2;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+        padding: 12px 0 14px;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+
+      #sidebar-phases {
+        display: flex;
+        gap: 12px;
+        padding: 0 16px 4px;
+        overflow-x: auto;
+      }
+
+      #sidebar-phases::-webkit-scrollbar {
+        height: 4px;
+      }
+
+      #sidebar-phases::-webkit-scrollbar-thumb {
+        background: var(--surface3);
+        border-radius: 999px;
+      }
+
+      .phase-group {
+        min-width: 220px;
+        margin-bottom: 0;
+        border: 1px solid var(--border);
+        border-radius: var(--r);
+        background: var(--surface);
+        overflow: hidden;
+      }
+
+      .phase-header {
+        padding: 10px 12px;
+      }
+
+      .week-list,
+      .week-list.open {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 8px 8px 10px 12px;
+      }
+
+      main {
+        overflow: visible;
+        padding: 20px 16px 28px;
+      }
+
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .col-span-2 {
+        grid-column: 1;
+      }
+
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .day-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .day-title {
+        font-size: 28px;
+      }
+
+      .activity-graph-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .activity-graph-stats {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px 16px;
+      }
+
+      .activity-graph-wrapper-desktop {
+        display: none;
+      }
+
+      .activity-graph-mobile {
+        display: block;
+      }
+
+      .gate-shell {
+        min-height: calc(100vh - 180px);
+      }
+    }
+
+    @media (max-width: 720px) {
+      header {
+        padding: 12px;
+        gap: 12px;
+      }
+
+      .current-date-display {
+        width: 100%;
+        min-width: 0;
+        text-align: left;
+        order: -1;
+      }
+
+      .header-center {
+        gap: 8px;
+      }
+
+      .header-right {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .progress-mini {
+        width: 100%;
+        order: 10;
+      }
+
+      .auth-controls {
+        justify-content: flex-start;
+        width: auto;
+      }
+
+      .auth-meta {
+        max-width: 150px;
+      }
+
+      .theme-toggle {
+        width: auto;
+      }
+
+      aside {
+        padding-bottom: 10px;
+      }
+
+      #sidebar-phases {
+        padding: 0 12px 2px;
+      }
+
+      .sidebar-section-label {
+        padding: 0 12px 10px;
+      }
+
+      .phase-group {
+        min-width: 188px;
+      }
+
+      main {
+        padding: 14px 12px 20px;
+      }
+
+      .card,
+      .activity-graph-card,
+      .gate-card {
+        padding: 14px;
+      }
+
+      .day-title {
+        font-size: 24px;
+      }
+
+      .task-item,
+      .revise-item,
+      .build-task {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .activity-mobile-daynames,
+      .activity-mobile-row {
+        grid-template-columns: 72px minmax(0, 1fr) 42px;
+        gap: 8px;
+      }
+
+      .activity-mobile-week-label,
+      .activity-mobile-summary {
+        font-size: 9px;
+      }
+
+      .activity-legend {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .gate-shell {
+        min-height: calc(100vh - 220px);
+      }
+
+      .skeleton-dashboard {
+        gap: 12px;
+      }
+
+      .skeleton-card {
+        min-height: 168px;
+      }
     }
   </style>
 </head>

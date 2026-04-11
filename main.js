@@ -1300,10 +1300,15 @@ function renderActivityGraph() {
   }
 
   let colsHTML = '';
+  let mobileRowsHTML = '';
   for (let w = 0; w < weeks.length; w++) {
     let cells = '';
+    let mobileCells = '';
+    let weekActive = 0;
+    let weekDone = 0;
+    const weekDays = weeks[w];
     for (let dow = 0; dow < 7; dow++) {
-      const cellDate = weeks[w][dow];
+      const cellDate = weekDays[dow];
       const ds = fmt(cellDate);
       const isFuture = cellDate > today;
       const isToday = ds === todayStr;
@@ -1311,6 +1316,11 @@ function renderActivityGraph() {
 
       if (!isFuture && total > 0 && done > 0) {
         totalDone++;
+      }
+
+      if (!isFuture && total > 0) {
+        weekActive++;
+        if (done > 0) weekDone++;
       }
 
       const classes = ['activity-cell'];
@@ -1326,8 +1336,20 @@ function renderActivityGraph() {
 
       const lvl = isFuture ? 0 : level;
       cells += `<div class="${classes.join(' ')}" data-level="${lvl}" data-tip="${tip}"></div>`;
+      mobileCells += `<div class="${classes.join(' ')}" data-level="${lvl}" data-tip="${tip}"></div>`;
     }
     colsHTML += `<div class="activity-col">${cells}</div>`;
+
+    const weekHasCurrentYearDay = weekDays.some(day => day.getFullYear() === year);
+    if (weekHasCurrentYearDay) {
+      const weekLabel = weekDays[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const weekSummary = weekActive > 0 ? `${weekDone}/${weekActive}` : '0/0';
+      mobileRowsHTML += `<div class="activity-mobile-row">
+        <div class="activity-mobile-week-label">${weekLabel}</div>
+        <div class="activity-mobile-grid">${mobileCells}</div>
+        <div class="activity-mobile-summary">${weekSummary}</div>
+      </div>`;
+    }
   }
 
   return `<div class="card activity-graph-card">
@@ -1338,12 +1360,28 @@ function renderActivityGraph() {
         <span class="activity-stat"><strong>${currentStreak}</strong> day streak</span>
       </div>
     </div>
-    <div class="activity-graph-wrapper">
+    <div class="activity-graph-wrapper activity-graph-wrapper-desktop">
       <div class="activity-month-labels">${monthLabelHTML}</div>
       <div class="activity-graph-inner">
         <div class="activity-day-labels">${dayLabelHTML}</div>
         ${colsHTML}
       </div>
+    </div>
+    <div class="activity-graph-mobile">
+      <div class="activity-mobile-daynames">
+        <div class="activity-mobile-week-label">Week</div>
+        <div class="activity-mobile-day-grid">
+          <div class="activity-mobile-day-label">S</div>
+          <div class="activity-mobile-day-label">M</div>
+          <div class="activity-mobile-day-label">T</div>
+          <div class="activity-mobile-day-label">W</div>
+          <div class="activity-mobile-day-label">T</div>
+          <div class="activity-mobile-day-label">F</div>
+          <div class="activity-mobile-day-label">S</div>
+        </div>
+        <div class="activity-mobile-summary">Done</div>
+      </div>
+      <div class="activity-mobile-weeklist">${mobileRowsHTML}</div>
     </div>
     <div class="activity-legend">
       <span class="activity-legend-label">Less</span>
