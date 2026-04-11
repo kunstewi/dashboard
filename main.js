@@ -7,11 +7,14 @@ let currentTheme = 'light';
 let currentSession = null;
 let currentUser = null;
 let supabaseClient = null;
+let browserStorage = undefined;
 let loadedYears = new Set();
 let syncStatus = { label: 'Setup required', tone: 'muted' };
 let lastHandledSessionKey = null;
 
 const THEME_KEY = 'sde_theme';
+const SUPABASE_AUTH_STORAGE_KEY = 'sde_dashboard_supabase_auth';
+const AUTH_SESSION_BACKUP_KEY = 'sde_dashboard_auth_backup';
 const SUPABASE_PROFILE_TABLE = 'profiles';
 const SUPABASE_SCHEDULE_TABLE = 'schedule_days';
 
@@ -316,6 +319,99 @@ function hasSupabaseConfig() {
   return Boolean(getSupabaseConfig());
 }
 
+function getBrowserStorage() {
+  if (browserStorage !== undefined) return browserStorage;
+
+  try {
+    const storage = window.localStorage;
+    const probeKey = '__sde_storage_probe__';
+    storage.setItem(probeKey, '1');
+    storage.removeItem(probeKey);
+    browserStorage = storage;
+  } catch (error) {
+    console.warn('Persistent browser storage is unavailable.', error);
+    browserStorage = null;
+  }
+
+  return browserStorage;
+}
+
+function readStoredValue(key) {
+  const storage = getBrowserStorage();
+  if (!storage) return null;
+
+  try {
+    return storage.getItem(key);
+  } catch (error) {
+    console.warn(`Could not read ${key} from local storage.`, error);
+    return null;
+  }
+}
+
+function writeStoredValue(key, value) {
+  const storage = getBrowserStorage();
+  if (!storage) return false;
+
+  try {
+    storage.setItem(key, value);
+    return true;
+  } catch (error) {
+    console.warn(`Could not write ${key} to local storage.`, error);
+    return false;
+  }
+}
+
+function removeStoredValue(key) {
+  const storage = getBrowserStorage();
+  if (!storage) return;
+
+  try {
+    storage.removeItem(key);
+  } catch (error) {
+    console.warn(`Could not remove ${key} from local storage.`, error);
+  }
+}
+
+function backupSession(session) {
+  if (!session || !session.access_token || !session.refresh_token) {
+    removeStoredValue(AUTH_SESSION_BACKUP_KEY);
+    return;
+  }
+
+  writeStoredValue(AUTH_SESSION_BACKUP_KEY, JSON.stringify({
+    access_token: session.access_token,
+    refresh_token: session.refresh_token
+  }));
+}
+
+function readSessionBackup() {
+  const raw = readStoredValue(AUTH_SESSION_BACKUP_KEY);
+  if (!raw) return null;
+
+  try {
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed.access_token !== 'string' || typeof parsed.refresh_token !== 'string') {
+      removeStoredValue(AUTH_SESSION_BACKUP_KEY);
+      return null;
+    }
+    return parsed;
+  } catch (error) {
+    console.warn('Stored auth backup could not be parsed.', error);
+    removeStoredValue(AUTH_SESSION_BACKUP_KEY);
+    return null;
+  }
+}
+
+function hasPendingAuthCallback() {
+  const search = new URLSearchParams(window.location.search);
+  const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+  return search.has('code')
+    || search.has('error')
+    || hash.has('access_token')
+    || hash.has('refresh_token')
+    || hash.has('error_description');
+}
+
 function setSyncStatus(label, tone) {
   syncStatus = { label, tone };
   const el = document.getElementById('sync-status');
@@ -366,15 +462,40 @@ function initializeSupabaseClient() {
   const config = getSupabaseConfig();
   if (!config || !window.supabase || typeof window.supabase.createClient !== 'function') return null;
 
+  const storage = getBrowserStorage();
+  const authOptions = {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+    storageKey: SUPABASE_AUTH_STORAGE_KEY
+  };
+  if (storage) authOptions.storage = storage;
+
   supabaseClient = window.supabase.createClient(config.url, config.anonKey, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true
-    }
+    auth: authOptions
   });
 
   return supabaseClient;
+}
+
+async function restoreSessionFromBackup(client) {
+  if (!client) return null;
+
+  const backup = readSessionBackup();
+  if (!backup) return null;
+
+  const { data, error } = await client.auth.setSession({
+    access_token: backup.access_token,
+    refresh_token: backup.refresh_token
+  });
+
+  if (error) {
+    console.warn('Could not restore auth session from local backup.', error);
+    removeStoredValue(AUTH_SESSION_BACKUP_KEY);
+    return null;
+  }
+
+  return data && data.session ? data.session : null;
 }
 
 async function signInWithGitHub() {
@@ -525,6 +646,7 @@ async function handleSessionChange(session) {
 
   currentSession = session || null;
   currentUser = currentSession ? currentSession.user : null;
+  backupSession(currentSession);
   updateAuthControls();
 
   if (!currentUser) {
@@ -1441,6 +1563,10 @@ async function init() {
 
   renderLoadingState('Loading your plan...');
 
+  client.auth.onAuthStateChange((_event, session) => {
+    handleSessionChange(session);
+  });
+
   const { data, error } = await client.auth.getSession();
   if (error) {
     handleSyncError(error, 'Could not initialize authentication');
@@ -1448,10 +1574,10 @@ async function init() {
   }
 
   await handleSessionChange(data.session);
-
-  client.auth.onAuthStateChange((_event, session) => {
-    handleSessionChange(session);
-  });
+  if (!data.session && !hasPendingAuthCallback()) {
+    const restoredSession = await restoreSessionFromBackup(client);
+    if (restoredSession) await handleSessionChange(restoredSession);
+  }
 }
 
 init();
