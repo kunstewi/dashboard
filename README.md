@@ -1,56 +1,96 @@
 # SDE Study Dashboard
 
-Your personal daily study tracker for the April–August SDE 1/2 preparation plan.
+GitHub Pages-hosted study dashboard with GitHub login and Supabase-backed task storage.
+
+## What changed
+- The dashboard is still a static `HTML/CSS/JS` site.
+- `schedule.json` is no longer used.
+- The default empty day structure now lives in `main.js`.
+- Tasks, completions, and graph state are stored in Supabase.
+- GitHub authentication is handled through Supabase Auth.
 
 ## Files
-- `index.html` — the dashboard UI
-- `main.js` — dashboard logic + local persistence
-- `data/schedule.json` — optional base schedule seed
+- `index.html` — UI shell and Supabase script includes
+- `main.js` — dashboard logic, auth flow, Supabase reads/writes
+- `supabase-config.js` — paste your Supabase URL + anon key here
+- `supabase/schema.sql` — run this in Supabase SQL Editor
 
-## How to run
+## Supabase setup
 
-You can open `index.html` directly, or serve it over HTTP.
-- If `data/schedule.json` is reachable, it is used as the base plan.
-- If not, the app still works using local storage edits from the page.
+### 1. Create a Supabase project
+Copy these two values from the project settings:
+- Project URL
+- anon public key
 
-### Option 1 — Node.js (recommended)
-```bash
-npx serve .
+### 2. Run the schema
+Open the Supabase SQL Editor and run:
+- `supabase/schema.sql`
+
+This creates:
+- `profiles`
+- `schedule_days`
+- row-level-security policies so each signed-in user can only read/write their own data
+
+### 3. Enable GitHub login in Supabase
+In Supabase:
+- Go to `Authentication` -> `Providers` -> `GitHub`
+- Enable GitHub provider
+- Supabase will show you a callback URL to use in GitHub OAuth
+
+### 4. Create a GitHub OAuth app
+In GitHub:
+- Create an OAuth App
+- Paste the Supabase callback URL into the OAuth app callback field
+- Copy the GitHub client ID and client secret back into Supabase GitHub provider settings
+
+### 5. Add redirect URLs in Supabase
+In Supabase Auth URL settings, add your app URLs, for example:
+- `https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/`
+- `http://127.0.0.1:5500/`
+- `http://localhost:5500/`
+
+## Final place to paste the Supabase config
+Open:
+- `supabase-config.js`
+
+Replace the placeholders with your real values:
+
+```js
+window.SDE_SUPABASE_CONFIG = {
+  url: 'https://YOUR_PROJECT.supabase.co',
+  anonKey: 'YOUR_SUPABASE_ANON_KEY'
+};
 ```
-Then open http://localhost:3000
 
-### Option 2 — Python
+This file is the only place you need to paste the Supabase frontend config.
+
+## Deployment
+Deploy the repo to GitHub Pages the same way you normally do.
+
+Important:
+- `supabase-config.js` must be committed so GitHub Pages can load it
+- the anon key is expected to be public in browser apps
+- your data is protected by Supabase Auth + RLS, not by hiding the anon key
+
+## Local development
+You can still open the site with a simple static server, for example:
+
 ```bash
 python3 -m http.server 8080
 ```
-Then open http://localhost:8080
 
-### Option 3 — VS Code
-Install the "Live Server" extension, right-click index.html → "Open with Live Server"
+Then open:
+- `http://localhost:8080`
 
-## Features
-- Shows today's learning tasks, revision tasks, problem of the day, and build task
-- Auto-generates spaced reviews (D1, D3, D7, D14, D30) from past learn/problem/build entries
-- Generated review items include one-click links to jump back to the source date
-- Navigate day by day with ← → buttons or arrow keys
-- Check off each task as you complete it (saves to localStorage)
-- Add/edit tasks directly on each card using the pencil icon (today + future dates)
-- Phase progress bar in the header
-- Sidebar with full timeline navigation
+Make sure that URL is also added to Supabase redirect URLs if you want GitHub login to work locally.
 
-## CLI commands
-- `1`, `a`, `add` — Add tasks for a date (Enter defaults to today).
-- `2`, `u`, `update` — Update tasks for an existing date (Enter defaults to today).
-- `3`, `r`, `reset` — Reset one date to empty defaults (Enter defaults to today).
-- `4`, `rall`, `resetall` — Reset all dates to empty defaults.
-- `5`, `l`, `list` — List schedule entries grouped by phase.
-- `6`, `e`, `exit` — Exit the schedule editor.
+## App behavior
+- If a date has no saved row in Supabase, the dashboard shows the default empty state
+- Editing tasks creates or updates that day's row in Supabase
+- Clearing a day back to the default empty state removes the stored row
+- The activity graph is computed from Supabase-backed schedule data and completion state
+- Theme preference still stays browser-local
 
-## Customising
-Study content can be edited directly in the UI (pencil icon per card).
-If you want a base file, edit `data/schedule.json`:
-- `schedule` entries are keyed by date (`YYYY-MM-DD`)
-- Each day has: `learn`, `revise`, `build`, `problem`, `tip`, `phase`
-
-## Dates covered
-April 6 – August 31, 2026 (147 days)
+## Notes
+- The old CLI and `schedule.json` flow are no longer part of the app runtime
+- If you had old local-only data in a browser, it will not automatically sync unless we add a one-time importer

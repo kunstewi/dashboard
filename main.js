@@ -1,12 +1,18 @@
 let curriculum = null;
 let viewDate = null;
 let completions = {};
-let scheduleOverrides = {};
+let persistedSchedule = {};
 let scheduleEditState = null;
 let currentTheme = 'light';
+let currentSession = null;
+let currentUser = null;
+let supabaseClient = null;
+let loadedYears = new Set();
+let syncStatus = { label: 'Setup required', tone: 'muted' };
+
 const THEME_KEY = 'sde_theme';
-const COMPLETIONS_KEY = 'sde_completions';
-const SCHEDULE_OVERRIDES_KEY = 'sde_schedule_overrides';
+const SUPABASE_PROFILE_TABLE = 'profiles';
+const SUPABASE_SCHEDULE_TABLE = 'schedule_days';
 
 const MONTH_NAMES = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -69,6 +75,7 @@ function addDaysToDateStr(dateStr, days) {
 
 function getWeekOf(date) {
   const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
   d.setDate(d.getDate() - d.getDay());
   return fmt(d);
 }
@@ -136,6 +143,36 @@ function emptyScheduleEntry(dateStr) {
     tip: '',
     phase: phaseFromDate(dateStr)
   };
+}
+
+function buildDefaultYearSchedule(year) {
+  const schedule = {};
+  const d = new Date(year, 0, 1);
+  while (d.getFullYear() === year) {
+    const dateStr = fmt(d);
+    schedule[dateStr] = emptyScheduleEntry(dateStr);
+    d.setDate(d.getDate() + 1);
+  }
+  return schedule;
+}
+
+function normalizeCompletionMap(value) {
+  const source = value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+  const out = {};
+  Object.keys(source).forEach(key => {
+    if (source[key]) out[key] = true;
+  });
+  return out;
+}
+
+function isDefaultScheduleEntry(entry, dateStr) {
+  const normalized = normalizeScheduleEntry(entry, dateStr);
+  return countTaskItems(normalized.learn) === 0
+    && countTaskItems(normalized.revise) === 0
+    && countTaskItems(normalized.problem) === 0
+    && countTaskItems(normalized.build) === 0
+    && !normalized.tip
+    && normalized.phase === phaseFromDate(dateStr);
 }
 
 function escapeHtml(value) {
@@ -217,12 +254,285 @@ function taskLineForEditor(item) {
   return String(item);
 }
 
+function ensureCurriculum() {
+  if (!curriculum) curriculum = { phases: PHASES, schedule: {} };
+}
+
+function applyPersistedScheduleForYear(year) {
+  Object.keys(persistedSchedule).forEach(dateStr => {
+    const d = parseDate(dateStr);
+    if (Number.isFinite(d.getTime()) && d.getFullYear() === year) {
+      curriculum.schedule[dateStr] = normalizeScheduleEntry(persistedSchedule[dateStr], dateStr);
+    }
+  });
+}
+
+function ensureScheduleYear(year) {
+  ensureCurriculum();
+  if (loadedYears.has(year)) return false;
+  Object.assign(curriculum.schedule, buildDefaultYearSchedule(year));
+  loadedYears.add(year);
+  applyPersistedScheduleForYear(year);
+  return true;
+}
+
+function rebuildCurriculum() {
+  const focusYear = viewDate ? viewDate.getFullYear() : new Date().getFullYear();
+  curriculum = { phases: PHASES, schedule: {} };
+  loadedYears = new Set();
+  ensureScheduleYear(focusYear);
+
+  Object.keys(persistedSchedule).forEach(dateStr => {
+    const d = parseDate(dateStr);
+    if (Number.isFinite(d.getTime())) ensureScheduleYear(d.getFullYear());
+  });
+
+  Object.keys(persistedSchedule).forEach(dateStr => {
+    curriculum.schedule[dateStr] = normalizeScheduleEntry(persistedSchedule[dateStr], dateStr);
+  });
+}
+
 function ensureScheduleEntry(dateStr) {
-  if (!curriculum.schedule[dateStr]) {
-    curriculum.schedule[dateStr] = emptyScheduleEntry(dateStr);
-  }
+  const year = parseDate(dateStr).getFullYear();
+  ensureScheduleYear(year);
   curriculum.schedule[dateStr] = normalizeScheduleEntry(curriculum.schedule[dateStr], dateStr);
   return curriculum.schedule[dateStr];
+}
+
+// ── Supabase / auth helpers ──
+
+function getSupabaseConfig() {
+  const raw = window.SDE_SUPABASE_CONFIG || {};
+  const url = typeof raw.url === 'string' ? raw.url.trim() : '';
+  const anonKey = typeof raw.anonKey === 'string' ? raw.anonKey.trim() : '';
+
+  if (!url || !anonKey) return null;
+  if (url.includes('YOUR_') || anonKey.includes('YOUR_')) return null;
+  return { url, anonKey };
+}
+
+function hasSupabaseConfig() {
+  return Boolean(getSupabaseConfig());
+}
+
+function setSyncStatus(label, tone) {
+  syncStatus = { label, tone };
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+  el.textContent = label;
+  el.setAttribute('data-tone', tone);
+}
+
+function getCurrentUserName() {
+  if (!currentUser) return '';
+  const meta = currentUser.user_metadata || {};
+  return meta.user_name || meta.preferred_username || meta.full_name || currentUser.email || 'Signed in';
+}
+
+function getCurrentUserAvatar() {
+  if (!currentUser) return '';
+  const meta = currentUser.user_metadata || {};
+  return typeof meta.avatar_url === 'string' ? meta.avatar_url : '';
+}
+
+function updateAuthControls() {
+  const slot = document.getElementById('auth-controls');
+  if (!slot) return;
+
+  if (!hasSupabaseConfig()) {
+    slot.innerHTML = '<button class="theme-toggle" type="button" onclick="openSupabaseSetup()">Setup Supabase</button>';
+    setSyncStatus('Setup required', 'muted');
+    return;
+  }
+
+  if (!currentUser) {
+    slot.innerHTML = '<button class="theme-toggle" type="button" onclick="signInWithGitHub()">GitHub sign in</button>';
+    setSyncStatus('Sign in to sync', 'muted');
+    return;
+  }
+
+  const avatar = getCurrentUserAvatar();
+  const avatarHtml = avatar
+    ? `<img class="auth-avatar" src="${escapeHtml(avatar)}" alt="${escapeHtml(getCurrentUserName())}">`
+    : '<div class="auth-avatar auth-avatar-fallback">GH</div>';
+
+  slot.innerHTML = `<div class="auth-meta">${avatarHtml}<span class="auth-name">${escapeHtml(getCurrentUserName())}</span></div>
+    <button class="theme-toggle" type="button" onclick="signOut()">Sign out</button>`;
+}
+
+function initializeSupabaseClient() {
+  if (supabaseClient) return supabaseClient;
+  const config = getSupabaseConfig();
+  if (!config || !window.supabase || typeof window.supabase.createClient !== 'function') return null;
+
+  supabaseClient = window.supabase.createClient(config.url, config.anonKey, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
+  });
+
+  return supabaseClient;
+}
+
+async function signInWithGitHub() {
+  const client = initializeSupabaseClient();
+  if (!client) {
+    renderSetupState();
+    return;
+  }
+
+  const redirectTo = `${window.location.origin}${window.location.pathname}`;
+  const { error } = await client.auth.signInWithOAuth({
+    provider: 'github',
+    options: { redirectTo }
+  });
+
+  if (error) {
+    console.error(error);
+    renderErrorState('Could not start GitHub login', error.message || 'Please check your Supabase OAuth configuration.');
+    setSyncStatus('Login failed', 'error');
+  }
+}
+
+async function signOut() {
+  if (!supabaseClient) return;
+  const { error } = await supabaseClient.auth.signOut();
+  if (error) {
+    console.error(error);
+    setSyncStatus('Sign out failed', 'error');
+  }
+}
+
+async function upsertProfile() {
+  if (!supabaseClient || !currentUser) return;
+  const meta = currentUser.user_metadata || {};
+  const payload = {
+    id: currentUser.id,
+    github_login: meta.user_name || meta.preferred_username || '',
+    github_avatar_url: meta.avatar_url || ''
+  };
+
+  const { error } = await supabaseClient
+    .from(SUPABASE_PROFILE_TABLE)
+    .upsert(payload, { onConflict: 'id' });
+
+  if (error) console.warn('Profile upsert skipped:', error.message || error);
+}
+
+async function loadCloudSchedule() {
+  if (!supabaseClient || !currentUser) return;
+
+  setSyncStatus('Loading cloud plan…', 'loading');
+  const { data, error } = await supabaseClient
+    .from(SUPABASE_SCHEDULE_TABLE)
+    .select('day, learn, revise, build, problem, tip, phase, completions')
+    .eq('user_id', currentUser.id)
+    .order('day', { ascending: true });
+
+  if (error) throw error;
+
+  persistedSchedule = {};
+  completions = {};
+
+  for (const row of data || []) {
+    const dateStr = row.day;
+    persistedSchedule[dateStr] = normalizeScheduleEntry(row, dateStr);
+    completions[dateStr] = normalizeCompletionMap(row.completions);
+  }
+
+  rebuildCurriculum();
+  buildSidebar();
+  renderDay(viewDate);
+  updateHeader();
+  updateProgress();
+  setSyncStatus('Synced', 'success');
+}
+
+async function persistDay(dateStr) {
+  if (!supabaseClient || !currentUser) return;
+
+  const normalized = normalizeScheduleEntry(curriculum.schedule[dateStr], dateStr);
+  const dayCompletions = normalizeCompletionMap(completions[dateStr]);
+  const shouldPersist = !isDefaultScheduleEntry(normalized, dateStr) || Object.keys(dayCompletions).length > 0;
+
+  setSyncStatus('Saving…', 'loading');
+
+  if (!shouldPersist) {
+    const { error } = await supabaseClient
+      .from(SUPABASE_SCHEDULE_TABLE)
+      .delete()
+      .eq('user_id', currentUser.id)
+      .eq('day', dateStr);
+
+    if (error) throw error;
+
+    delete persistedSchedule[dateStr];
+    delete completions[dateStr];
+    curriculum.schedule[dateStr] = emptyScheduleEntry(dateStr);
+    setSyncStatus('Synced', 'success');
+    return;
+  }
+
+  const payload = {
+    user_id: currentUser.id,
+    day: dateStr,
+    learn: normalized.learn,
+    revise: normalized.revise,
+    build: normalized.build,
+    problem: normalized.problem,
+    tip: normalized.tip,
+    phase: normalized.phase,
+    completions: dayCompletions,
+    updated_at: new Date().toISOString()
+  };
+
+  const { error } = await supabaseClient
+    .from(SUPABASE_SCHEDULE_TABLE)
+    .upsert(payload, { onConflict: 'user_id,day' });
+
+  if (error) throw error;
+
+  persistedSchedule[dateStr] = normalized;
+  completions[dateStr] = dayCompletions;
+  setSyncStatus('Synced', 'success');
+}
+
+function handleSyncError(error, title) {
+  console.error(error);
+  setSyncStatus('Sync failed', 'error');
+  if (title) renderErrorState(title, error && error.message ? error.message : 'Something went wrong while syncing with Supabase.');
+}
+
+function openSupabaseSetup() {
+  renderSetupState();
+}
+
+async function handleSessionChange(session) {
+  currentSession = session || null;
+  currentUser = currentSession ? currentSession.user : null;
+  updateAuthControls();
+
+  if (!currentUser) {
+    persistedSchedule = {};
+    completions = {};
+    rebuildCurriculum();
+    buildSidebar();
+    updateHeader();
+    updateProgress();
+    renderSignedOutState();
+    return;
+  }
+
+  renderLoadingState('Loading your cloud plan...');
+
+  try {
+    await upsertProfile();
+    await loadCloudSchedule();
+  } catch (error) {
+    handleSyncError(error, 'Could not load your dashboard');
+  }
 }
 
 // ── Schedule helpers ──
@@ -242,53 +552,16 @@ function getPhaseMap() {
   return map;
 }
 
-// ── Persistence ──
-
-function loadCompletions() {
-  try {
-    const saved = localStorage.getItem(COMPLETIONS_KEY);
-    if (saved) completions = JSON.parse(saved);
-  } catch (e) { }
-}
-
-function saveCompletions() {
-  try {
-    localStorage.setItem(COMPLETIONS_KEY, JSON.stringify(completions));
-  } catch (e) { }
-}
-
-function loadScheduleOverrides() {
-  try {
-    const saved = localStorage.getItem(SCHEDULE_OVERRIDES_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (parsed && typeof parsed === 'object') scheduleOverrides = parsed;
-    }
-  } catch (e) { }
-}
-
-function saveScheduleOverrides() {
-  try {
-    localStorage.setItem(SCHEDULE_OVERRIDES_KEY, JSON.stringify(scheduleOverrides));
-  } catch (e) { }
-}
-
-function applyScheduleOverrides() {
-  const dates = Object.keys(scheduleOverrides);
-  for (const dateStr of dates) {
-    curriculum.schedule[dateStr] = normalizeScheduleEntry(scheduleOverrides[dateStr], dateStr);
-  }
-}
+// ── Persistence / local theme ──
 
 function upsertScheduleEntry(dateStr, entry) {
   const normalized = normalizeScheduleEntry(entry, dateStr);
   curriculum.schedule[dateStr] = normalized;
-  scheduleOverrides[dateStr] = normalized;
-  saveScheduleOverrides();
+  return persistDay(dateStr);
 }
 
 function openTaskEditor(dateStr, section) {
-  if (!isCurrentOrFutureDateStr(dateStr)) return;
+  if (!currentUser || !isCurrentOrFutureDateStr(dateStr)) return;
   scheduleEditState = { dateStr, section };
   renderDay(viewDate);
   focusTaskEditorInput();
@@ -317,8 +590,8 @@ function handleTaskEditorKeydown(event, dateStr, section) {
   }
 }
 
-function saveTaskEditor(dateStr, section) {
-  if (!isCurrentOrFutureDateStr(dateStr)) return;
+async function saveTaskEditor(dateStr, section) {
+  if (!currentUser || !isCurrentOrFutureDateStr(dateStr)) return;
 
   const input = document.getElementById('task-editor-input');
   if (!input) return;
@@ -335,11 +608,16 @@ function saveTaskEditor(dateStr, section) {
   }
 
   nextEntry.phase = nextEntry.phase || phaseFromDate(dateStr);
-  upsertScheduleEntry(dateStr, nextEntry);
-  scheduleEditState = null;
-  buildSidebar();
-  renderDay(viewDate);
-  updateHeader();
+
+  try {
+    await upsertScheduleEntry(dateStr, nextEntry);
+    scheduleEditState = null;
+    buildSidebar();
+    renderDay(viewDate);
+    updateHeader();
+  } catch (error) {
+    handleSyncError(error);
+  }
 }
 
 function loadTheme() {
@@ -367,13 +645,24 @@ function toggleTheme() {
   saveTheme(next);
 }
 
-function toggleCompletion(dateStr, taskId) {
-  if (!isTodayDateStr(dateStr)) return;
+async function toggleCompletion(dateStr, taskId) {
+  if (!currentUser || !isTodayDateStr(dateStr)) return;
   if (!completions[dateStr]) completions[dateStr] = {};
-  completions[dateStr][taskId] = !completions[dateStr][taskId];
-  saveCompletions();
+
+  if (completions[dateStr][taskId]) {
+    delete completions[dateStr][taskId];
+  } else {
+    completions[dateStr][taskId] = true;
+  }
+
   renderDay(viewDate);
   updateProgress();
+
+  try {
+    await persistDay(dateStr);
+  } catch (error) {
+    handleSyncError(error);
+  }
 }
 
 // ── Progress ──
@@ -402,10 +691,9 @@ function buildSidebar() {
   const dates = getScheduleDates();
   if (dates.length === 0) return;
 
-  // Group dates by "YYYY-MM"
   const monthGroups = {};
   for (const dateStr of dates) {
-    const key = dateStr.slice(0, 7); // "YYYY-MM"
+    const key = dateStr.slice(0, 7);
     if (!monthGroups[key]) monthGroups[key] = [];
     monthGroups[key].push(dateStr);
   }
@@ -428,7 +716,6 @@ function buildSidebar() {
     const wl = document.createElement('div');
     wl.className = 'week-list';
 
-    // Group by week
     const weekMap = {};
     for (const ds of monthDates) {
       const d = parseDate(ds);
@@ -450,7 +737,6 @@ function buildSidebar() {
       wl.appendChild(wi);
     });
 
-    // Auto-open the current month
     const now = new Date();
     if (now.getFullYear() === year && now.getMonth() === monthIdx - 1) {
       wl.classList.add('open');
@@ -468,8 +754,19 @@ function buildSidebar() {
 
 function navigateTo(date) {
   viewDate = new Date(date);
+  viewDate.setHours(0, 0, 0, 0);
   scheduleEditState = null;
-  renderDay(viewDate);
+  const addedYear = ensureScheduleYear(viewDate.getFullYear());
+  if (addedYear) buildSidebar();
+
+  if (currentUser) {
+    renderDay(viewDate);
+  } else if (hasSupabaseConfig()) {
+    renderSignedOutState();
+  } else {
+    renderSetupState();
+  }
+
   updateHeader();
 }
 
@@ -481,7 +778,7 @@ function jumpToDate(dateStr) {
 
 function updateHeader() {
   const dateStr = fmt(viewDate);
-  const dayData = curriculum.schedule[dateStr] || (isCurrentOrFutureDateStr(dateStr) ? emptyScheduleEntry(dateStr) : null);
+  const dayData = curriculum.schedule[dateStr] || emptyScheduleEntry(dateStr);
   const phaseMap = getPhaseMap();
 
   document.getElementById('date-display').textContent =
@@ -510,6 +807,44 @@ function updateHeader() {
   updateProgress();
 }
 
+// ── State gates ──
+
+function renderLoadingState(message) {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `<div class="gate-card fadein">
+    <h2>${escapeHtml(message || 'Loading your plan...')}</h2>
+    <p>Checking your session and syncing the latest schedule from Supabase.</p>
+  </div>`;
+}
+
+function renderSetupState() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `<div class="gate-card fadein">
+    <h2>Supabase config needed</h2>
+    <p>Paste your project URL and anon key into <code>supabase-config.js</code>, then refresh the page.</p>
+    <div class="gate-code">window.SDE_SUPABASE_CONFIG = { url: 'https://YOUR_PROJECT.supabase.co', anonKey: 'YOUR_SUPABASE_ANON_KEY' };</div>
+  </div>`;
+}
+
+function renderSignedOutState() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `<div class="gate-card fadein">
+    <h2>Sign in with GitHub</h2>
+    <p>Your dashboard data lives in Supabase now, so signing in is what keeps tasks, completions, and graph history synced across browsers and mobile.</p>
+    <div class="gate-actions">
+      <button class="gate-btn" type="button" onclick="signInWithGitHub()">Continue with GitHub</button>
+    </div>
+  </div>`;
+}
+
+function renderErrorState(title, message) {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `<div class="gate-card fadein">
+    <h2>${escapeHtml(title || 'Something went wrong')}</h2>
+    <p>${escapeHtml(message || 'Please check your Supabase setup and try again.')}</p>
+  </div>`;
+}
+
 // ── Render ──
 
 function renderDay(date) {
@@ -517,25 +852,18 @@ function renderDay(date) {
   let dayData = curriculum.schedule[dateStr];
   const main = document.getElementById('main-content');
   const phaseMap = getPhaseMap();
-  const canEditSchedule = isCurrentOrFutureDateStr(dateStr);
-
-  if (!dayData && canEditSchedule) {
-    dayData = emptyScheduleEntry(dateStr);
-  }
+  const canEditSchedule = Boolean(currentUser) && isCurrentOrFutureDateStr(dateStr);
 
   if (!dayData) {
-    main.innerHTML = `<div class="off-plan-msg fadein">
-      <h3>No plan for this day</h3>
-      <p>No saved tasks for this past date.</p>
-    </div>`;
-    return;
+    ensureScheduleYear(date.getFullYear());
+    dayData = curriculum.schedule[dateStr] || emptyScheduleEntry(dateStr);
   }
 
   const phase = dayData.phase || phaseFromDate(dateStr);
   const phaseInfo = phaseMap[phase];
   const phaseColor = (phaseInfo && phaseInfo.color) || 'var(--accent)';
   const phaseName = (phaseInfo && phaseInfo.name) || phase || '—';
-  const canEditChecklist = isTodayDateStr(dateStr);
+  const canEditChecklist = Boolean(currentUser) && isTodayDateStr(dateStr);
   const dc = completions[dateStr] || {};
 
   function normalizeTaskItem(item, index, type) {
@@ -594,7 +922,7 @@ function renderDay(date) {
     </div>`;
   }
 
-  function renderCardEditorHTML(section, valueLines, accentColor, options = {}) {
+  function renderCardEditorHTML(section, valueLines, accentColor, options) {
     if (!scheduleEditState) return '';
     if (scheduleEditState.dateStr !== dateStr || scheduleEditState.section !== section) return '';
     const isTipEditor = section === 'tip';
@@ -796,12 +1124,10 @@ function renderActivityGraph() {
   const todayStr = fmt(today);
   const year = today.getFullYear();
 
-  // Start from the first Sunday of the year (or Jan 1 if Sunday)
   const jan1 = new Date(year, 0, 1);
   const startDate = new Date(jan1);
   startDate.setDate(startDate.getDate() - startDate.getDay());
 
-  // Build 53 weeks
   const weeks = [];
   const d = new Date(startDate);
   for (let w = 0; w < 53; w++) {
@@ -813,7 +1139,6 @@ function renderActivityGraph() {
     weeks.push(week);
   }
 
-  // Month labels
   const monthLabels = [];
   let lastMonth = -1;
   for (let w = 0; w < weeks.length; w++) {
@@ -825,28 +1150,23 @@ function renderActivityGraph() {
     }
   }
 
-  // Compute month label positions as inline widths
   let monthLabelHTML = '';
   for (let i = 0; i < monthLabels.length; i++) {
     const startW = monthLabels[i].index;
     const endW = i < monthLabels.length - 1 ? monthLabels[i + 1].index : weeks.length;
     const span = endW - startW;
-    const width = span * 14; // 11px cell + 3px gap
+    const width = span * 14;
     monthLabelHTML += `<span class="activity-month-label" style="width:${width}px">${monthLabels[i].name}</span>`;
   }
 
-  // Day labels (Mon, Wed, Fri)
   const dayLabels = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
   const dayLabelHTML = dayLabels
     .map(l => `<div class="activity-day-label">${l}</div>`)
     .join('');
 
-  // Build columns
   let totalDone = 0;
-  let totalActive = 0;
   let currentStreak = 0;
 
-  // Compute streaks by walking backwards from today
   const streakDate = new Date(today);
   while (true) {
     const sStr = fmt(streakDate);
@@ -869,9 +1189,8 @@ function renderActivityGraph() {
       const isToday = ds === todayStr;
       const { level, done, total } = getActivityLevel(ds);
 
-      if (!isFuture && total > 0) {
-        totalActive++;
-        if (done > 0) totalDone++;
+      if (!isFuture && total > 0 && done > 0) {
+        totalDone++;
       }
 
       const classes = ['activity-cell'];
@@ -920,70 +1239,61 @@ function renderActivityGraph() {
 
 // ── Init ──
 
-async function loadBaseSchedule() {
-  try {
-    const response = await fetch('data/schedule.json', { cache: 'no-store' });
-    if (!response.ok) throw new Error('schedule fetch failed');
-    const schedule = await response.json();
-    if (!schedule || typeof schedule !== 'object' || Array.isArray(schedule)) {
-      throw new Error('invalid schedule payload');
-    }
-    const normalized = {};
-    Object.keys(schedule).sort().forEach(dateStr => {
-      normalized[dateStr] = normalizeScheduleEntry(schedule[dateStr], dateStr);
-    });
-    return normalized;
-  } catch (e) {
-    return {};
-  }
-}
-
 async function init() {
-  loadCompletions();
-  loadScheduleOverrides();
+  viewDate = new Date();
+  viewDate.setHours(0, 0, 0, 0);
+  rebuildCurriculum();
   applyTheme(loadTheme());
+  buildSidebar();
+  updateHeader();
+  updateAuthControls();
 
   const themeToggle = document.getElementById('theme-toggle');
   if (themeToggle) themeToggle.onclick = toggleTheme;
 
-  const schedule = await loadBaseSchedule();
-  curriculum = { phases: PHASES, schedule };
-  applyScheduleOverrides();
-  buildSidebar();
-
-  viewDate = new Date();
-  viewDate.setHours(0, 0, 0, 0);
-
-  renderDay(viewDate);
-  updateHeader();
-  updateProgress();
-
   document.getElementById('prev-day').onclick = () => {
     scheduleEditState = null;
     viewDate.setDate(viewDate.getDate() - 1);
-    renderDay(viewDate);
-    updateHeader();
+    navigateTo(viewDate);
   };
 
   document.getElementById('next-day').onclick = () => {
     scheduleEditState = null;
     viewDate.setDate(viewDate.getDate() + 1);
-    renderDay(viewDate);
-    updateHeader();
+    navigateTo(viewDate);
   };
 
   document.getElementById('go-today').onclick = () => {
     scheduleEditState = null;
     viewDate = new Date();
     viewDate.setHours(0, 0, 0, 0);
-    renderDay(viewDate);
-    updateHeader();
+    navigateTo(viewDate);
   };
 
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft') document.getElementById('prev-day').click();
     if (e.key === 'ArrowRight') document.getElementById('next-day').click();
   });
+
+  const client = initializeSupabaseClient();
+  if (!client) {
+    renderSetupState();
+    return;
+  }
+
+  renderLoadingState('Loading your plan...');
+
+  client.auth.onAuthStateChange((_event, session) => {
+    handleSessionChange(session);
+  });
+
+  const { data, error } = await client.auth.getSession();
+  if (error) {
+    handleSyncError(error, 'Could not initialize authentication');
+    return;
+  }
+
+  await handleSessionChange(data.session);
 }
 
 init();
