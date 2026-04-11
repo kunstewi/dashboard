@@ -219,6 +219,75 @@
       background: var(--surface3);
     }
 
+    .auth-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .auth-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 180px;
+    }
+
+    .auth-name {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .auth-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      object-fit: cover;
+      border: 1px solid var(--border2);
+      background: var(--surface2);
+    }
+
+    .auth-avatar-fallback {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+    }
+
+    .sync-status {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--faint);
+      padding: 5px 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface2);
+      white-space: nowrap;
+    }
+
+    .sync-status[data-tone="success"] {
+      color: var(--green);
+      border-color: var(--green);
+      background: var(--green-dim);
+    }
+
+    .sync-status[data-tone="loading"] {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-dim2);
+    }
+
+    .sync-status[data-tone="error"] {
+      color: var(--coral);
+      border-color: var(--coral);
+      background: var(--coral-dim);
+    }
+
     .phase-pill {
       padding: 3px 10px;
       border-radius: 20px;
@@ -1182,6 +1251,66 @@
       height: 11px;
       border-radius: 2px;
     }
+
+    .gate-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 28px;
+      max-width: 620px;
+      box-shadow: 0 14px 34px rgba(20, 32, 51, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .gate-card h2 {
+      font-family: var(--serif);
+      font-size: 28px;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    .gate-card p {
+      color: var(--muted);
+      max-width: 52ch;
+    }
+
+    .gate-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .gate-btn {
+      appearance: none;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      border-radius: var(--r-sm);
+      padding: 8px 14px;
+      font-size: 13px;
+      font-family: var(--sans);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 8px 18px rgba(47, 111, 214, 0.22);
+    }
+
+    .gate-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .gate-code {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      padding: 12px;
+      border-radius: var(--r-sm);
+      background: var(--surface2);
+      border: 1px dashed var(--border2);
+      overflow-x: auto;
+    }
   </style>
 </head>
 
@@ -1209,6 +1338,8 @@
           <span id="global-prog-text">0%</span>
         </div>
         <div class="phase-pill" id="phase-pill">—</div>
+        <div class="sync-status" id="sync-status" data-tone="muted">Setup required</div>
+        <div class="auth-controls" id="auth-controls"></div>
         <button class="theme-toggle" id="theme-toggle">Dark view</button>
       </div>
     </header>
@@ -1226,6 +1357,8 @@
 
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="main.js"></script>
 </body>
 
