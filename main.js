@@ -811,38 +811,52 @@ function updateHeader() {
 
 function renderLoadingState(message) {
   const main = document.getElementById('main-content');
-  main.innerHTML = `<div class="gate-card fadein">
+  main.innerHTML = `<div class="gate-shell"><div class="gate-card fadein">
     <h2>${escapeHtml(message || 'Loading your plan...')}</h2>
     <p>Checking your session and syncing the latest schedule from Supabase.</p>
-  </div>`;
+  </div></div>`;
 }
 
 function renderSetupState() {
   const main = document.getElementById('main-content');
-  main.innerHTML = `<div class="gate-card fadein">
+  main.innerHTML = `<div class="gate-shell"><div class="gate-card fadein">
+    <div class="gate-badge gate-badge-supabase" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M13.8 3.8c.7-1.2 2.5-.7 2.5.7v14.1c0 1.7-2.1 2.5-3.2 1.2l-1.2-1.5c-.4-.5-.4-1.2 0-1.8l2.9-4.1c.2-.2 0-.6-.3-.6H11c-1.3 0-2.1-1.4-1.4-2.5l4.2-5.5Z" fill="currentColor"/>
+        <path d="M10.2 7.3c.7-1.1 2.4-.6 2.4.8v11.3c0 1.7-2.1 2.5-3.2 1.2L7.2 18c-.5-.6-.5-1.4 0-2l3.1-4.1c.2-.2 0-.5-.2-.5H6.8c-1.3 0-2.1-1.4-1.4-2.5l4.8-6.6Z" fill="currentColor" opacity="0.78"/>
+      </svg>
+    </div>
     <h2>Supabase config needed</h2>
     <p>Paste your project URL and anon key into <code>supabase-config.js</code>, then refresh the page.</p>
     <div class="gate-code">window.SDE_SUPABASE_CONFIG = { url: 'https://YOUR_PROJECT.supabase.co', anonKey: 'YOUR_SUPABASE_ANON_KEY' };</div>
-  </div>`;
+    <div class="gate-actions">
+      <button class="gate-btn gate-btn-supabase" type="button" onclick="window.location.reload()">Reload after setup</button>
+    </div>
+  </div></div>`;
 }
 
 function renderSignedOutState() {
   const main = document.getElementById('main-content');
-  main.innerHTML = `<div class="gate-card fadein">
+  main.innerHTML = `<div class="gate-shell"><div class="gate-card fadein">
+    <div class="gate-badge gate-badge-github" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 .7a11.3 11.3 0 0 0-3.58 22.03c.57.1.77-.24.77-.54v-1.9c-3.12.68-3.78-1.33-3.78-1.33-.5-1.3-1.24-1.65-1.24-1.65-1.01-.7.08-.68.08-.68 1.11.08 1.7 1.13 1.7 1.13 1 .34 1.95.24 2.43.18.1-.7.39-1.18.7-1.45-2.49-.28-5.12-1.25-5.12-5.56 0-1.23.44-2.23 1.15-3.01-.12-.28-.5-1.41.1-2.94 0 0 .95-.3 3.11 1.15a10.8 10.8 0 0 1 5.66 0c2.16-1.45 3.1-1.15 3.1-1.15.62 1.53.23 2.66.12 2.94.71.78 1.15 1.78 1.15 3.01 0 4.32-2.63 5.27-5.14 5.55.4.35.76 1.02.76 2.07v3.07c0 .3.2.65.78.54A11.3 11.3 0 0 0 12 .7Z"/>
+      </svg>
+    </div>
     <h2>Sign in with GitHub</h2>
     <p>Your dashboard data lives in Supabase now, so signing in is what keeps tasks, completions, and graph history synced across browsers and mobile.</p>
     <div class="gate-actions">
-      <button class="gate-btn" type="button" onclick="signInWithGitHub()">Continue with GitHub</button>
+      <button class="gate-btn gate-btn-github" type="button" onclick="signInWithGitHub()">Continue with GitHub</button>
     </div>
-  </div>`;
+  </div></div>`;
 }
 
 function renderErrorState(title, message) {
   const main = document.getElementById('main-content');
-  main.innerHTML = `<div class="gate-card fadein">
+  main.innerHTML = `<div class="gate-shell"><div class="gate-card fadein">
     <h2>${escapeHtml(title || 'Something went wrong')}</h2>
     <p>${escapeHtml(message || 'Please check your Supabase setup and try again.')}</p>
-  </div>`;
+  </div></div>`;
 }
 
 // ── Render ──
