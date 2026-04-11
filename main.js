@@ -9,6 +9,7 @@ let currentUser = null;
 let supabaseClient = null;
 let loadedYears = new Set();
 let syncStatus = { label: 'Setup required', tone: 'muted' };
+let lastHandledSessionKey = null;
 
 const THEME_KEY = 'sde_theme';
 const SUPABASE_PROFILE_TABLE = 'profiles';
@@ -509,7 +510,19 @@ function openSupabaseSetup() {
   renderSetupState();
 }
 
+function getSessionKey(session) {
+  if (!session || !session.user) return 'signed-out';
+  const tokenHint = typeof session.access_token === 'string'
+    ? session.access_token.slice(-12)
+    : 'no-token';
+  return `${session.user.id}:${tokenHint}`;
+}
+
 async function handleSessionChange(session) {
+  const sessionKey = getSessionKey(session);
+  if (sessionKey === lastHandledSessionKey) return;
+  lastHandledSessionKey = sessionKey;
+
   currentSession = session || null;
   currentUser = currentSession ? currentSession.user : null;
   updateAuthControls();
@@ -1383,10 +1396,6 @@ async function init() {
 
   renderLoadingState('Loading your plan...');
 
-  client.auth.onAuthStateChange((_event, session) => {
-    handleSessionChange(session);
-  });
-
   const { data, error } = await client.auth.getSession();
   if (error) {
     handleSyncError(error, 'Could not initialize authentication');
@@ -1394,6 +1403,10 @@ async function init() {
   }
 
   await handleSessionChange(data.session);
+
+  client.auth.onAuthStateChange((_event, session) => {
+    handleSessionChange(session);
+  });
 }
 
 init();
