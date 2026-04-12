@@ -1168,14 +1168,9 @@ function renderDay(date) {
     if (scheduleEditState.dateStr !== dateStr || scheduleEditState.section !== section) return '';
     const isTipEditor = section === 'tip';
     const value = valueLines.join('\n');
-    const helper = isTipEditor
-      ? 'Write a quick daily note. Enter = new line, Shift+Enter = save.'
-      : 'One task per line. Optional link format: Task | https://... Enter = new line, Shift+Enter = save.';
-    const placeholder = options.placeholder || '';
     const rows = options.rows || (isTipEditor ? 3 : 6);
     return `<div class="card-editor" style="--editor-accent:${accentColor}">
-      <div class="card-editor-help">${helper}</div>
-      <textarea id="task-editor-input" class="card-editor-input" rows="${rows}" placeholder="${escapeHtml(placeholder)}" onkeydown="handleTaskEditorKeydown(event,'${dateStr}','${section}')">${escapeHtml(value)}</textarea>
+      <textarea id="task-editor-input" class="card-editor-input" rows="${rows}" onkeydown="handleTaskEditorKeydown(event,'${dateStr}','${section}')">${escapeHtml(value)}</textarea>
       <div class="card-editor-actions">
         <button class="editor-btn editor-btn-primary" type="button" onclick="saveTaskEditor('${dateStr}','${section}')">Save</button>
         <button class="editor-btn" type="button" onclick="closeTaskEditor()">Cancel</button>
@@ -1260,16 +1255,12 @@ function renderDay(date) {
     <div class="grid-2">
       <div class="card">
         ${cardHeaderHTML('Learn today', phaseColor, 'learn')}
-        ${renderCardEditorHTML('learn', normalizeEditableArray(dayData.learn).map(taskLineForEditor), phaseColor, {
-          placeholder: 'Example: Binary search patterns'
-        })}
+        ${renderCardEditorHTML('learn', normalizeEditableArray(dayData.learn).map(taskLineForEditor), phaseColor, {})}
         <div class="task-list">${learnHTML}</div>
       </div>
       <div class="card">
         ${cardHeaderHTML('Revise today', 'var(--amber)', 'revise')}
-        ${renderCardEditorHTML('revise', normalizeEditableArray(dayData.revise).map(taskLineForEditor), 'var(--amber)', {
-          placeholder: 'Example: JS closures, async/await'
-        })}
+        ${renderCardEditorHTML('revise', normalizeEditableArray(dayData.revise).map(taskLineForEditor), 'var(--amber)', {})}
         <div class="task-list">${reviseHTML}</div>
       </div>
     </div>
@@ -1277,16 +1268,12 @@ function renderDay(date) {
     <div class="grid-2">
       <div class="card">
         ${cardHeaderHTML('Problem of the day', 'var(--coral)', 'problem')}
-        ${renderCardEditorHTML('problem', normalizeEditableArray(dayData.problem).map(taskLineForEditor), 'var(--coral)', {
-          placeholder: 'Example: 2 Sum | https://leetcode.com/...'
-        })}
+        ${renderCardEditorHTML('problem', normalizeEditableArray(dayData.problem).map(taskLineForEditor), 'var(--coral)', {})}
         <div class="task-list">${probHTML}</div>
       </div>
       <div class="card">
         ${cardHeaderHTML('Build / code', 'var(--green)', 'build')}
-        ${renderCardEditorHTML('build', normalizeEditableArray(dayData.build).map(taskLineForEditor), 'var(--green)', {
-          placeholder: 'Example: Implement LRU cache'
-        })}
+        ${renderCardEditorHTML('build', normalizeEditableArray(dayData.build).map(taskLineForEditor), 'var(--green)', {})}
         ${buildHTML}
       </div>
     </div>
@@ -1294,7 +1281,6 @@ function renderDay(date) {
     <div class="card col-span-full">
       ${cardHeaderHTML("Today's insight", 'var(--accent)', 'tip')}
       ${renderCardEditorHTML('tip', tipText ? [tipText] : [], 'var(--accent)', {
-        placeholder: 'Add a quick insight, reminder, or note',
         rows: 4
       })}
       ${tipHTML}
