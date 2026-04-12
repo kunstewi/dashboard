@@ -798,30 +798,6 @@
       color: var(--coral);
     }
 
-    /* BUILD CARD */
-    .build-task {
-      padding: 14px 16px;
-      background: var(--surface2);
-      border-left: 3px solid var(--accent);
-      border-radius: 0 var(--r-sm) var(--r-sm) 0;
-      font-size: 13px;
-      color: var(--text);
-      line-height: 1.5;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      min-width: 0;
-      max-width: 100%;
-    }
-
-    .build-task span {
-      flex: 1;
-      min-width: 0;
-      white-space: normal;
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
-
     .task-link {
       color: var(--accent);
       text-decoration: none;
@@ -875,9 +851,10 @@
       background: var(--accent-dim2);
       border-left: 3px solid var(--accent);
       border-radius: 0 var(--r-sm) var(--r-sm) 0;
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: 15px;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
       color: var(--text);
       line-height: 1.6;
       min-width: 0;
@@ -1717,8 +1694,7 @@
       }
 
       .task-item,
-      .revise-item,
-      .build-task {
+      .revise-item {
         padding-left: 10px;
         padding-right: 10px;
       }

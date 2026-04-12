@@ -1227,12 +1227,7 @@ function renderDay(date) {
     : '<div class="empty-revise">No problem assigned</div>';
 
   const buildHTML = buildTasks.length
-    ? buildTasks.map(t => {
-      return `<div class="build-task">
-        ${taskCheckHTML(t)}
-        <span>${renderLabelOrLink(t.label, t.link)}</span>
-      </div>`;
-    }).join('')
+    ? buildTasks.map(t => taskItemHTML(t)).join('')
     : '<div class="empty-revise">No build task assigned</div>';
 
   const tipText = typeof dayData.tip === 'string' ? dayData.tip.trim() : '';
@@ -1274,7 +1269,7 @@ function renderDay(date) {
       <div class="card">
         ${cardHeaderHTML('Build / code', 'var(--green)', 'build')}
         ${renderCardEditorHTML('build', normalizeEditableArray(dayData.build).map(taskLineForEditor), 'var(--green)', {})}
-        ${buildHTML}
+        <div class="task-list">${buildHTML}</div>
       </div>
     </div>
 
