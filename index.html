@@ -6,6 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SDE Study Dashboard</title>
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <script>
+    (() => {
+      try {
+        const savedTheme = localStorage.getItem('sde_theme');
+        if (savedTheme === 'dark' || savedTheme === 'light') {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+      } catch (error) { }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
@@ -1765,9 +1775,191 @@
       <div id="sidebar-phases"></div>
     </aside>
 
-    <main id="main-content">
-      <div class="no-data-msg">
-        <h2>Loading your plan...</h2>
+    <main id="main-content" data-screen="loading">
+      <div class="skeleton-dashboard fadein" aria-label="Loading your plan...">
+        <div class="skeleton-day-header">
+          <div class="skeleton-block skeleton-line" style="width:128px"></div>
+          <div class="skeleton-block skeleton-line-xl" style="width:min(480px,72%)"></div>
+          <div class="skeleton-block skeleton-line" style="width:116px"></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card skeleton-card">
+            <div class="skeleton-card-head">
+              <div class="skeleton-block skeleton-line" style="width:124px"></div>
+              <div class="skeleton-block" style="width:24px;height:24px;border-radius:6px"></div>
+            </div>
+            <div class="skeleton-card-items">
+              <div class="skeleton-block skeleton-task"></div>
+              <div class="skeleton-block skeleton-task"></div>
+              <div class="skeleton-block skeleton-task"></div>
+            </div>
+          </div>
+          <div class="card skeleton-card">
+            <div class="skeleton-card-head">
+              <div class="skeleton-block skeleton-line" style="width:128px"></div>
+              <div class="skeleton-block" style="width:24px;height:24px;border-radius:6px"></div>
+            </div>
+            <div class="skeleton-card-items">
+              <div class="skeleton-block skeleton-task"></div>
+              <div class="skeleton-block skeleton-task"></div>
+              <div class="skeleton-block skeleton-task"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card skeleton-card">
+            <div class="skeleton-card-head">
+              <div class="skeleton-block skeleton-line" style="width:148px"></div>
+              <div class="skeleton-block" style="width:24px;height:24px;border-radius:6px"></div>
+            </div>
+            <div class="skeleton-card-items">
+              <div class="skeleton-block skeleton-task"></div>
+              <div class="skeleton-block skeleton-task"></div>
+            </div>
+          </div>
+          <div class="card skeleton-card">
+            <div class="skeleton-card-head">
+              <div class="skeleton-block skeleton-line" style="width:112px"></div>
+              <div class="skeleton-block" style="width:24px;height:24px;border-radius:6px"></div>
+            </div>
+            <div class="skeleton-card-items">
+              <div class="skeleton-block skeleton-task"></div>
+              <div class="skeleton-block skeleton-task"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card skeleton-card col-span-full">
+          <div class="skeleton-card-head">
+            <div class="skeleton-block skeleton-line" style="width:120px"></div>
+            <div class="skeleton-block" style="width:24px;height:24px;border-radius:6px"></div>
+          </div>
+          <div class="skeleton-block" style="height:84px;border-radius:12px"></div>
+        </div>
+
+        <div class="card activity-graph-card skeleton-graph">
+          <div class="skeleton-card-head">
+            <div class="skeleton-block skeleton-line" style="width:108px"></div>
+            <div class="skeleton-block skeleton-line" style="width:148px"></div>
+          </div>
+          <div class="skeleton-graph-grid">
+            <div class="skeleton-graph-labels">
+              <div class="skeleton-block skeleton-line" style="width:24px"></div>
+              <div class="skeleton-block skeleton-line" style="width:24px"></div>
+              <div class="skeleton-block skeleton-line" style="width:24px"></div>
+            </div>
+            <div class="skeleton-graph-col">
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+            </div>
+            <div class="skeleton-graph-col">
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+            </div>
+            <div class="skeleton-graph-col">
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+            </div>
+            <div class="skeleton-graph-col">
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+            </div>
+            <div class="skeleton-graph-col">
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+            </div>
+            <div class="skeleton-graph-col">
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+            </div>
+            <div class="skeleton-graph-col">
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+            </div>
+            <div class="skeleton-graph-col">
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+            </div>
+            <div class="skeleton-graph-col">
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+            </div>
+            <div class="skeleton-graph-col">
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+            </div>
+            <div class="skeleton-graph-col">
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+            </div>
+            <div class="skeleton-graph-col">
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+              <div class="skeleton-block skeleton-graph-cell"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
 
